@@ -31,6 +31,9 @@ const scannedRoots = ['lib/features', 'lib/core/widgets'];
 const allowlistedFiles = [
   // P1: the only hardcoded patient-visible strings in the app.
   'p1_language_screen.dart',
+  // Developer-facing gallery on a debug-only route — sample strings for
+  // visual review against design/index.html, never shown to a patient.
+  'design_gallery_screen.dart',
 ];
 
 // Patterns that put a literal in front of a patient.
