@@ -84,6 +84,13 @@ class ReminderService {
           requestBadgePermission: false,
           requestSoundPermission: false,
         ),
+        // Desktop is a dev convenience, not a shipping target — but init
+        // must not take the whole app down there.
+        macOS: DarwinInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+        ),
       ),
       onDidReceiveNotificationResponse: (response) {
         final taskId = response.payload;

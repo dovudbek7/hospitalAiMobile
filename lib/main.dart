@@ -24,10 +24,16 @@ Future<void> main() async {
   );
 
   // Notification taps open P8 directly for the tapped medication.
-  await container.read(reminderServiceProvider).init(
-        onOpenMedication: (taskId) =>
-            container.read(routerProvider).push(medicationRouteFor(taskId)),
-      );
+  // Reminders failing to initialise (e.g. desktop dev runs) must never
+  // block the programme — the P5 rule, applied to boot.
+  try {
+    await container.read(reminderServiceProvider).init(
+          onOpenMedication: (taskId) =>
+              container.read(routerProvider).push(medicationRouteFor(taskId)),
+        );
+  } on Exception {
+    // Continue without local notifications.
+  }
 
   runApp(
     UncontrolledProviderScope(
