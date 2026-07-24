@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hospital AI — Patient App Design (P1–P17)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+/* ------------------------------------------------------------------
+   Design System — Hospital AI.  Every value here is copied from the
+   spec (Notion "Design System — Hospital AI" == handoff MD §8).
+   Nothing is invented.  The spacing scale is DELIBERATELY replaced by
+   the 4pt grid's permitted values only — so an off-grid number simply
+   does not exist as a utility class.
+   ------------------------------------------------------------------ */
+tailwind.config = {
+  theme: {
+    /* permitted spacing values only: 4 8 12 16 24 32 48 64 */
+    spacing: {
+      0:'0px', px:'1px', 1:'1px', 2:'2px',
+      4:'4px', 8:'8px', 12:'12px', 16:'16px',
+      24:'24px', 32:'32px', 44:'44px', 48:'48px', 56:'56px', 64:'64px', 72:'72px',
+    },
+    borderRadius: { none:'0', sm:'4px', DEFAULT:'8px', lg:'12px', xl:'16px', phone:'28px', full:'9999px' },
+    extend: {
+      colors: {
+        primary:        '#0F5F6B',
+        'primary-dark': '#0A464F',
+        'primary-light':'#EDF4F5',
+        ink:            '#1A2430',
+        muted:          '#5B6673',
+        line:           '#C9DBDE',
+        surface:        '#FFFFFF',
+        bg:             '#F7FAFB',
+        emergency:      '#B3261E',
+        urgent:         '#B36B00',
+        routine:        '#7A6A00',
+        success:        '#1B7F5A',
+        overdue:        '#5B6673',
+        /* gallery chrome only — NOT an app token. Never used inside a phone frame. */
+        shell:          '#EEF3F5',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
+      /* line-height 1.5 throughout, per spec */
+      fontSize: {
+        display: ['28px', { lineHeight: '1.5', fontWeight: '700' }],
+        h1:      ['22px', { lineHeight: '1.5', fontWeight: '700' }],
+        h2:      ['18px', { lineHeight: '1.5', fontWeight: '600' }],
+        bodyl:   ['18px', { lineHeight: '1.5', fontWeight: '400' }],
+        body:    ['16px', { lineHeight: '1.5', fontWeight: '400' }],
+        caption: ['14px', { lineHeight: '1.5', fontWeight: '400' }],
+        btn:     ['18px', { lineHeight: '1.5', fontWeight: '600' }],
+        code6:   ['24px', { lineHeight: '1.5', fontWeight: '600' }],
+        micro:   ['12px', { lineHeight: '1.5', fontWeight: '400' }],
+      },
+    },
+  },
+};
+</script>
+<style type="text/tailwindcss">
+  @layer components {
+    /* ---------- phone frame ---------- */
+    .frame       { @apply w-[360px] h-[800px] bg-bg rounded-phone overflow-hidden flex flex-col relative ring-1 ring-line shadow-[0_10px_30px_rgba(26,36,48,.13)]; }
+    .statusbar   { @apply h-24 shrink-0 bg-bg px-16 flex items-center justify-between text-micro text-muted; }
+    .screen      { @apply flex-1 overflow-y-auto; }
+    .pad         { @apply px-16 py-16; }
+
+    /* ---------- emergency banner (spec: every screen, 44 tall, not dismissible) ---------- */
+    .banner      { @apply shrink-0 min-h-44 bg-emergency text-surface px-16 py-8 flex items-start gap-8 text-caption; }
+
+    /* ---------- buttons (font size stated per variant, never inherited) ---------- */
+    .btn         { @apply w-full rounded flex items-center justify-center gap-8; }
+    .btn-primary { @apply btn h-56 bg-primary text-surface text-btn; }
+    .btn-key     { @apply btn h-64 bg-primary text-surface text-btn; }        /* 64dp key patient actions */
+    .btn-sec     { @apply btn h-56 border-2 border-primary text-primary bg-surface text-btn; }
+    .btn-sec-key { @apply btn h-64 border-2 border-primary text-primary bg-surface text-btn; }
+    .btn-off     { @apply btn h-64 bg-line/50 text-muted text-btn; }          /* disabled — never invisible */
+    .btn-911     { @apply btn h-72 bg-surface text-emergency text-display; }  /* full width, 72 tall */
+    .btn-911-sec { @apply btn h-64 border-2 border-surface text-surface text-btn; }
+
+    /* ---------- check-in answer options ----------
+       Spec token use: primary-light is for "section backgrounds, selected rows".
+       So a chosen option is primary-light + primary border, not filled primary. */
+    .opt         { @apply w-full min-h-64 rounded border-2 border-line bg-surface px-16 py-12 flex items-center text-bodyl text-left; }
+    .opt-on      { @apply w-full min-h-64 rounded border-2 border-primary bg-primary-light px-16 py-12 flex items-center gap-12 text-bodyl text-left; }
+
+    /* ---------- surfaces ---------- */
+    .card        { @apply bg-surface rounded-lg border border-line p-16; }
+    .input       { @apply h-56 w-full rounded border border-line bg-surface px-16 text-bodyl text-ink flex items-center; }
+    .input-focus { @apply border-2 border-primary; }
+
+    /* ---------- content slot: clinician-approved prose renders here ----------
+       No approved string exists for these keys yet, so the mockup shows the
+       content key and a skeleton rather than inventing clinical text.        */
+    .slot        { @apply rounded border border-dashed border-line bg-primary-light p-16; }
+    .slot-key    { @apply font-mono text-micro text-primary break-all; }
+    .slot-line   { @apply h-8 rounded-sm bg-line; }
+
+    /* ---------- bits ---------- */
+    .chip        { @apply inline-flex items-center gap-4 rounded-full px-8 py-2 text-micro; }
+    .navitem     { @apply flex-1 flex flex-col items-center justify-center gap-2 text-micro; }
+    .ic          { @apply shrink-0 stroke-current fill-none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ---------- gallery chrome (not part of the app) ---------- */
+    .pill        { @apply inline-flex items-center rounded-full border border-line bg-surface px-12 py-4 text-caption text-muted; }
+    .note        { @apply text-caption text-muted; }
+    .tag         { @apply font-mono text-micro text-primary; }
+  }
+</style>
+</head>
+
+<body class="bg-shell font-sans text-ink antialiased">
+
+<!-- ============================== ICONS ============================== -->
+<svg width="0" height="0" class="hidden" aria-hidden="true">
+  <symbol id="i-pill" viewBox="0 0 24 24"><g transform="rotate(-45 12 12)"><rect x="2.5" y="8.5" width="19" height="7" rx="3.5"/><path d="M12 8.5v7"/></g></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13.5" cy="4" r="2"/><path d="M11.5 21l1.5-6-3-3 1-4.5 3 3 2.5 1"/><path d="M8.5 21l3-5"/></symbol>
+  <symbol id="i-bandage" viewBox="0 0 24 24"><rect x="2.5" y="7.5" width="19" height="9" rx="4.5" transform="rotate(-30 12 12)"/><path d="M10.2 10.2h.01M13.8 13.8h.01M10.2 13.8h.01M13.8 10.2h.01"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2" width="6" height="4" rx="1"/><path d="M9 12.5l2 2 4-4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5L20 6.5"/></symbol>
+  <symbol id="i-chev-l" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-chev-r" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6 3h4l2 5-3 2a12 12 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.4 19.5a2 2 0 0 0 3.2 0"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5l9 16.5H3z"/><path d="M12 9.5v5M12 17.6v.01"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.4v.01"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6.5 9.5V20h11V9.5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6.5 21V11M12 21V4M17.5 21v-7"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M2.5 12h3M18.5 12h3M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M5 12.2a11 11 0 0 1 4.2-2.6"/><path d="M8.6 15.9a6 6 0 0 1 2.6-1.5"/><path d="M12 19.5v.01"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+</svg>
+
+<!-- ============================== HEADER ============================== -->
+<header class="sticky top-0 z-50 border-b border-line bg-surface/95 backdrop-blur">
+  <div class="mx-auto max-w-[1400px] px-24 py-16">
+    <div class="flex flex-wrap items-end justify-between gap-16">
+      <div>
+        <h1 class="text-display leading-none">Hospital AI — Patient App</h1>
+        <p class="note mt-4">17 screens (P1–P17) + 5 state variants · design system applied exactly · all copy verbatim from the Seed &amp; Placeholder Content Pack</p>
+      </div>
+      <nav class="flex flex-wrap gap-8">
+        <a href="#g1" class="pill hover:border-primary hover:text-primary">P1–P5 Onboarding</a>
+        <a href="#g2" class="pill hover:border-primary hover:text-primary">P6–P9 Daily</a>
+        <a href="#g3" class="pill hover:border-primary hover:text-primary">P10–P13 Check-in</a>
+        <a href="#g4" class="pill hover:border-primary hover:text-primary">P14–P17 Learn</a>
+        <a href="#g5" class="pill hover:border-primary hover:text-primary">States</a>
+      </nav>
+    </div>
+
+    <!-- token legend -->
+    <div class="mt-16 flex flex-wrap items-center gap-16">
+      <div class="flex flex-wrap gap-8">
+        <span class="chip bg-primary text-surface">primary #0F5F6B</span>
+        <span class="chip bg-primary-light text-primary border border-line">primary-light #EDF4F5</span>
+        <span class="chip bg-success text-surface">success #1B7F5A</span>
+        <span class="chip bg-overdue text-surface">neutral-overdue #5B6673</span>
+        <span class="chip bg-routine text-surface">routine #7A6A00</span>
+        <span class="chip bg-urgent text-surface">urgent #B36B00</span>
+        <span class="chip bg-emergency text-surface">emergency #B3261E</span>
+      </div>
+      <div class="flex flex-wrap gap-8 text-muted">
+        <span class="pill">Display 28/700</span>
+        <span class="pill">H1 22/700</span>
+        <span class="pill">H2 18/600</span>
+        <span class="pill">Body-L 18/400</span>
+        <span class="pill">Caption 14/400</span>
+        <span class="pill">line-height 1.5</span>
+        <span class="pill">grid 4·8·12·16·24·32·48·64</span>
+        <span class="pill">frame 360×800</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="mx-auto max-w-[1400px] px-24 py-32">
+
+<!-- what to look for -->
+<section class="mb-32 card">
+  <h2 class="text-h1">What to check while reviewing</h2>
+  <ul class="mt-12 grid gap-8 text-body text-muted sm:grid-cols-2">
+    <li>· Overdue tasks are <b class="text-ink">grey</b>, never red — red appears only on the banner and P13.</li>
+    <li>· Every tier carries an <b class="text-ink">icon + text label</b>, never colour alone.</li>
+    <li>· Disabled buttons are visible (border fill + muted text), never ghosted away.</li>
+    <li>· P11 contains <b class="text-ink">zero reassurance</b>; P12 contains <b class="text-ink">zero time promise</b>.</li>
+    <li>· Percentages always show their denominator.</li>
+    <li>· Key actions are 64dp; the emergency call button is full-width 72dp.</li>
+  </ul>
+  <p class="note mt-16 border-t border-line pt-12">
+    Dashed blocks marked <span class="tag">content.key</span> are content slots. The Content Pack has no approved
+    string for those keys yet, so nothing is invented — the real text arrives from
+    <span class="tag">GET /v1/content/{key}?lang=</span> once a clinician signs it.
+  </p>
+</section>
+
+<!-- ==================================================================== -->
+<!-- GROUP 1 — ONBOARDING                                                 -->
+<!-- ==================================================================== -->
+<section id="g1" class="mb-48 scroll-mt-64">
+  <h2 class="text-h1 mb-16 border-l-4 border-primary pl-12">Group 1 · Onboarding &amp; Consent (P1–P5)</h2>
+  <div class="flex flex-wrap gap-32">
+
+    <!-- ---------------- P1 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P1</span> <span class="text-h2">Language selection</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>▪▪▪ ▮</span></div>
+        <!-- no emergency banner here: P1's "no other text" rule wins -->
+        <div class="screen pad flex flex-col justify-center">
+          <div class="mb-48 flex flex-col items-center gap-16">
+            <div class="flex h-64 w-64 items-center justify-center rounded-lg bg-primary text-surface">
+              <svg class="ic h-32 w-32"><use href="#i-clipboard"/></svg>
+            </div>
+            <p class="text-h1 text-primary">Hospital AI</p>
+          </div>
+          <div class="flex flex-col gap-12">
+            <button class="btn-sec-key">Oʻzbekcha</button>
+            <button class="btn-sec-key">Русский</button>
+            <button class="btn-sec-key">English</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">The only hardcoded strings in the whole app. Each option written in its own script, 64dp tall. Device language is read but <b>never</b> auto-selected. No banner and no other text — P1's rule outranks the always-on banner.</p>
+    </figure>
+
+    <!-- ---------------- P2 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P2</span> <span class="text-h2">Enrolment code</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad">
+          <h1 class="text-display">Enter your code</h1>
+          <p class="mt-8 text-bodyl text-muted">Your clinic gave you a 6-character code when you were discharged.</p>
+
+          <div class="mt-32">
+            <p class="text-caption text-muted mb-4">Code</p>
+            <div class="input input-focus justify-center font-mono text-code6 tracking-[.4em] text-ink">H7K9QP</div>
+          </div>
+
+          <button class="btn-key mt-24">Continue</button>
+
+          <div class="mt-24 text-center">
+            <p class="text-body text-muted">Don’t have a code? Contact your clinic.</p>
+            <a class="mt-8 inline-flex items-center gap-8 text-btn text-primary underline" href="#">
+              <svg class="ic h-24 w-24"><use href="#i-phone"/></svg>+998 71 200 00 00
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Monospace 24pt, letter-spaced, centred, auto-uppercase. Continue disabled until 6 chars. Errors never reveal whether a code exists. Code survives rotation and backgrounding.</p>
+    </figure>
+
+    <!-- ---------------- P3 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P3</span> <span class="text-h2">Phone number</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad">
+          <h1 class="text-display">Your phone number</h1>
+          <p class="mt-8 text-bodyl text-muted">Enter the number you gave your clinic.</p>
+
+          <div class="mt-32">
+            <p class="text-caption text-muted mb-4">Phone</p>
+            <div class="flex gap-8">
+              <div class="input w-[88px] justify-center bg-primary-light text-muted">+998</div>
+              <div class="input input-focus flex-1 tracking-[.08em]">90 123 45 67</div>
+            </div>
+          </div>
+
+          <button class="btn-key mt-24">Continue</button>
+
+          <div class="mt-24 flex items-start gap-8 rounded bg-primary-light p-16">
+            <svg class="ic h-24 w-24 text-primary"><use href="#i-lock"/></svg>
+            <p class="text-caption text-muted">Spaces and dashes are removed before checking. A mismatch never reveals the stored number.</p>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">+998 prefix visible but not editable, numeric keypad only. Three failed attempts lock the code — staff must reissue. Enforced server-side.</p>
+    </figure>
+
+    <!-- ---------------- P4 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P4</span> <span class="text-h2">Consent</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="pad pb-8"><h1 class="text-display">Before we begin</h1></div>
+
+          <!-- scrollable consent body -->
+          <div class="mx-16 h-[300px] overflow-y-auto rounded border border-line bg-surface p-16">
+            <p class="text-body text-ink">This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact Sehat Clinic (DEMO) directly or seek emergency care.</p>
+            <p class="mt-16 text-body text-ink"><b>What we collect:</b> which recovery tasks and medicines you complete, and your answers to symptom check-ins.</p>
+            <p class="mt-12 text-body text-ink"><b>Who sees it:</b> your care team at Sehat Clinic (DEMO), and the technical team supporting the app.</p>
+            <p class="mt-12 text-body text-ink"><b>How long:</b> for the duration of your programme and your clinic’s record-keeping period.</p>
+            <p class="mt-12 text-body text-ink"><b>Your choice:</b> you can leave the programme at any time from Settings.</p>
+            <p class="mt-16 text-caption text-muted">Consent version 1.0 · scroll to the end to continue</p>
+          </div>
+
+          <div class="pad pt-16">
+            <label class="flex items-start gap-12">
+              <span class="mt-2 h-32 w-32 shrink-0 rounded border-2 border-line bg-surface"></span>
+              <span class="text-bodyl">I have read and agree</span>
+            </label>
+            <button class="btn-off mt-16">Agree and continue</button>
+            <button class="btn-sec mt-12">Decline</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Checkbox unticked by default, no pre-ticking ever. Primary stays <b>disabled but visible</b> until the text is scrolled to the end <i>and</i> the box is ticked. Decline writes zero personal data.</p>
+    </figure>
+
+    <!-- ---------------- P5 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P5</span> <span class="text-h2">Welcome / ready</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad">
+          <div class="mb-24 flex h-64 w-64 items-center justify-center rounded-full bg-success text-surface">
+            <svg class="ic h-32 w-32"><use href="#i-check"/></svg>
+          </div>
+          <h1 class="text-display">You’re all set, Aziz</h1>
+
+          <ul class="mt-24 flex flex-col gap-12">
+            <li class="card text-bodyl">Each day you’ll see the tasks your doctor set for you.</li>
+            <li class="card text-bodyl">Your programme runs for 30 days.</li>
+            <li class="card text-bodyl">Your clinic reviews check-ins during opening hours only. In an emergency, call 103.</li>
+          </ul>
+
+          <div class="mt-24 flex items-start gap-12 rounded bg-primary-light p-16">
+            <svg class="ic h-24 w-24 text-primary"><use href="#i-bell"/></svg>
+            <p class="text-body text-ink">We’ll remind you when to take your medication.</p>
+          </div>
+
+          <button class="btn-key mt-24">Start</button>
+        </div>
+      </div>
+      <p class="note mt-12">The reason for notifications is explained <b>before</b> the OS prompt. Denying never blocks the programme — Today then shows a persistent non-blocking banner, re-prompted once at day 3 and never again.</p>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ==================================================================== -->
+<!-- GROUP 2 — DAILY RECOVERY                                             -->
+<!-- ==================================================================== -->
+<section id="g2" class="mb-48 scroll-mt-64">
+  <h2 class="text-h1 mb-16 border-l-4 border-primary pl-12">Group 2 · Daily Recovery (P6–P9) <span class="note">— 90% of app time lives here</span></h2>
+  <div class="flex flex-wrap gap-32">
+
+    <!-- ---------------- P6 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P6</span> <span class="text-h2">Today (home)</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+
+        <div class="screen">
+          <!-- header -->
+          <div class="bg-surface px-16 pt-16 pb-12 border-b border-line">
+            <div class="flex items-baseline justify-between">
+              <h1 class="text-h1">Day 6 of 30</h1>
+              <span class="text-caption text-muted">4 of 6 done</span>
+            </div>
+            <div class="mt-8 h-8 w-full rounded-full bg-line">
+              <div class="h-8 rounded-full bg-primary" style="width:20%"></div>
+            </div>
+          </div>
+
+          <div class="px-16 py-16 flex flex-col gap-12">
+
+            <!-- check-in entry: visually distinct -->
+            <button class="w-full rounded-lg border-2 border-primary bg-primary-light p-16 text-left">
+              <div class="flex items-center gap-12">
+                <svg class="ic h-24 w-24 text-primary"><use href="#i-clipboard"/></svg>
+                <div class="flex-1">
+                  <p class="text-h2 text-primary">Today’s check-in</p>
+                  <p class="text-caption text-muted">7 questions · about 2 minutes</p>
+                </div>
+                <svg class="ic h-24 w-24 text-primary"><use href="#i-chev-r"/></svg>
+              </div>
+            </button>
+
+            <!-- 08:00 completed -->
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-success"><use href="#i-pill"/></svg>
+              <div class="flex-1 opacity-60">
+                <p class="text-bodyl line-through">Paracetamol 500 mg</p>
+                <p class="text-caption text-muted">08:00</p>
+              </div>
+              <span class="flex h-32 w-32 items-center justify-center rounded bg-success text-surface"><svg class="ic h-16 w-16"><use href="#i-check"/></svg></span>
+            </div>
+
+            <!-- 09:00 completed -->
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-success"><use href="#i-pill"/></svg>
+              <div class="flex-1 opacity-60">
+                <p class="text-bodyl line-through">Antibiotic</p>
+                <p class="text-caption text-muted">09:00</p>
+              </div>
+              <span class="flex h-32 w-32 items-center justify-center rounded bg-success text-surface"><svg class="ic h-16 w-16"><use href="#i-check"/></svg></span>
+            </div>
+
+            <!-- 10:00 OVERDUE — grey, never red, never scolding -->
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-overdue"><use href="#i-bandage"/></svg>
+              <div class="flex-1">
+                <p class="text-bodyl">Wound care</p>
+                <p class="flex items-center gap-4 text-caption text-overdue">
+                  <span class="h-4 w-4 rounded-full bg-overdue"></span>10:00 · Earlier today
+                </p>
+              </div>
+              <span class="h-32 w-32 rounded border-2 border-line bg-surface"></span>
+            </div>
+
+            <!-- 11:00 completed -->
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-success"><use href="#i-walk"/></svg>
+              <div class="flex-1 opacity-60">
+                <p class="text-bodyl line-through">Gentle walking, 20 minutes</p>
+                <p class="text-caption text-muted">11:00</p>
+              </div>
+              <span class="flex h-32 w-32 items-center justify-center rounded bg-success text-surface"><svg class="ic h-16 w-16"><use href="#i-check"/></svg></span>
+            </div>
+
+            <!-- 14:00 pending -->
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-pill"/></svg>
+              <div class="flex-1">
+                <p class="text-bodyl">Paracetamol 500 mg</p>
+                <p class="text-caption text-muted">14:00</p>
+              </div>
+              <span class="h-32 w-32 rounded border-2 border-line bg-surface"></span>
+            </div>
+
+            <!-- 20:00 pending -->
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-pill"/></svg>
+              <div class="flex-1">
+                <p class="text-bodyl">Paracetamol 500 mg</p>
+                <p class="text-caption text-muted">20:00</p>
+              </div>
+              <span class="h-32 w-32 rounded border-2 border-line bg-surface"></span>
+            </div>
+
+            <button class="btn-sec mt-4"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Contact clinic</button>
+          </div>
+        </div>
+
+        <!-- bottom nav -->
+        <nav class="flex h-64 shrink-0 items-stretch border-t border-line bg-surface">
+          <a class="navitem text-primary"><svg class="ic h-24 w-24"><use href="#i-home"/></svg>Today</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-chart"/></svg>Progress</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-book"/></svg>Learn</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-gear"/></svg>Settings</a>
+        </nav>
+      </div>
+      <p class="note mt-12">Completed tasks stay visible (success tick, 60% opacity, strikethrough) — seeing what you finished is the motivation. Overdue is grey text + a grey dot, no red, no exclamation, no “you missed”. Rows ≥72 tall, checkbox 32dp inside a 64dp tap area.</p>
+    </figure>
+
+    <!-- ---------------- P7 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P7</span> <span class="text-h2">Task detail</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:31</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="flex h-56 items-center gap-8 border-b border-line bg-surface px-16 text-primary">
+            <svg class="ic h-24 w-24"><use href="#i-chev-l"/></svg><span class="text-btn">Today</span>
+          </div>
+          <div class="pad">
+            <div class="flex items-center gap-12">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-bandage"/></svg>
+              <h1 class="text-h1">Wound care</h1>
+            </div>
+            <p class="mt-4 text-caption text-overdue">10:00 · Earlier today</p>
+
+            <div class="slot mt-24">
+              <p class="slot-key">clinical.laparoscopic_appendectomy.wound_care_day3</p>
+              <div class="mt-12 flex flex-col gap-8">
+                <div class="slot-line w-full"></div><div class="slot-line w-full"></div>
+                <div class="slot-line w-[85%]"></div><div class="slot-line w-full"></div>
+                <div class="slot-line w-[60%]"></div>
+              </div>
+              <p class="mt-12 text-micro text-muted">Clinician-approved instruction renders here, resolved by content key.</p>
+            </div>
+
+            <div class="mt-16 h-[120px] rounded-lg border border-dashed border-line bg-primary-light flex items-center justify-center">
+              <p class="text-caption text-muted">Approved image (optional)</p>
+            </div>
+
+            <button class="btn-key mt-24">Mark as done</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Missing or unapproved content <b>fails closed</b> — renders nothing and raises an error, never a fallback. An already-completed task can be un-completed (patients mis-tap); the correction is a new event, never a mutation of the original.</p>
+    </figure>
+
+    <!-- ---------------- P8 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P8</span> <span class="text-h2">Medication confirm</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>14:00</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <div class="mb-24 flex h-64 w-64 items-center justify-center rounded-full bg-primary-light text-primary">
+              <svg class="ic h-32 w-32"><use href="#i-pill"/></svg>
+            </div>
+            <p class="text-caption text-muted">Scheduled by your clinic</p>
+            <h1 class="mt-4 text-display">Paracetamol</h1>
+            <p class="mt-8 text-h1 text-primary">500 mg</p>
+            <p class="mt-4 text-bodyl text-muted">14:00 · 1 tablet</p>
+
+            <div class="mt-24 flex items-start gap-12 rounded bg-primary-light p-16">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-info"/></svg>
+              <p class="text-caption text-muted">Dose and schedule are set by your clinic and cannot be changed here.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-12 pb-16">
+            <button class="btn-key">Taken</button>
+            <button class="btn-sec-key">Not yet</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Exactly two actions — no third option, no snooze menu, no free text. “Not yet” repeats the reminder <b>once</b> after 30 minutes. Late confirmation is still recorded, with <span class="tag">on_time: false</span>. No editable dose field exists anywhere in the app.</p>
+    </figure>
+
+    <!-- ---------------- P9 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P9</span> <span class="text-h2">My progress</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:32</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="pad">
+            <h1 class="text-display">My recovery</h1>
+
+            <div class="card mt-16">
+              <p class="text-caption text-muted">Days</p>
+              <p class="text-display text-primary">6 of 30 days</p>
+              <div class="mt-12 h-8 w-full rounded-full bg-line">
+                <div class="h-8 rounded-full bg-primary" style="width:20%"></div>
+              </div>
+            </div>
+
+            <div class="card mt-12">
+              <p class="text-caption text-muted">Tasks completed so far</p>
+              <p class="text-display text-primary">80%</p>
+              <!-- denominator always shown -->
+              <p class="text-caption text-muted">8 of 10 tasks · future tasks not counted</p>
+            </div>
+
+            <div class="card mt-12">
+              <p class="text-h2 mb-12">30-day programme</p>
+              <div class="grid grid-cols-[repeat(10,minmax(0,1fr))] gap-4">
+                <!-- days 1–5 complete -->
+                <div class="aspect-square rounded-sm bg-success"></div><div class="aspect-square rounded-sm bg-success"></div>
+                <div class="aspect-square rounded-sm bg-success"></div><div class="aspect-square rounded-sm bg-success"></div>
+                <div class="aspect-square rounded-sm bg-success"></div>
+                <!-- day 6 = today -->
+                <div class="aspect-square rounded-sm border-2 border-primary bg-primary-light"></div>
+                <!-- days 7–30 future -->
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+                <div class="aspect-square rounded-sm bg-line"></div><div class="aspect-square rounded-sm bg-line"></div>
+              </div>
+              <div class="mt-12 flex flex-wrap gap-12 text-micro text-muted">
+                <span class="flex items-center gap-4"><span class="h-12 w-12 rounded-sm bg-success"></span>Completed</span>
+                <span class="flex items-center gap-4"><span class="h-12 w-12 rounded-sm border-2 border-primary bg-primary-light"></span>Today</span>
+                <span class="flex items-center gap-4"><span class="h-12 w-12 rounded-sm bg-line"></span>Upcoming</span>
+              </div>
+            </div>
+
+            <div class="mt-12 rounded-lg bg-primary-light p-16">
+              <p class="text-bodyl text-primary">Every day counts.</p>
+            </div>
+          </div>
+        </div>
+
+        <nav class="flex h-64 shrink-0 items-stretch border-t border-line bg-surface">
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-home"/></svg>Today</a>
+          <a class="navitem text-primary"><svg class="ic h-24 w-24"><use href="#i-chart"/></svg>Progress</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-book"/></svg>Learn</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-gear"/></svg>Settings</a>
+        </nav>
+      </div>
+      <p class="note mt-12">Percentage excludes future tasks — otherwise it always looks terrible on day 2. Encouragement copy is neutral at <i>every</i> adherence level: no clinical interpretation, and nothing discouraging when adherence is low. Works offline from cache.</p>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ==================================================================== -->
+<!-- GROUP 3 — CHECK-IN & ESCALATION                                      -->
+<!-- ==================================================================== -->
+<section id="g3" class="mb-48 scroll-mt-64">
+  <h2 class="text-h1 mb-16 border-l-4 border-emergency pl-12">Group 3 · Symptom Check-in &amp; Escalation (P10–P13) <span class="note">— highest-liability screens</span></h2>
+  <div class="flex flex-wrap gap-32">
+
+    <!-- ---------------- P10a ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P10a</span> <span class="text-h2">Check-in · single-select</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:35</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <p class="text-caption text-muted">Question 1 of 7</p>
+            <div class="mt-8 flex gap-4">
+              <span class="h-4 flex-1 rounded-full bg-primary"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span><span class="h-4 flex-1 rounded-full bg-line"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span><span class="h-4 flex-1 rounded-full bg-line"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span><span class="h-4 flex-1 rounded-full bg-line"></span>
+            </div>
+
+            <h1 class="mt-24 text-h1">Have you measured your temperature today?</h1>
+
+            <div class="mt-24 flex flex-col gap-12">
+              <button class="opt">Under 37.5</button>
+              <button class="opt-on">
+                <svg class="ic h-24 w-24 shrink-0 text-primary"><use href="#i-check"/></svg>
+                <span class="flex-1">37.5–38.4</span>
+              </button>
+              <button class="opt">38.5 or above</button>
+              <button class="opt">Haven’t measured</button>
+            </div>
+          </div>
+
+          <div class="flex gap-12 pb-16">
+            <button class="btn-sec-key flex-1"><svg class="ic h-24 w-24"><use href="#i-chev-l"/></svg>Back</button>
+            <button class="btn-key flex-1">Next<svg class="ic h-24 w-24"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">One question per screen. Answer types allowed: yes/no, single-select, multi-select, 0–10 scale — <b>nothing else</b>. There is no free-text field anywhere in this flow. Banner visible on every question.</p>
+    </figure>
+
+    <!-- ---------------- P10b ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P10b</span> <span class="text-h2">Check-in · 0–10 scale</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:36</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <p class="text-caption text-muted">Question 2 of 7</p>
+            <div class="mt-8 flex gap-4">
+              <span class="h-4 flex-1 rounded-full bg-primary"></span><span class="h-4 flex-1 rounded-full bg-primary"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span><span class="h-4 flex-1 rounded-full bg-line"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span><span class="h-4 flex-1 rounded-full bg-line"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span>
+            </div>
+
+            <h1 class="mt-24 text-h1">How is your pain right now?</h1>
+
+            <!-- the ONE horizontally scrollable element in the whole app -->
+            <div class="mt-24 -mx-16 overflow-x-auto px-16">
+              <div class="flex w-max gap-8">
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">0</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">1</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">2</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">3</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">4</button>
+                <button class="h-48 w-48 shrink-0 rounded-full bg-primary text-surface text-bodyl">5</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">6</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">7</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">8</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">9</button>
+                <button class="h-48 w-48 shrink-0 rounded-full border-2 border-line bg-surface text-bodyl">10</button>
+              </div>
+            </div>
+            <div class="mt-12 flex justify-between text-caption text-muted">
+              <span>0 · No pain</span><span>10 · Worst pain</span>
+            </div>
+          </div>
+
+          <div class="flex gap-12 pb-16">
+            <button class="btn-sec-key flex-1"><svg class="ic h-24 w-24"><use href="#i-chev-l"/></svg>Back</button>
+            <button class="btn-key flex-1">Next<svg class="ic h-24 w-24"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Eleven circular 48dp targets. This row is the <b>only</b> horizontally scrollable thing in the entire patient app. End labels come from the content library, so the 0-is-best direction is identical in all three languages.</p>
+    </figure>
+
+    <!-- ---------------- P10c ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P10c</span> <span class="text-h2">Check-in · red-flag multi-select</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:38</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <p class="text-caption text-muted">Question 5 of 7</p>
+            <div class="mt-8 flex gap-4">
+              <span class="h-4 flex-1 rounded-full bg-primary"></span><span class="h-4 flex-1 rounded-full bg-primary"></span>
+              <span class="h-4 flex-1 rounded-full bg-primary"></span><span class="h-4 flex-1 rounded-full bg-primary"></span>
+              <span class="h-4 flex-1 rounded-full bg-primary"></span><span class="h-4 flex-1 rounded-full bg-line"></span>
+              <span class="h-4 flex-1 rounded-full bg-line"></span>
+            </div>
+
+            <h1 class="mt-24 text-h1">Do you have any of these today?</h1>
+            <p class="mt-4 text-caption text-muted">Select all that apply</p>
+
+            <div class="mt-16 flex flex-col gap-8">
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">Chills or shivering</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">Difficulty breathing</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">Chest pain</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">Confusion</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">Very hard to stay awake</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">Heavy bleeding</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">New calf pain or swelling</span></label>
+              <label class="card flex min-h-56 items-center gap-12 py-12"><span class="h-24 w-24 shrink-0 rounded-sm border-2 border-line"></span><span class="text-bodyl">None of these</span></label>
+            </div>
+          </div>
+
+          <div class="flex gap-12 py-16">
+            <button class="btn-sec-key flex-1"><svg class="ic h-24 w-24"><use href="#i-chev-l"/></svg>Back</button>
+            <button class="btn-key flex-1">Next<svg class="ic h-24 w-24"><use href="#i-chev-r"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">The options arrive from <span class="tag">GET /me/checkin/questions</span> <b>already translated</b> — rendered directly, never re-translated. Nothing on this screen hints which answers are dangerous: the tier is decided server-side, and the client is never trusted with a safety decision.</p>
+    </figure>
+
+    <!-- ---------------- P11 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-routine text-surface">P11</span> <span class="text-h2">Submitted — ROUTINE</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:40</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <!-- tier carries icon + text label, not colour alone -->
+            <span class="chip border border-routine text-routine">
+              <svg class="ic h-16 w-16"><use href="#i-check"/></svg>Routine
+            </span>
+
+            <h1 class="mt-16 text-display">Answers received</h1>
+
+            <div class="slot mt-16">
+              <p class="slot-key">checkin.submitted.routine</p>
+              <div class="mt-12 flex flex-col gap-8">
+                <div class="slot-line w-full"></div><div class="slot-line w-full"></div><div class="slot-line w-[70%]"></div>
+              </div>
+              <p class="mt-12 text-micro text-muted">Approved copy: answers sent, the team reviews on the next working day. No interpretation.</p>
+            </div>
+
+            <div class="card mt-16">
+              <p class="text-caption text-muted">Sehat Clinic (DEMO)</p>
+              <p class="mt-4 text-bodyl">If your symptoms get worse, call the clinic or 103.</p>
+              <a class="mt-12 inline-flex items-center gap-8 text-btn text-primary underline" href="#">
+                <svg class="ic h-24 w-24"><use href="#i-phone"/></svg>+998 71 200 00 00
+              </a>
+            </div>
+          </div>
+
+          <button class="btn-key mb-16">Back to Today</button>
+        </div>
+      </div>
+      <p class="note mt-12"><b>Forbidden here:</b> “that sounds normal”, “nothing to worry about”, “your answers look fine” — any interpretation at all. This is the screen most likely to tempt a well-meaning developer into adding reassurance.</p>
+    </figure>
+
+    <!-- ---------------- P12 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-urgent text-surface">P12</span> <span class="text-h2">Submitted — URGENT</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:40</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <span class="chip border-2 border-urgent text-urgent">
+              <svg class="ic h-16 w-16"><use href="#i-alert"/></svg>Urgent
+            </span>
+
+            <h1 class="mt-16 text-display">Sent to your care team</h1>
+
+            <!-- verbatim from checkin.submitted.urgent -->
+            <p class="mt-16 text-bodyl">Thank you. Your answers have been sent to the Sehat Clinic (DEMO) care team. This app cannot assess your symptoms — a staff member will review them. Sehat Clinic (DEMO)’s instruction: if your symptoms get worse while you are waiting, call 103 or +998 71 200 00 00 straight away.</p>
+          </div>
+
+          <div class="flex flex-col gap-12 pb-16">
+            <button class="btn-key"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call clinic</button>
+            <button class="btn-key"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call 103</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Body is verbatim approved copy; clinic name and phone are injected from <span class="tag">GET /me/profile</span>, never hardcoded. <b>No response-time promise appears anywhere</b> — the SLA is an internal target, and an unmet promise is worse than none.</p>
+    </figure>
+
+    <!-- ---------------- P13 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-emergency text-surface">P13</span> <span class="text-h2">EMERGENCY</span></figcaption>
+      <div class="frame bg-emergency">
+        <div class="statusbar bg-emergency text-surface/80"><span>12:40</span><span>▪▪▪ ▮</span></div>
+        <!-- full-screen, high-contrast, unmistakable. no banner: the whole screen IS the alert -->
+        <div class="screen px-16 pt-16 flex flex-col text-surface">
+          <div class="flex-1">
+            <svg class="ic h-48 w-48"><use href="#i-alert"/></svg>
+            <h1 class="mt-16 text-display">Your clinic’s instruction: call 103 now.</h1>
+            <p class="mt-16 text-bodyl">Sehat Clinic (DEMO) advises that anyone with these symptoms after surgery should call emergency services immediately. Do not wait for a reply from this app.</p>
+          </div>
+
+          <div class="flex flex-col gap-12 pb-16">
+            <button class="btn-911">
+              <svg class="ic h-32 w-32"><use href="#i-phone"/></svg>Call 103
+            </button>
+            <button class="btn-911-sec">
+              <svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call Sehat Clinic (DEMO)
+            </button>
+            <!-- dismiss: available, but deliberately de-emphasised -->
+            <button class="mx-auto py-12 text-caption text-surface/70 underline">Close</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Renders and dials <b>with no network</b> — strings and numbers are cached locally at enrolment. Identical in and out of clinic hours. Shown <i>before</i> staff are notified. Cannot be suppressed, deduplicated or rate-limited, however many times it fires. <span class="tag">emergency_screen_shown</span> is logged every single time, queued when offline.</p>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ==================================================================== -->
+<!-- GROUP 4 — LEARN, SETTINGS, SURVEY                                    -->
+<!-- ==================================================================== -->
+<section id="g4" class="mb-48 scroll-mt-64">
+  <h2 class="text-h1 mb-16 border-l-4 border-primary pl-12">Group 4 · Learn, Settings &amp; Survey (P14–P17)</h2>
+  <div class="flex flex-wrap gap-32">
+
+    <!-- ---------------- P14 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P14</span> <span class="text-h2">Learn</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:45</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="pad">
+            <h1 class="text-display">Learn</h1>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">Relevant today</p>
+            <button class="card mt-8 flex w-full min-h-72 items-center gap-12 text-left border-2 border-primary">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-bandage"/></svg>
+              <div class="flex-1">
+                <p class="text-bodyl">Warning signs to watch for</p>
+                <p class="text-caption text-muted">2 min read</p>
+              </div>
+              <svg class="ic h-24 w-24 text-muted"><use href="#i-chev-r"/></svg>
+            </button>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">Wound care</p>
+            <button class="card mt-8 flex w-full min-h-72 items-center gap-12 text-left">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-bandage"/></svg>
+              <div class="flex-1">
+                <p class="text-bodyl">Caring for your wound</p>
+                <p class="text-caption text-muted">4 min read</p>
+              </div>
+              <svg class="ic h-24 w-24 text-muted"><use href="#i-chev-r"/></svg>
+            </button>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">What to expect</p>
+            <button class="card mt-8 flex w-full min-h-72 items-center gap-12 text-left">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-book"/></svg>
+              <div class="flex-1">
+                <p class="text-bodyl">What to expect</p>
+                <p class="text-caption text-muted">3 min read</p>
+              </div>
+              <svg class="ic h-24 w-24 text-muted"><use href="#i-chev-r"/></svg>
+            </button>
+
+            <p class="mt-24 text-caption text-muted">More articles unlock as your recovery continues.</p>
+          </div>
+        </div>
+
+        <nav class="flex h-64 shrink-0 items-stretch border-t border-line bg-surface">
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-home"/></svg>Today</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-chart"/></svg>Progress</a>
+          <a class="navitem text-primary"><svg class="ic h-24 w-24"><use href="#i-book"/></svg>Learn</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-gear"/></svg>Settings</a>
+        </nav>
+      </div>
+      <p class="note mt-12">Day 6 → only the day 1, 3 and 5 unlocks exist. Later items are <b>absent, not greyed</b> — greying invites patients to seek out later-stage advice early. Available offline from cache.</p>
+    </figure>
+
+    <!-- ---------------- P15 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P15</span> <span class="text-h2">Article detail</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:46</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="flex h-56 items-center gap-8 border-b border-line bg-surface px-16 text-primary">
+            <svg class="ic h-24 w-24"><use href="#i-chev-l"/></svg><span class="text-btn">Learn</span>
+          </div>
+          <div class="pad">
+            <h1 class="text-h1">Warning signs to watch for</h1>
+            <p class="mt-4 text-caption text-muted">2 min read · unlocked day 5</p>
+
+            <div class="slot mt-16">
+              <p class="slot-key">clinical.laparoscopic_appendectomy.warning_signs_day5</p>
+              <div class="mt-12 flex flex-col gap-8">
+                <div class="slot-line w-full"></div><div class="slot-line w-full"></div><div class="slot-line w-[92%]"></div>
+                <div class="slot-line w-full"></div><div class="slot-line w-[75%]"></div>
+                <div class="slot-line w-full"></div><div class="slot-line w-[55%]"></div>
+              </div>
+              <p class="mt-12 text-micro text-muted">Rendered exactly as the clinician approved it — no summarisation, no simplification, no AI adaptation.</p>
+            </div>
+
+            <!-- content.disclaimer, verbatim, on every article -->
+            <div class="mt-24 border-t border-line pt-16">
+              <p class="text-caption text-muted">This information was approved by your clinic. It is general guidance, not advice about your specific case. For questions about your own recovery, contact Sehat Clinic (DEMO).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Footer disclaimer verbatim on <b>every</b> article. A missing translation shows an explicit “not yet available in your language” plus clinic contact — <b>never</b> a silent fallback to another language, because a patient expecting Uzbek and shown Russian may misread medical instruction entirely.</p>
+    </figure>
+
+    <!-- ---------------- P16 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P16</span> <span class="text-h2">Settings</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:48</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="pad">
+            <h1 class="text-display">Settings</h1>
+
+            <!-- cover statement, prominent -->
+            <div class="mt-16 rounded-lg border-2 border-primary bg-primary-light p-16">
+              <div class="flex items-start gap-12">
+                <svg class="ic h-24 w-24 shrink-0 text-primary"><use href="#i-info"/></svg>
+                <p class="text-body text-ink">Your clinic reviews check-ins 09:00–18:00, Mon–Sat. Outside these hours no one is monitoring. In an emergency, call 103.</p>
+              </div>
+            </div>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">Language</p>
+            <div class="mt-8 flex flex-col gap-8">
+              <button class="card flex min-h-56 items-center gap-12 py-12 border-2 border-primary">
+                <svg class="ic h-24 w-24 text-primary"><use href="#i-globe"/></svg>
+                <span class="flex-1 text-bodyl text-left">English</span>
+                <svg class="ic h-24 w-24 text-primary"><use href="#i-check"/></svg>
+              </button>
+              <button class="card flex min-h-56 items-center gap-12 py-12">
+                <svg class="ic h-24 w-24 text-muted"><use href="#i-globe"/></svg>
+                <span class="flex-1 text-bodyl text-left">Oʻzbekcha</span>
+              </button>
+              <button class="card flex min-h-56 items-center gap-12 py-12">
+                <svg class="ic h-24 w-24 text-muted"><use href="#i-globe"/></svg>
+                <span class="flex-1 text-bodyl text-left">Русский</span>
+              </button>
+            </div>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">Your clinic</p>
+            <div class="card mt-8">
+              <p class="text-h2">Sehat Clinic (DEMO)</p>
+              <p class="mt-4 text-caption text-muted">09:00–18:00 · Mon–Sat · Asia/Tashkent</p>
+              <button class="btn-primary mt-12"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>+998 71 200 00 00</button>
+            </div>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">Notifications</p>
+            <button class="card mt-8 flex min-h-56 w-full items-center gap-12 py-12 text-left">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-bell"/></svg>
+              <span class="flex-1 text-bodyl">Reminder settings</span>
+              <svg class="ic h-24 w-24 text-muted"><use href="#i-chev-r"/></svg>
+            </button>
+
+            <p class="mt-24 text-caption text-muted uppercase tracking-wide">Programme</p>
+            <div class="card mt-8 flex flex-col gap-8">
+              <div class="flex justify-between"><span class="text-body text-muted">Started</span><span class="text-body">18 July 2026</span></div>
+              <div class="flex justify-between"><span class="text-body text-muted">Today</span><span class="text-body">Day 6 of 30</span></div>
+              <div class="flex justify-between"><span class="text-body text-muted">Ends</span><span class="text-body">17 August 2026</span></div>
+            </div>
+
+            <button class="btn-sec mt-24 border-muted text-muted">Leave programme</button>
+            <p class="mt-16 text-center text-caption text-muted">Hospital AI 1.0.0 · support@hospital-ai.uz</p>
+          </div>
+        </div>
+
+        <nav class="flex h-64 shrink-0 items-stretch border-t border-line bg-surface">
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-home"/></svg>Today</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-chart"/></svg>Progress</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-book"/></svg>Learn</a>
+          <a class="navitem text-primary"><svg class="ic h-24 w-24"><use href="#i-gear"/></svg>Settings</a>
+        </nav>
+      </div>
+      <p class="note mt-12">Language change re-renders everything instantly, no restart. Leaving requires explicit confirmation and notifies the clinic — a patient dropping out is clinically relevant, not just churn. Withdrawal stops the programme; it does not delete data.</p>
+    </figure>
+
+    <!-- ---------------- P17 ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-primary text-surface">P17</span> <span class="text-h2">Day-30 survey</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>10:15</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="pad">
+            <h1 class="text-display">Five quick questions</h1>
+            <p class="mt-8 text-bodyl text-muted">There are no right answers.</p>
+
+            <p class="mt-24 text-bodyl">1. Overall, how helpful was the app during your recovery?</p>
+            <div class="mt-8 flex gap-8">
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">1</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">2</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">3</button>
+              <button class="h-48 flex-1 rounded-full bg-primary text-surface text-bodyl">4</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">5</button>
+            </div>
+            <div class="mt-4 flex justify-between text-caption text-muted"><span>Not helpful</span><span>Very helpful</span></div>
+
+            <p class="mt-24 text-bodyl">2. How easy was the app to use?</p>
+            <div class="mt-8 flex gap-8">
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">1</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">2</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">3</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">4</button>
+              <button class="h-48 flex-1 rounded-full border-2 border-line bg-surface text-bodyl">5</button>
+            </div>
+            <div class="mt-4 flex justify-between text-caption text-muted"><span>Very difficult</span><span>Very easy</span></div>
+
+            <p class="mt-24 text-bodyl">3. Did it help you remember your medication and daily tasks?</p>
+            <div class="mt-8 flex gap-8">
+              <button class="h-48 flex-1 rounded border-2 border-line bg-surface text-body">Yes</button>
+              <button class="h-48 flex-1 rounded border-2 border-line bg-surface text-body">Somewhat</button>
+              <button class="h-48 flex-1 rounded border-2 border-line bg-surface text-body">No</button>
+            </div>
+
+            <p class="mt-24 text-bodyl">4. Would you recommend it to another patient having surgery?</p>
+            <div class="mt-8 flex gap-8">
+              <button class="h-48 flex-1 rounded border-2 border-line bg-surface text-body">Yes</button>
+              <button class="h-48 flex-1 rounded border-2 border-line bg-surface text-body">Maybe</button>
+              <button class="h-48 flex-1 rounded border-2 border-line bg-surface text-body">No</button>
+            </div>
+
+            <p class="mt-24 text-bodyl">5. What would you change? <span class="text-caption text-muted">(optional)</span></p>
+            <div class="mt-8 h-[96px] w-full rounded border border-line bg-surface p-16 text-body text-muted">Type here…</div>
+
+            <button class="btn-key mt-24">Submit</button>
+            <button class="mx-auto mt-12 block py-12 text-btn text-muted underline">Skip</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Exactly five questions, never more. Scale direction identical in all three languages (1 = worst). Always skippable — programme completion is never blocked on it. One reminder after 48 hours, then never again. The free text is stored for humans and <b>never</b> enters an analytics event.</p>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ==================================================================== -->
+<!-- GROUP 5 — STATES                                                     -->
+<!-- ==================================================================== -->
+<section id="g5" class="mb-48 scroll-mt-64">
+  <h2 class="text-h1 mb-16 border-l-4 border-muted pl-12">States <span class="note">— where the spec's real character shows</span></h2>
+  <div class="flex flex-wrap gap-32">
+
+    <!-- ---------------- empty state ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-muted text-surface">S1</span> <span class="text-h2">Today · nothing scheduled</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>08:05</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="bg-surface px-16 pt-16 pb-12 border-b border-line">
+            <h1 class="text-h1">Day 0 of 30</h1>
+            <div class="mt-8 h-8 w-full rounded-full bg-line"><div class="h-8 rounded-full bg-primary" style="width:0%"></div></div>
+          </div>
+          <div class="pad flex flex-col items-center justify-center pt-64 text-center">
+            <div class="flex h-64 w-64 items-center justify-center rounded-full bg-primary-light text-primary">
+              <svg class="ic h-32 w-32"><use href="#i-check"/></svg>
+            </div>
+            <p class="mt-24 text-h1">Nothing scheduled today. Rest well.</p>
+            <button class="btn-sec mt-32"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Contact clinic</button>
+          </div>
+        </div>
+        <nav class="flex h-64 shrink-0 items-stretch border-t border-line bg-surface">
+          <a class="navitem text-primary"><svg class="ic h-24 w-24"><use href="#i-home"/></svg>Today</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-chart"/></svg>Progress</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-book"/></svg>Learn</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-gear"/></svg>Settings</a>
+        </nav>
+      </div>
+      <p class="note mt-12">Day 0 may legitimately have no tasks. An explicit welcoming state, never a blank screen and never an empty list.</p>
+    </figure>
+
+    <!-- ---------------- offline ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-muted text-surface">S2</span> <span class="text-h2">Today · offline</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:30</span><span>✈ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <!-- discreet, non-blocking -->
+        <div class="flex shrink-0 items-center gap-8 bg-primary-light px-16 py-8 text-caption text-muted">
+          <svg class="ic h-16 w-16"><use href="#i-wifi-off"/></svg>Offline — your progress will be saved
+        </div>
+        <div class="screen">
+          <div class="bg-surface px-16 pt-16 pb-12 border-b border-line">
+            <h1 class="text-h1">Day 6 of 30</h1>
+            <div class="mt-8 h-8 w-full rounded-full bg-line"><div class="h-8 rounded-full bg-primary" style="width:20%"></div></div>
+          </div>
+          <div class="px-16 py-16 flex flex-col gap-12">
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-success"><use href="#i-pill"/></svg>
+              <div class="flex-1 opacity-60">
+                <p class="text-bodyl line-through">Paracetamol 500 mg</p>
+                <p class="text-caption text-muted">08:00 · saved on this device</p>
+              </div>
+              <span class="flex h-32 w-32 items-center justify-center rounded bg-success text-surface"><svg class="ic h-16 w-16"><use href="#i-check"/></svg></span>
+            </div>
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-pill"/></svg>
+              <div class="flex-1"><p class="text-bodyl">Paracetamol 500 mg</p><p class="text-caption text-muted">14:00</p></div>
+              <span class="h-32 w-32 rounded border-2 border-line bg-surface"></span>
+            </div>
+            <div class="card flex min-h-72 items-center gap-12">
+              <svg class="ic h-24 w-24 text-primary"><use href="#i-walk"/></svg>
+              <div class="flex-1"><p class="text-bodyl">Gentle walking, 20 minutes</p><p class="text-caption text-muted">16:00</p></div>
+              <span class="h-32 w-32 rounded border-2 border-line bg-surface"></span>
+            </div>
+          </div>
+        </div>
+        <nav class="flex h-64 shrink-0 items-stretch border-t border-line bg-surface">
+          <a class="navitem text-primary"><svg class="ic h-24 w-24"><use href="#i-home"/></svg>Today</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-chart"/></svg>Progress</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-book"/></svg>Learn</a>
+          <a class="navitem text-muted"><svg class="ic h-24 w-24"><use href="#i-gear"/></svg>Settings</a>
+        </nav>
+      </div>
+      <p class="note mt-12">Seven days of tasks are cached. Completions queue locally and sync with their <b>original</b> timestamp, never the sync time, replayed with the same <span class="tag">Idempotency-Key</span>. The indicator is discreet — never a blocking error.</p>
+    </figure>
+
+    <!-- ---------------- offline check-in blocked ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-muted text-surface">S3</span> <span class="text-h2">Check-in blocked offline</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:34</span><span>✈ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <div class="flex h-64 w-64 items-center justify-center rounded-full bg-primary-light text-primary">
+              <svg class="ic h-32 w-32"><use href="#i-wifi-off"/></svg>
+            </div>
+            <h1 class="mt-24 text-display">No connection</h1>
+            <p class="mt-16 text-bodyl">You need a connection to send a check-in. If you are worried now, call +998 71 200 00 00 or 103.</p>
+
+            <div class="mt-24 flex items-start gap-12 rounded bg-primary-light p-16">
+              <svg class="ic h-24 w-24 shrink-0 text-primary"><use href="#i-info"/></svg>
+              <p class="text-caption text-muted">Your answers have <b>not</b> been sent and are not waiting in a queue.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-12 pb-16">
+            <button class="btn-key"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call clinic</button>
+            <button class="btn-key"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call 103</button>
+            <button class="btn-sec">Try again</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Check-in submission is the <b>one</b> action that requires connectivity. A patient reporting symptoms is never silently queued, and a failed submission never renders as success.</p>
+    </figure>
+
+    <!-- ---------------- fail closed ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-muted text-surface">S4</span> <span class="text-h2">Content not approved — fails closed</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>12:50</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen">
+          <div class="flex h-56 items-center gap-8 border-b border-line bg-surface px-16 text-primary">
+            <svg class="ic h-24 w-24"><use href="#i-chev-l"/></svg><span class="text-btn">Learn</span>
+          </div>
+          <div class="pad">
+            <div class="flex h-64 w-64 items-center justify-center rounded-full bg-primary-light text-primary">
+              <svg class="ic h-32 w-32"><use href="#i-lock"/></svg>
+            </div>
+            <h1 class="mt-24 text-h1">This is not yet available in your language.</h1>
+            <p class="mt-16 text-bodyl text-muted">Please contact your clinic if you need this information.</p>
+
+            <div class="card mt-24">
+              <p class="text-caption text-muted">Sehat Clinic (DEMO)</p>
+              <button class="btn-primary mt-12"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>+998 71 200 00 00</button>
+            </div>
+
+            <p class="mt-24 font-mono text-micro text-muted">CONTENT_NOT_APPROVED · nothing rendered · no language fallback</p>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">The error <span class="tag">code</span> is mapped to a content-library string — the API's English <span class="tag">message</span> is a developer diagnostic and is <b>never</b> shown to a patient. No fallback language, ever.</p>
+    </figure>
+
+    <!-- ---------------- P12 out of hours ---------------- -->
+    <figure class="w-[360px]">
+      <figcaption class="mb-12"><span class="chip bg-urgent text-surface">S5</span> <span class="text-h2">URGENT · out of hours</span></figcaption>
+      <div class="frame">
+        <div class="statusbar"><span>21:10</span><span>▪▪▪ ▮</span></div>
+        <div class="banner">
+          <svg class="ic h-16 w-16 mt-4"><use href="#i-alert"/></svg>
+          <span>Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.</span>
+        </div>
+        <div class="screen pad flex flex-col">
+          <div class="flex-1">
+            <span class="chip border-2 border-urgent text-urgent">
+              <svg class="ic h-16 w-16"><use href="#i-alert"/></svg>Urgent · clinic closed
+            </span>
+            <h1 class="mt-16 text-display">Sent to your care team</h1>
+            <!-- verbatim from checkin.submitted.out_of_hours -->
+            <p class="mt-16 text-bodyl">Sehat Clinic (DEMO) is closed. Your answers will be reviewed at 09:00. Sehat Clinic (DEMO)’s instruction: if you are worried now, call 103 or +998 71 200 00 00.</p>
+          </div>
+          <div class="flex flex-col gap-12 pb-16">
+            <button class="btn-key"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call clinic</button>
+            <button class="btn-key"><svg class="ic h-24 w-24"><use href="#i-phone"/></svg>Call 103</button>
+          </div>
+        </div>
+      </div>
+      <p class="note mt-12">Selected by <span class="tag">withinClinicHours</span> from the check-in response. No staff call is placed, but the escalation is still created and queued. Note P13 has <i>no</i> out-of-hours variant — the emergency screen has no staff dependency, which is exactly what makes clinic-hours-only cover safe.</p>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ============================== OPEN QUESTION ============================== -->
+<section class="mb-48 card border-2 border-urgent">
+  <div class="flex items-start gap-12">
+    <svg class="ic h-24 w-24 shrink-0 text-urgent"><use href="#i-alert"/></svg>
+    <div>
+      <h2 class="text-h1">One thing the spec cannot satisfy as written</h2>
+      <p class="mt-8 text-body">
+        The design system fixes the emergency banner at <b>44dp tall</b>. The approved
+        <span class="tag">emergency.banner</span> string —
+        <i>“Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent
+        symptoms.”</i> — is 103 characters, which wraps to three lines at 14sp inside a 360dp screen,
+        so it needs roughly 63dp. At 200% font scale it needs far more.
+      </p>
+      <p class="mt-12 text-body">
+        Every frame above renders it at <span class="tag">min-height: 44dp</span> and lets it grow, because
+        truncating clinician-approved emergency text is not an option. Three ways out — the content owner picks:
+      </p>
+      <ol class="mt-12 flex flex-col gap-4 text-body text-muted">
+        <li>1. Approve a short banner variant (e.g. <i>“In an emergency, call 103”</i>) and keep 44dp fixed.</li>
+        <li>2. Change the spec: banner is <b>min</b> 44dp and grows with its content — what is drawn here.</li>
+        <li>3. Banner shows the short line and expands to the full text on tap, before dialling.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-line pt-24 pb-48 note">
+  Sources: <span class="tag">md/HOSPITAL_AI_FLUTTER_HANDOFF.md</span> · Notion “Design System — Hospital AI”,
+  “Seed &amp; Placeholder Content Pack”, “Patient App 1–4”, “Build Decisions (ADR)”, “MVP Scope Decisions”.
+  All patient-visible copy is placeholder content pending clinician sign-off
+  (<span class="tag">is_placeholder: true</span>). Clinic name, phone and patient name are demo seed values.
+</footer>
+
+</main>
+</body>
+</html>
