@@ -214,7 +214,7 @@ Both open items block F1. Everything before F1 proceeds regardless.
 
 # PHASES
 
-## F0 · Project foundation
+## F0 · Project foundation ✅
 
 **Goal:** an empty app that builds, lints, and already refuses hardcoded patient strings.
 
@@ -248,10 +248,10 @@ the script stays as the belt to that braces.
 
 **Done when**
 
-- [ ] `flutter analyze` clean, `flutter test` green, `flutter build apk --debug` succeeds
-- [ ] The gate fails on a deliberately added `Text('hello')` in a feature file, and passes once removed
-- [ ] `API_BASE_URL` is absent from source; the app refuses to start without the define
-- [ ] Inter renders in a smoke-test widget
+- [x] `flutter analyze` clean, `flutter test` green, `flutter build apk --debug` succeeds
+- [x] The gate fails on a deliberately added `Text('hello')` in a feature file, and passes once removed
+- [x] `API_BASE_URL` is absent from source; the app refuses to start without the define
+- [x] Inter renders in a smoke-test widget
 
 ---
 

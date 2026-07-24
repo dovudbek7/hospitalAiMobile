@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches: [main, 'feat/**']
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.4
+          cache: true
+
+      - run: flutter pub get
+
+      # Golden rule 2 — no patient-facing string literals. A failure here
+      # is a release blocker, not a style nit.
+      - run: dart run tool/check_no_patient_literals.dart
+
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: flutter analyze
+      - run: flutter test
