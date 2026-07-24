@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/auth/session.dart';
+import '../../core/config/env.dart';
 
 /// Enrolment draft state. The code must survive rotation AND backgrounding
 /// (spec P2) — rotation is covered by Riverpod, process death by mirroring
@@ -26,6 +27,10 @@ class EnrolmentFormNotifier extends Notifier<EnrolmentForm> {
   @override
   EnrolmentForm build() {
     final draft = ref.read(sharedPrefsProvider).getString(_kDraftCode) ?? '';
+    if (draft.isEmpty && Env.demoMode) {
+      // Demo mode: pre-filled so a reviewer walks straight through.
+      return const EnrolmentForm(code: 'H7K9QP', phone: '901234567');
+    }
     return EnrolmentForm(code: draft);
   }
 

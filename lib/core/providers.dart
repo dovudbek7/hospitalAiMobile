@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'api/patient_api.dart';
+import 'config/env.dart';
+import 'demo/demo_server.dart';
 import 'content/content_repository.dart';
 import 'content/content_result.dart';
 import 'network/dio_client.dart';
@@ -16,9 +18,19 @@ export 'content/content_result.dart';
 /// tests and the gallery run without a platform channel.
 final tokenStoreProvider = Provider<TokenStore>((ref) => InMemoryTokenStore());
 
-final dioProvider = Provider<Dio>(
-  (ref) => buildDio(tokens: ref.watch(tokenStoreProvider)),
-);
+final dioProvider = Provider<Dio>((ref) {
+  final dio = buildDio(
+    tokens: ref.watch(tokenStoreProvider),
+    baseUrl: Env.demoMode && !Env.isConfigured
+        ? 'https://demo.local/v1'
+        : null,
+  );
+  if (Env.demoMode) {
+    // The in-app fake server: the entire API surface, no network needed.
+    dio.httpClientAdapter = DemoServer();
+  }
+  return dio;
+});
 
 final patientApiProvider =
     Provider<PatientApi>((ref) => PatientApi(ref.watch(dioProvider)));
