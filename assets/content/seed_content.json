@@ -2242,5 +2242,56 @@
    "version": 0,
    "isPlaceholder": true
   }
+ },
+ "today.notifications_off": {
+  "EN": {
+   "text": "Reminders are off. You can enable them in Settings.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders are off. You can enable them in Settings.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders are off. You can enable them in Settings.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "medication.channel_name": {
+  "EN": {
+   "text": "Medication reminders",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Medication reminders",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Medication reminders",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "medication.channel_desc": {
+  "EN": {
+   "text": "Reminders to take your medication, scheduled by your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders to take your medication, scheduled by your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders to take your medication, scheduled by your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
  }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/auth/session.dart';
+import '../../core/notifications/reminders.dart';
 import '../../core/models/api_models.dart';
 import '../../core/providers.dart';
 import '../../core/storage/app_database.dart';
@@ -108,9 +110,18 @@ class TodayNotifier extends AsyncNotifier<TodayView> {
       // ignore: unawaited_futures
       api.appOpened().catchError((Object _) {});
       final rows = await cache.tasksForDay(today.recoveryDay);
+      final tasks = rows.map(_fromCached).toList();
+      // Rolling-window reminder schedule (no-op until the service is
+      // initialised — i.e. in tests).
+      unawaited(
+        ref
+            .read(reminderServiceProvider)
+            .rescheduleFromTasks(tasks)
+            .catchError((Object _) {}),
+      );
       return TodayView(
         recoveryDay: today.recoveryDay,
-        tasks: rows.map(_fromCached).toList(),
+        tasks: tasks,
         checkinDue: today.checkinDue,
         fromCache: false,
       );

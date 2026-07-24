@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'core/notifications/reminders.dart';
+import 'core/router/app_router.dart';
 import 'core/auth/session.dart';
 import 'core/network/token_store.dart';
 import 'core/providers.dart';
@@ -17,9 +19,19 @@ Future<void> main() async {
   // first frame is already Today — no login flash, no re-login, ever.
   final prefs = await SharedPreferences.getInstance();
 
+  final container = ProviderContainer(
+    overrides: appOverrides(prefs, SecureTokenStore()),
+  );
+
+  // Notification taps open P8 directly for the tapped medication.
+  await container.read(reminderServiceProvider).init(
+        onOpenMedication: (taskId) =>
+            container.read(routerProvider).push(medicationRouteFor(taskId)),
+      );
+
   runApp(
-    ProviderScope(
-      overrides: appOverrides(prefs, SecureTokenStore()),
+    UncontrolledProviderScope(
+      container: container,
       child: const HospitalAiApp(),
     ),
   );

@@ -473,7 +473,7 @@ entirely here, so optimise these above everything else.
 
 ---
 
-## F8 · Notifications and medication · P8
+## F8 · Notifications and medication · P8 ✅ *(device verification pending)*
 
 **Goal:** the highest-value habit in the programme, with exactly two choices. Missed medication is a
 leading cause of readmission.
@@ -498,11 +498,11 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] A reminder fires on a real device in airplane mode
-- [ ] The deep link opens the correct medication
-- [ ] The 30-minute repeat fires exactly once, never twice
-- [ ] Reinstall and reboot both reschedule correctly
-- [ ] No editable dose field exists anywhere — grep-verified
+- [ ] A reminder fires on a real device in airplane mode — **needs the physical device**
+- [x] The deep link opens the correct medication — notification payload = taskId → `/medication/:id` wired in main()
+- [x] The 30-minute repeat fires exactly once — repeat lives in a distinct, stable id space, so a second "Not yet" REPLACES the pending repeat (unit-tested)
+- [ ] Reinstall and reboot reschedule — reboot rescheduling relies on the rolling window at next app open; **verify on the device**
+- [x] No editable dose field exists anywhere — P8 has zero TextFields, asserted in a test
 
 ---
 
@@ -727,6 +727,7 @@ any order — or in parallel if you want several running at once.
 
 **Backend gaps found while building (send to the backend owner):**
 - No patient token-refresh endpoint exists (`/auth/patient/session` is single-use). The 60-day refresh token is unusable until one exists; the app never force-logs-out, but a >24h access token will start failing.
+- No endpoint returns the FUTURE task list (only `GET /me/today`), so the ADR's "schedule all 30 days at enrolment" is impossible — reminders are scheduled as a rolling window from the cached days, refreshed on every Today load. An `/me/tasks?days=30` endpoint would fix it.
 - No telemetry ingestion endpoint exists for the five client-side events — the app queues them in a local outbox (never dropped), but they cannot reach the server until an endpoint ships.
 - **Only `emergency.*`, `checkin.*`, `contact.*` are seeded in the content library.** Everything else the app needs (~128 keys) is missing and fails closed. The full required list is exactly the keys of `assets/content/seed_content.json` — seed the library from it (EN is Pack-verbatim; UZ/RU pending native-speaker review).
 
