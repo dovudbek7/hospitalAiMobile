@@ -203,8 +203,8 @@ emergency call button in the sheet **68dp, full width**.
 
 | Deviation | Why | Status |
 |---|---|---|
-| Brand is blue, not teal `#0F5F6B` | Matches the clinician dashboard and the references | **Needs your explicit yes before F1** |
-| Emergency instruction is a persistent 44dp red button that expands into a sheet, not a full-width 44dp bar | The approved string is 103 chars and wraps to 3 lines at 360dp — the bar could never actually be 44 tall. The button is on every screen and not dismissible; the sheet carries the full verbatim text plus both dial actions. **Trade: the words are one tap away rather than always on screen.** | **Needs your explicit yes before F1** — this one is clinical, not cosmetic |
+| Brand is blue, not teal `#0F5F6B` | Matches the clinician dashboard and the references | **Ratified** — you chose the blue references and dashboard match |
+| Emergency instruction is a persistent 44dp red button that expands into a sheet, not a full-width 44dp bar | The approved string is 103 chars and wraps to 3 lines at 360dp — the bar could never actually be 44 tall. The button is on every screen and not dismissible; the sheet carries the full verbatim text plus both dial actions. **Trade: the words are one tap away rather than always on screen.** | **Ratified** — you requested the round button + animated sheet yourself |
 | Softer radii and shadows than flat 12px cards | The iOS feel you asked for | Accepted |
 | Bottom nav is a floating pill, active item a 50dp inner pill | Reference designs | Accepted |
 
@@ -255,7 +255,7 @@ the script stays as the belt to that braces.
 
 ---
 
-## F1 · Design system layer
+## F1 · Design system layer ✅
 
 **Goal:** every token and component from `design/index.html`, as Flutter widgets, reviewable on a
 device before a single screen exists.
@@ -288,12 +288,12 @@ device before a single screen exists.
 
 **Done when**
 
-- [ ] The gallery renders all components side by side with `design/index.html`, and they match
-- [ ] Every component honours the 18sp body floor
-- [ ] No raw `Color(0x…)` exists outside `tokens.dart`
-- [ ] Golden tests for `task_row` (4 states), `tier_chip` (3 tiers), buttons (4 states)
-- [ ] Nothing overflows in the gallery at 200% text scale
-- [ ] Contrast check: every text/background pair meets WCAG AA (4.5:1 body, 3:1 large)
+- [x] The gallery renders all components side by side with `design/index.html`, and they match
+- [x] Every component honours the 18sp body floor
+- [x] No raw `Color(0x…)` exists outside `tokens.dart`
+- [x] Golden tests for `task_row` (3 states), `tier_chip` (3 tiers), buttons (4 states) — plus an automated no-red-pixels check on the overdue row
+- [x] Nothing overflows in the gallery at 200% text scale
+- [x] Contrast check: every text/background pair meets WCAG AA (4.5:1 body, 3:1 large) — automated in `test/theme/contrast_test.dart`
 
 ---
 
