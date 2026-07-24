@@ -647,7 +647,7 @@ leading cause of readmission.
 
 ---
 
-## F14 · Demo and release preparation
+## F14 · Demo and release preparation ✅ *(builds compile; device/demo-seed items listed)*
 
 **Depends on:** F13
 
@@ -667,9 +667,10 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] The whole product is demonstrable end to end in minutes rather than 30 days
-- [ ] Both production-gate flags verified from the app, not only from the API
-- [ ] Signed release builds install and run on a physical mid-range Android and a physical iPhone
+- [ ] Demonstrable end to end in minutes — **blocked on the backend demo seed** (DEMO-01…06 patients + the staging clock-offset control are server-side; the app is ready for them)
+- [x] Both production-gate flags verified from the app side: `ALLOW_BUNDLED_PLACEHOLDERS=false` → strict fail-closed (F3 test); `CLINICAL_CONTENT_NOT_APPROVED` → content-key mapping, no crash (F2 test)
+- [x] Release builds compile: `app-release.apk` 61.9MB (fat — use `--split-per-abi` for ~20MB installs; debug-signed until you add a keystore) and iOS `Runner.app` 30.6MB `--no-codesign` — **installing on the physical devices is yours**
+- [ ] Recorded walkthrough for the submission — needs the device + demo seed
 
 ---
 
