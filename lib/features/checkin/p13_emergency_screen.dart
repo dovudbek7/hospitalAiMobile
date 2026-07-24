@@ -140,7 +140,7 @@ class _P13EmergencyScreenState extends ConsumerState<P13EmergencyScreen> {
                       height: 76,
                       alignment: Alignment.center,
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
                             Icons.call_rounded,
@@ -148,11 +148,14 @@ class _P13EmergencyScreenState extends ConsumerState<P13EmergencyScreen> {
                             size: 28,
                           ),
                           const SizedBox(width: AppSpace.s12),
-                          Txt(
-                            'emergency.call_103',
-                            style: AppText.display.copyWith(
-                              color: AppColors.emergency,
-                              fontSize: 26,
+                          Flexible(
+                            child: Txt(
+                              'emergency.call_103',
+                              textAlign: TextAlign.center,
+                              style: AppText.display.copyWith(
+                                color: AppColors.emergency,
+                                fontSize: 26,
+                              ),
                             ),
                           ),
                         ],
@@ -184,7 +187,7 @@ class _P13EmergencyScreenState extends ConsumerState<P13EmergencyScreen> {
                         ),
                       ),
                       child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Icon(
                             Icons.call_rounded,
@@ -192,10 +195,13 @@ class _P13EmergencyScreenState extends ConsumerState<P13EmergencyScreen> {
                             size: 20,
                           ),
                           const SizedBox(width: AppSpace.s8),
-                          Txt(
-                            'emergency.call_clinic',
-                            style: AppText.button
-                                .copyWith(color: AppColors.surface),
+                          Flexible(
+                            child: Txt(
+                              'emergency.call_clinic',
+                              textAlign: TextAlign.center,
+                              style: AppText.button
+                                  .copyWith(color: AppColors.surface),
+                            ),
                           ),
                         ],
                       ),

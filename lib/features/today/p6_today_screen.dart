@@ -309,6 +309,13 @@ class _TaskCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Screen-reader label for the 64dp toggle — resolved, never hardcoded.
+    final toggleLabel = switch (ref.watch(
+      txtProvider(task.completed ? 'task.done' : 'task.mark_done'),
+    )) {
+      AsyncData(value: final ContentResolved r) => r.text,
+      _ => null,
+    };
     final overdue = task.overdueAt(DateTime.now().toUtc());
     final state = task.completed
         ? TaskRowState.completed
@@ -325,6 +332,7 @@ class _TaskCard extends ConsumerWidget {
       overdueSuffix: const Txt('today.overdue'),
       iconBackground: tint.$1,
       iconColor: tint.$2,
+      toggleSemanticLabel: toggleLabel,
       onTap: () => context.push(
         task.isMedication
             ? '${Routes.medication}/${task.id}'

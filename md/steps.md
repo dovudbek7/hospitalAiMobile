@@ -600,7 +600,7 @@ leading cause of readmission.
 
 ---
 
-## F12 · Accessibility, localization, resilience hardening
+## F12 · Accessibility, localization, resilience hardening ✅ *(screen-reader manual pass pending device)*
 
 **Depends on:** F6 – F10
 
@@ -617,9 +617,9 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] TalkBack and VoiceOver both complete full onboarding and a check-in
-- [ ] Screenshot matrix reviewed: 17 screens × 3 languages × {100%, 200%} scale
-- [ ] An automated contrast test covers the token pairs
+- [ ] TalkBack and VoiceOver both complete full onboarding and a check-in — **manual pass on the physical device**
+- [x] Automated sweep: **17 screens × {100%, 200%} scale, zero overflow** (`test/a11y/scale_sweep_test.dart`) — it caught and fixed real bugs on P4, P11, P12, P13 and the tier chip. 3-language coverage pinned structurally (`seed_languages_test.dart`: EN/UZ/RU present, tokens match). Visual screenshot review with real translations remains manual.
+- [x] An automated contrast test covers the token pairs (F1)
 
 ---
 

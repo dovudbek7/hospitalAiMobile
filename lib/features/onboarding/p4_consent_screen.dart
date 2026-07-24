@@ -98,7 +98,9 @@ class _P4ConsentScreenState extends ConsumerState<P4ConsentScreen> {
     return Scaffold(
       backgroundColor: AppColors.canvas,
       body: SafeArea(
-        child: Padding(
+        // The whole screen scrolls at large font scales; the consent text
+        // keeps its own inner scroll for the read-to-the-end gate.
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpace.s24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -108,7 +110,8 @@ class _P4ConsentScreenState extends ConsumerState<P4ConsentScreen> {
                 style: AppText.display.copyWith(fontSize: 30),
               ),
               const SizedBox(height: AppSpace.s16),
-              Expanded(
+              SizedBox(
+                height: 300,
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppColors.surface,

@@ -42,19 +42,19 @@ class P12UrgentScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Wrap(
+                        spacing: AppSpace.s8,
+                        runSpacing: AppSpace.s8,
                         children: [
                           const TierChip(
                             tier: Tier.urgent,
                             label: Txt('tier.urgent'),
                           ),
-                          if (outOfHours) ...[
-                            const SizedBox(width: AppSpace.s8),
+                          if (outOfHours)
                             const TierChip(
                               tier: Tier.urgent,
                               label: Txt('tier.clinic_closed'),
                             ),
-                          ],
                         ],
                       ),
                       const SizedBox(height: AppSpace.s16),

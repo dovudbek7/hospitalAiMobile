@@ -47,12 +47,14 @@ class TierChip extends StatelessWidget {
         children: [
           Icon(tier.icon, size: 16, color: tier.color),
           const SizedBox(width: AppSpace.s8),
-          DefaultTextStyle.merge(
-            style: AppText.caption.copyWith(
-              fontWeight: FontWeight.w700,
-              color: tier.color,
+          Flexible(
+            child: DefaultTextStyle.merge(
+              style: AppText.caption.copyWith(
+                fontWeight: FontWeight.w700,
+                color: tier.color,
+              ),
+              child: label,
             ),
-            child: label,
           ),
         ],
       ),
