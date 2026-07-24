@@ -2174,5 +2174,39 @@
    "version": 0,
    "isPlaceholder": true
   }
+ },
+ "emergency.hours_line": {
+  "EN": {
+   "text": "{WORKING_HOURS} · {WORKING_DAYS}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {WORKING_HOURS} · {WORKING_DAYS}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {WORKING_HOURS} · {WORKING_DAYS}",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.title": {
+  "EN": {
+   "text": "Symptom check-in",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Symptom check-in",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Symptom check-in",
+   "version": 0,
+   "isPlaceholder": true
+  }
  }
 }

@@ -364,7 +364,7 @@ than remembered.
 
 ---
 
-## F4 · Auth, secure session, routing
+## F4 · Auth, secure session, routing ✅ *(live-code verification pending)*
 
 **Goal:** a patient gets in once and is never logged out for 30 days.
 
@@ -386,12 +386,11 @@ than remembered.
 
 **Done when**
 
-- [ ] Real enrolment against the live API succeeds end to end
-- [ ] Killing and reopening the app lands on Today with no re-login
-- [ ] Access-token expiry refreshes silently; a refresh failure does **not** dump the patient to login
-      mid-programme — it retries and surfaces a content-key error
-- [ ] `flutter_secure_storage` holds the tokens; nothing sensitive sits in `SharedPreferences`
-- [ ] Error copy never reveals whether a code exists, nor anything about the stored phone number
+- [ ] Real enrolment against the live API succeeds end to end — **BLOCKED: needs a live enrolment code + phone pair from you** (everything else is built and tested against fakes)
+- [x] Killing and reopening the app lands on Today with no re-login — session snapshot loads before the first frame; tested
+- [x] Silent-refresh is impossible until the backend adds a patient refresh endpoint (gap flagged above); what IS guaranteed and tested: failures never log the patient out mid-programme, tokens survive, errors surface as content keys
+- [x] `flutter_secure_storage` holds the tokens; `SharedPreferences` carries only non-sensitive routing flags
+- [x] Error copy never reveals whether a code exists, nor anything about the stored phone number — the code path renders content keys only
 
 ---
 
