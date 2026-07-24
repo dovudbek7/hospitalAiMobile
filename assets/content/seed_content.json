@@ -2208,5 +2208,39 @@
    "version": 0,
    "isPlaceholder": true
   }
+ },
+ "today.programme_complete": {
+  "EN": {
+   "text": "Your 30-day programme is complete.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your 30-day programme is complete.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your 30-day programme is complete.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.go_survey": {
+  "EN": {
+   "text": "Five quick questions",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "version": 0,
+   "isPlaceholder": true
+  }
  }
 }

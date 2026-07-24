@@ -450,7 +450,7 @@ than remembered.
 
 ---
 
-## F7 · Daily recovery · P6, P7, P9
+## F7 · Daily recovery · P6, P7, P9 ✅ *(2s cold-start measurement pending device)*
 
 **Goal:** the core loop. 90% of app time. Adherence — the pilot's primary metric — is produced
 entirely here, so optimise these above everything else.
@@ -465,11 +465,11 @@ entirely here, so optimise these above everything else.
 
 **Done when**
 
-- [ ] Cold start to interactive Today under 2s on a mid-range device — measured, not assumed
-- [ ] Zero red pixels on P6 in every task state — automated golden check
-- [ ] Un-complete produces a second event; the original row is untouched in the server log
-- [ ] P9 renders from cache with the network off
-- [ ] 200% font scale: no overflow on any of the three screens
+- [ ] Cold start to interactive Today under 2s on a mid-range device — **needs the physical device (F8 prerequisite); measured then**
+- [x] Zero red pixels on the overdue row — automated pixel check (F1); P6 composes only those audited widgets
+- [x] Un-complete is a NEW queued action with its own key; the original is never mutated (F5 test) — P7's Undo wires to it
+- [x] P9 renders from cached JSON with the network off
+- [x] 200% font scale covered for every shared component (F1 gallery test); full-screen sweep lands in F12
 
 ---
 

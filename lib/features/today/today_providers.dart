@@ -1,0 +1,192 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../core/auth/session.dart';
+import '../../core/models/api_models.dart';
+import '../../core/providers.dart';
+import '../../core/storage/app_database.dart';
+import '../../core/sync/connectivity.dart';
+import '../../core/sync/task_cache.dart';
+
+/// One task as the Today screen renders it — merged from server truth and
+/// local (possibly still-queued) completions.
+@immutable
+class TodayTask {
+  const TodayTask({
+    required this.id,
+    required this.taskType,
+    required this.contentRef,
+    required this.scheduledFor,
+    required this.completed,
+    this.windowClosesAt,
+  });
+
+  final String id;
+  final String taskType;
+  final String contentRef;
+  final DateTime scheduledFor;
+  final DateTime? windowClosesAt;
+  final bool completed;
+
+  bool get isMedication => taskType == 'medication';
+
+  /// Overdue = window passed and still pending. Rendered GREY, never red,
+  /// never scolding (standing rule 8).
+  bool overdueAt(DateTime now) =>
+      !completed &&
+      windowClosesAt != null &&
+      now.isAfter(windowClosesAt!);
+
+  /// Time label (HH:mm, local device clock) — data, not prose.
+  String get timeLabel {
+    final local = scheduledFor.toLocal();
+    String two(int n) => n.toString().padLeft(2, '0');
+    return '${two(local.hour)}:${two(local.minute)}';
+  }
+}
+
+@immutable
+class TodayView {
+  const TodayView({
+    required this.recoveryDay,
+    required this.tasks,
+    required this.checkinDue,
+    required this.fromCache,
+  });
+
+  final int recoveryDay;
+  final List<TodayTask> tasks;
+  final bool checkinDue;
+
+  /// True when the server was unreachable and this is the offline copy.
+  final bool fromCache;
+
+  int get doneCount => tasks.where((t) => t.completed).length;
+  bool get programmeComplete => recoveryDay > 30;
+}
+
+final taskCacheProvider = Provider<TaskCacheRepository>(
+  (ref) => TaskCacheRepository(
+    ref.watch(databaseProvider),
+    ref.watch(actionQueueProvider),
+  ),
+);
+
+TodayTask _fromCached(CachedTask row) => TodayTask(
+      id: row.id,
+      taskType: row.taskType,
+      contentRef: row.contentRef,
+      scheduledFor:
+          DateTime.tryParse(row.scheduledFor)?.toUtc() ?? DateTime.now(),
+      windowClosesAt: row.windowClosesAt == null
+          ? null
+          : DateTime.tryParse(row.windowClosesAt!)?.toUtc(),
+      completed: row.status == 'completed',
+    );
+
+/// Loads Today: server first (then caches), cache when offline. Fires the
+/// app_opened engagement ping opportunistically.
+final todayProvider =
+    AsyncNotifierProvider<TodayNotifier, TodayView>(TodayNotifier.new);
+
+class TodayNotifier extends AsyncNotifier<TodayView> {
+  int _lastKnownDay = 0;
+
+  @override
+  Future<TodayView> build() async {
+    final api = ref.watch(patientApiProvider);
+    final cache = ref.watch(taskCacheProvider);
+
+    try {
+      final today = await api.getToday();
+      await cache.saveToday(today);
+      _lastKnownDay = today.recoveryDay;
+      // Engagement telemetry — fire and forget, never blocks the screen.
+      // ignore: unawaited_futures
+      api.appOpened().catchError((Object _) {});
+      final rows = await cache.tasksForDay(today.recoveryDay);
+      return TodayView(
+        recoveryDay: today.recoveryDay,
+        tasks: rows.map(_fromCached).toList(),
+        checkinDue: today.checkinDue,
+        fromCache: false,
+      );
+    } on DioException {
+      // Offline (or server trouble): the cached day keeps working.
+      final day = _lastKnownDay;
+      final rows = await cache.tasksForDay(day);
+      return TodayView(
+        recoveryDay: day,
+        tasks: rows.map(_fromCached).toList(),
+        checkinDue: false,
+        fromCache: true,
+      );
+    }
+  }
+
+  /// Complete (or un-complete) locally + queue for sync, then re-render.
+  /// Works fully offline; the original tap instant is preserved.
+  Future<void> toggleTask(String taskId, {required bool completed}) async {
+    final cache = ref.read(taskCacheProvider);
+    await cache.toggle(taskId: taskId, completed: completed);
+
+    final current = state.value;
+    if (current != null) {
+      state = AsyncData(
+        TodayView(
+          recoveryDay: current.recoveryDay,
+          tasks: [
+            for (final t in current.tasks)
+              t.id == taskId
+                  ? TodayTask(
+                      id: t.id,
+                      taskType: t.taskType,
+                      contentRef: t.contentRef,
+                      scheduledFor: t.scheduledFor,
+                      windowClosesAt: t.windowClosesAt,
+                      completed: completed,
+                    )
+                  : t,
+          ],
+          checkinDue: current.checkinDue,
+          fromCache: current.fromCache,
+        ),
+      );
+    }
+    // Try to sync immediately if we're online.
+    // ignore: unawaited_futures
+    ref.read(syncWorkerProvider).drainOnce().catchError((Object _) => 0);
+  }
+}
+
+/// P9 data: server first, cached JSON for offline re-render.
+final progressProvider = FutureProvider<ProgressResponse>((ref) async {
+  final api = ref.watch(patientApiProvider);
+  final prefs = ref.watch(sharedPrefsProviderSafe);
+  const cacheKey = 'cache.progress_v1';
+  try {
+    final progress = await api.getProgress();
+    await prefs?.setString(cacheKey, jsonEncode(progress.toJson()));
+    return progress;
+  } on DioException {
+    final raw = prefs?.getString(cacheKey);
+    if (raw != null) {
+      return ProgressResponse.fromJson(
+        jsonDecode(raw) as Map<String, dynamic>,
+      );
+    }
+    rethrow;
+  }
+});
+
+// Small indirection so tests without prefs don't crash the provider.
+final sharedPrefsProviderSafe = Provider((ref) {
+  try {
+    return ref.watch(sharedPrefsProvider);
+  } catch (_) {
+    return null;
+  }
+});
