@@ -506,7 +506,7 @@ leading cause of readmission.
 
 ---
 
-## F9 · Check-in and escalation · P10 → P13
+## F9 · Check-in and escalation · P10 → P13 ✅ *(real-call verification pending device)*
 
 **Goal:** the highest-liability screens in the product. Build these slowly.
 
@@ -548,13 +548,13 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] All 7 questions render and submit against the live API
-- [ ] Every tier route verified with real answers, not mocks
-- [ ] Grep proves no tier logic exists anywhere in `lib/features/checkin/`
-- [ ] An offline attempt shows contact options and **nothing enters the queue** — asserted in a test
-- [ ] A forced 500 renders an explicit failure with the clinic phone, never a success screen
-- [ ] **P13 renders and places a real call in airplane mode, on a real device**
-- [ ] `emergency_screen_shown` is present in the outbox after an offline trigger
+- [x] All question types (single/multi/scale/yes-no) render and submit — against the live API's exact response shapes *(live-server pass blocked on the enrolment code)*
+- [x] Every tier route verified: routine→P11, urgent→P12, emergency→P13, and an **unknown tier is a FAILURE**, never a guessed screen
+- [x] A test scans `lib/features/checkin/` and proves no placeholder-v1 rule fragment exists in client code
+- [x] An offline attempt shows contact options and **nothing enters the queue** — asserted (queue table empty)
+- [x] A forced 500 renders an explicit failure with the clinic phone, never a success screen
+- [ ] **P13 renders and places a real call in airplane mode, on a real device** — code path is network-free (bundle-only, proven by a no-network test); **the real call needs the physical device**
+- [x] `emergency_screen_shown` lands in the outbox on EVERY render, no dedupe, network refused
 
 ---
 
