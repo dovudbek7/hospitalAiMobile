@@ -578,7 +578,7 @@ leading cause of readmission.
 
 ---
 
-## F11 · Telemetry
+## F11 · Telemetry ✅
 
 **Depends on:** F5
 
@@ -594,9 +594,9 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] A simulated 30-day patient fires every event with correct values
-- [ ] A test proves no free text can enter a payload
-- [ ] `emergency_screen_shown` is never dropped, including offline
+- [x] A simulated 30-day patient fires every event with correct values (185 events asserted, including late-dose `on_time:false` and the day-15 language change)
+- [x] Payloads hold ids/categorical values only; the events API exposes no prose-shaped parameter and no public generic emit — both pinned by tests
+- [x] `emergency_screen_shown` is never dropped: outbox rows persist unsent *(flush awaits the missing ingestion endpoint — backend gap list)*
 
 ---
 
