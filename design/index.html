@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hospital AI — Patient App Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        /* brand — matched to the Hospital AI clinician dashboard (blue), not the
+           spec's teal #0F5F6B.  Deliberate deviation, flagged below the phone.  */
+        brand:   { 50:'#EEF3FF', 100:'#DDE7FF', 200:'#C2D3FF', 300:'#9DB8FF',
+                   400:'#6E93FF', 500:'#4C7CFF', 600:'#3B6EF6', 700:'#2F5FE0', 800:'#2450C8' },
+        ink:     '#1A2430',
+        muted:   '#5B6673',
+        line:    '#E6EAF2',
+        surface: '#FFFFFF',
+        canvas:  '#F2F5FA',
+        /* SAFETY TOKENS — verbatim from the spec, never re-mapped */
+        emergency:'#B3261E',
+        urgent:   '#B36B00',
+        routine:  '#7A6A00',
+        success:  '#1B7F5A',
+        overdue:  '#5B6673',
+      },
+      fontFamily: { sans: ['Inter','system-ui','-apple-system','sans-serif'] },
+      borderRadius: { xl2:'20px', xl3:'24px', xl4:'28px', xl5:'32px', phone:'46px' },
+      boxShadow: {
+        card: '0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(16,24,40,.06)',
+        lift: '0 2px 6px rgba(16,24,40,.06), 0 16px 40px rgba(16,24,40,.10)',
+        nav:  '0 8px 32px rgba(16,24,40,.16)',
+        phone:'0 40px 90px rgba(15,26,52,.28), 0 8px 24px rgba(15,26,52,.16)',
+      },
+    },
+  },
+};
+</script>
+<style>
+  html,body{height:100%}
+  body{background:
+      radial-gradient(1100px 640px at 50% -10%, #E8EFFC 0%, rgba(232,239,252,0) 60%),
+      linear-gradient(180deg,#F4F7FC 0%, #E9EEF7 100%);
+      background-attachment:fixed;}
+  .noscroll::-webkit-scrollbar{width:0;height:0}
+  .noscroll{scrollbar-width:none}
+  .scr{animation:fade .22s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .press{transition:transform .12s ease, background-color .12s ease, box-shadow .12s ease}
+  .press:active{transform:scale(.97)}
+  .ic{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+  /* --- emergency affordance: small red button, expands into a sheet --- */
+  .emg-halo{animation:halo 2.8s ease-out infinite}
+  @keyframes halo{
+    0%   {box-shadow:0 0 0 0 rgba(179,38,30,.45)}
+    70%  {box-shadow:0 0 0 14px rgba(179,38,30,0)}
+    100% {box-shadow:0 0 0 0 rgba(179,38,30,0)}
+  }
+  .sheet-back{animation:backIn .24s ease both}
+  @keyframes backIn{from{opacity:0}to{opacity:1}}
+  .sheet{animation:sheetIn .34s cubic-bezier(.22,1,.28,1) both}
+  @keyframes sheetIn{from{transform:translateY(102%)}to{transform:translateY(0)}}
+  .sheet-item{animation:itemIn .38s cubic-bezier(.22,1,.28,1) both}
+  .sheet-item:nth-child(1){animation-delay:.06s}
+  .sheet-item:nth-child(2){animation-delay:.11s}
+  .sheet-item:nth-child(3){animation-delay:.16s}
+  .sheet-item:nth-child(4){animation-delay:.21s}
+  @keyframes itemIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){
+    .emg-halo,.sheet-back,.sheet,.sheet-item{animation:none}
+  }
+</style>
+</head>
+
+<body class="font-sans text-ink antialiased">
+
+<!-- ============================ PAGE HEAD ============================ -->
+<header class="px-6 pb-4 pt-10 text-center">
+  <p class="text-[13px] font-semibold uppercase tracking-[.18em] text-brand-700">Clickable prototype</p>
+  <h1 class="mt-1 text-[30px] font-extrabold tracking-tight">Hospital AI — Patient App</h1>
+  <p class="mt-1 text-[15px] text-muted">Tap through it like the real app. 17 screens, real flows, real rules.</p>
+</header>
+
+<!-- ============================ PHONE ============================ -->
+<main class="flex justify-center px-6 pb-8">
+  <div class="relative">
+    <div class="relative h-[844px] w-[390px] rounded-phone bg-[#0B1220] p-[11px] shadow-phone">
+      <div class="relative h-full w-full overflow-hidden rounded-[36px] bg-canvas">
+        <div class="pointer-events-none absolute left-1/2 top-[10px] z-40 h-[30px] w-[112px] -translate-x-1/2 rounded-full bg-[#0B1220]"></div>
+        <div id="app" class="flex h-full w-full flex-col"></div>
+        <div class="pointer-events-none absolute bottom-[7px] left-1/2 z-40 h-[5px] w-[134px] -translate-x-1/2 rounded-full bg-ink/25"></div>
+      </div>
+    </div>
+    <div id="toast" class="pointer-events-none absolute bottom-[110px] left-1/2 z-50 w-[330px] -translate-x-1/2 text-center opacity-0 transition-opacity duration-200">
+      <div class="inline-block rounded-2xl bg-ink/90 px-4 py-2.5 text-[13px] font-medium leading-snug text-white shadow-lift"></div>
+    </div>
+  </div>
+</main>
+
+<!-- ============================ CAPTION ============================ -->
+<section class="mx-auto max-w-[680px] px-6 pb-14 text-center">
+  <p id="caption-id" class="text-[13px] font-semibold uppercase tracking-[.16em] text-brand-700"></p>
+  <p id="caption-note" class="mt-2 text-[15px] leading-relaxed text-muted"></p>
+</section>
+
+<!-- ============================ DEV PANEL ============================ -->
+<button id="panel-toggle"
+        class="press fixed bottom-6 right-6 z-50 flex h-14 items-center gap-2 rounded-full bg-ink px-5 text-[14px] font-semibold text-white shadow-nav">
+  <svg viewBox="0 0 24 24" class="ic h-5 w-5"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+  Screens
+</button>
+
+<aside id="panel" class="fixed bottom-24 right-6 z-50 hidden w-[300px] rounded-xl3 bg-white p-4 shadow-lift ring-1 ring-line">
+  <p class="px-1 text-[12px] font-bold uppercase tracking-[.14em] text-muted">Jump to screen</p>
+  <div id="panel-list" class="mt-2 max-h-[280px] space-y-1 overflow-y-auto pr-1"></div>
+  <p class="mt-4 px-1 text-[12px] font-bold uppercase tracking-[.14em] text-muted">Simulate</p>
+  <div class="mt-2 space-y-2">
+    <label class="flex cursor-pointer items-center justify-between rounded-xl bg-canvas px-3 py-2.5 text-[14px] font-medium">
+      <span>Offline</span><input id="sim-offline" type="checkbox" class="h-5 w-5 accent-brand-600"></label>
+    <label class="flex cursor-pointer items-center justify-between rounded-xl bg-canvas px-3 py-2.5 text-[14px] font-medium">
+      <span>Clinic closed</span><input id="sim-closed" type="checkbox" class="h-5 w-5 accent-brand-600"></label>
+    <label class="flex cursor-pointer items-center justify-between rounded-xl bg-canvas px-3 py-2.5 text-[14px] font-medium">
+      <span>Empty day (day 0)</span><input id="sim-empty" type="checkbox" class="h-5 w-5 accent-brand-600"></label>
+    <label class="flex cursor-pointer items-center justify-between rounded-xl bg-canvas px-3 py-2.5 text-[14px] font-medium">
+      <span>Content unapproved</span><input id="sim-unapproved" type="checkbox" class="h-5 w-5 accent-brand-600"></label>
+  </div>
+  <button id="reset" class="press mt-4 w-full rounded-xl bg-ink py-3 text-[14px] font-semibold text-white">Restart from P1</button>
+</aside>
+
+<!-- ============================ NOTES ============================ -->
+<section class="mx-auto max-w-[880px] px-6 pb-24">
+  <div class="rounded-xl3 bg-white/70 p-6 shadow-card ring-1 ring-line backdrop-blur">
+    <h2 class="text-[19px] font-bold">What is real in here, and what is not</h2>
+    <div class="mt-4 grid gap-6 sm:grid-cols-2">
+      <div>
+        <p class="text-[13px] font-bold uppercase tracking-wide text-brand-700">Real</p>
+        <ul class="mt-2 space-y-1.5 text-[15px] leading-relaxed text-muted">
+          <li>· Every patient-visible string is looked up by content key through <code class="text-ink">C(key)</code> — the same shape as <code class="text-ink">GET /content/{key}?lang=</code>. Nothing is typed inline in a screen.</li>
+          <li>· The check-in runs the real <code class="text-ink">placeholder-v1</code> tier rules. Answer calmly and you land on P11; tick “Chest pain” and P13 fires.</li>
+          <li>· The tier is computed in <code class="text-ink">mockServer.postCheckin()</code>, never in a screen — matching the rule that a client is never trusted with a safety decision.</li>
+          <li>· Consent stays disabled until you scroll to the end <em>and</em> tick the box. Try it.</li>
+          <li>· Turn on Offline: check-in is blocked and explicitly not queued, while tasks still tick.</li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-[13px] font-bold uppercase tracking-wide text-urgent">Deliberate deviations — your call</p>
+        <ul class="mt-2 space-y-1.5 text-[15px] leading-relaxed text-muted">
+          <li>· <b class="text-ink">The emergency instruction is a persistent red button, not a full-width bar.</b> The spec asks for a 44dp bar carrying the whole approved string — but that string is 103 characters and wraps to three lines at 360dp, so the bar could never actually be 44 tall. The button is on every screen and not dismissible; tapping it opens the full verbatim text and the dial actions. <b class="text-ink">The trade: the words are one tap away instead of always on screen.</b> Content owner's call.</li>
+          <li>· <b class="text-ink">Brand colour is blue, not the spec's teal <code>#0F5F6B</code></b> — matched to your clinician dashboard and the references you sent.</li>
+          <li>· Radii and shadows are softer than the spec's flat 12px cards, for the iOS feel.</li>
+          <li>· <b class="text-ink">Safety tokens untouched</b>: emergency <code>#B3261E</code>, urgent <code>#B36B00</code>, success <code>#1B7F5A</code>, overdue grey. Red appears only on the banner and P13.</li>
+          <li>· Clinical prose (P7, P15, P11 body) shows a content slot — no medical text is invented anywhere in this file.</li>
+          <li>· UI is English only; UZ and RU arrive from the content library after native-speaker review.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ===================================================================
+   CONTENT LIBRARY — mirrors GET /content/{key}?lang=
+   Text verbatim from the Seed & Placeholder Content Pack.
+   =================================================================== */
+const CLINIC = {
+  name:'Sehat Clinic (DEMO)', phone:'+998 71 200 00 00',
+  hours:'09:00–18:00', days:'Mon–Sat', opening:'09:00',
+};
+
+const RAW = {
+  /* --- safety-critical: exact, never paraphrased --- */
+  'emergency.headline'            :'Your clinic’s instruction: call 103 now.',
+  'emergency.body'                :'{CLINIC_NAME} advises that anyone with these symptoms after surgery should call emergency services immediately. Do not wait for a reply from this app.',
+  'emergency.banner'              :'Your clinic’s instruction: in an emergency, call 103. Do not use this app to report urgent symptoms.',
+  'checkin.submitted.urgent'      :'Thank you. Your answers have been sent to the {CLINIC_NAME} care team. This app cannot assess your symptoms — a staff member will review them. {CLINIC_NAME}’s instruction: if your symptoms get worse while you are waiting, call 103 or {CLINIC_PHONE} straight away.',
+  'checkin.submitted.out_of_hours':'{CLINIC_NAME} is closed. Your answers will be reviewed at {OPENING_TIME}. {CLINIC_NAME}’s instruction: if you are worried now, call 103 or {CLINIC_PHONE}.',
+  'content.disclaimer'            :'This information was approved by your clinic. It is general guidance, not advice about your specific case. For questions about your own recovery, contact {CLINIC_NAME}.',
+
+  /* --- onboarding --- */
+  'onboarding.code.title'       :'Enter your code',
+  'onboarding.code.help'        :'Your clinic gave you a 6-character code when you were discharged.',
+  'onboarding.code.no_code'     :'Don’t have a code? Contact your clinic.',
+  'onboarding.code.error'       :'That code isn’t valid. Please check it or contact your clinic.',
+  'onboarding.phone.title'      :'Your phone number',
+  'onboarding.phone.help'       :'Enter the number you gave your clinic.',
+  'onboarding.consent.title'    :'Before we begin',
+  'onboarding.consent.checkbox' :'I have read and agree',
+  'onboarding.consent.agree'    :'Agree and continue',
+  'onboarding.consent.decline'  :'Decline',
+  'onboarding.consent.body'     :'This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact {CLINIC_NAME} directly or seek emergency care.',
+  'onboarding.consent.collect'  :'What we collect: which recovery tasks and medicines you complete, and your answers to symptom check-ins.',
+  'onboarding.consent.who'      :'Who sees it: your care team at {CLINIC_NAME}, and the technical team supporting the app.',
+  'onboarding.consent.howlong'  :'How long: for the duration of your programme and your clinic’s record-keeping period.',
+  'onboarding.consent.choice'   :'Your choice: you can leave the programme at any time from Settings.',
+  'onboarding.welcome.title'    :'You’re all set, {FIRST_NAME}',
+  'onboarding.welcome.line1'    :'Each day you’ll see the tasks your doctor set for you.',
+  'onboarding.welcome.line2'    :'Your programme runs for 30 days.',
+  'onboarding.welcome.line3'    :'Your clinic reviews check-ins during opening hours only. In an emergency, call 103.',
+  'onboarding.notifications.why':'We’ll remind you when to take your medication.',
+  'onboarding.welcome.start'    :'Start',
+
+  /* --- core app --- */
+  'today.title'            :'Day {N} of 30',
+  'today.empty'            :'Nothing scheduled today. Rest well.',
+  'today.checkin_prompt'   :'Today’s check-in',
+  'today.overdue'          :'Earlier today',
+  'task.mark_done'         :'Mark as done',
+  'task.done'              :'Done',
+  'medication.taken'       :'Taken',
+  'medication.not_yet'     :'Not yet',
+  'progress.title'         :'My recovery',
+  'progress.days'          :'{N} of 30 days',
+  'progress.encouragement.1':'Every day counts.',
+  'nav.today':'Today','nav.progress':'Progress','nav.learn':'Learn','nav.settings':'Settings',
+  'contact.button'         :'Contact clinic',
+  'contact.body'           :'Call {CLINIC_NAME} on {CLINIC_PHONE}. In an emergency, call 103.',
+  'settings.language'      :'Language',
+  'settings.cover_hours'   :'Your clinic reviews check-ins {WORKING_HOURS}, {WORKING_DAYS}. Outside these hours no one is monitoring. In an emergency, call 103.',
+  'settings.leave'         :'Leave programme',
+  'settings.leave_confirm' :'Are you sure? Your clinic will be told you have left.',
+  'offline.indicator'      :'Offline — your progress will be saved',
+  'offline.checkin_blocked':'You need a connection to send a check-in. If you are worried now, call {CLINIC_PHONE} or 103.',
+
+  /* --- check-in --- */
+  'checkin.q1_temp'       :'Have you measured your temperature today?',
+  'checkin.q2_pain'       :'How is your pain right now?',
+  'checkin.q3_pain_change':'Compared with yesterday, your pain is…',
+  'checkin.q4_wound'      :'How does your wound look today?',
+  'checkin.q5_redflags'   :'Do you have any of these today?',
+  'checkin.q6_intake'     :'Are you eating and drinking normally?',
+  'checkin.q7_urine'      :'Have you passed urine today?',
+  'checkin.submitted.routine.title':'Answers received',
+  'checkin.submitted.urgent.title' :'Sent to your care team',
+  'checkin.back_to_today' :'Back to Today',
+
+  /* --- survey --- */
+  'survey.q1':'Overall, how helpful was the app during your recovery?',
+  'survey.q2':'How easy was the app to use?',
+  'survey.q3':'Did it help you remember your medication and daily tasks?',
+  'survey.q4':'Would you recommend it to another patient having surgery?',
+  'survey.q5':'What would you change?',
+};
+
+/* Two distinct "no text" outcomes, and they must not be confused:
+     null      → the API refused it (CONTENT_NOT_APPROVED). Screen FAILS CLOSED.
+     undefined → no approved string exists in this prototype yet. Screen shows a
+                 content slot, so a reviewer can see the layout without any
+                 clinical prose being invented.                                  */
+function C(key, vars) {
+  if (S.unapproved && key.indexOf('clinical.') === 0) return null;   // fails closed
+  const t = RAW[key];
+  if (t === undefined) return undefined;                             // render a slot
+  const v = Object.assign({
+    CLINIC_NAME:CLINIC.name, CLINIC_PHONE:CLINIC.phone, OPENING_TIME:CLINIC.opening,
+    WORKING_HOURS:CLINIC.hours, WORKING_DAYS:CLINIC.days, FIRST_NAME:'Aziz', N:'',
+  }, vars || {});
+  return t.replace(/\{(\w+)\}/g, (m, k) => (v[k] !== undefined ? v[k] : m));
+}
+
+/* ===================================================================
+   MOCK SERVER — stands in for POST /checkins.
+   The tier is computed HERE, never in a screen.
+   Rules: placeholder-v1, from the Content Pack.
+   =================================================================== */
+const mockServer = {
+  postCheckin(a) {
+    const rf = a.q5_redflags || [];
+    const EMERGENCY_FLAGS = ['difficulty_breathing','chest_pain','confusion','very_hard_awake','heavy_bleeding'];
+
+    const isEmergency = rf.some(f => EMERGENCY_FLAGS.indexOf(f) !== -1) || a.q4_wound === 'opening';
+    const isUrgent =
+      a.q1_temp === '38_5_or_above' ||
+      rf.indexOf('chills') !== -1 || rf.indexOf('new_calf_pain') !== -1 ||
+      a.q4_wound === 'very_red_spreading' || a.q4_wound === 'leaking' ||
+      a.q2_pain >= 8 ||
+      (a.q3_pain_change === 'worse' && a.q2_pain >= 6) ||
+      a.q6_intake === 'no' || a.q7_urine === 'no';
+
+    const tier = isEmergency ? 'emergency' : (isUrgent ? 'urgent' : 'routine');
+    return { tier, ruleVersion:'placeholder-v1', recoveryDay:S.day,
+             withinClinicHours: !S.clinicClosed,
+             escalationId: tier === 'routine' ? null : 'esc-demo' };
+  },
+};
+
+/* =================================================================== */
+/*  QUESTION SET — option labels arrive pre-translated from the API     */
+/* =================================================================== */
+const QUESTIONS = [
+  { ref:'q1_temp', key:'checkin.q1_temp', type:'single', options:[
+      {code:'under_37_5',label:'Under 37.5'},{code:'37_5_to_38_4',label:'37.5–38.4'},
+      {code:'38_5_or_above',label:'38.5 or above'},{code:'not_measured',label:'Haven’t measured'}]},
+  { ref:'q2_pain', key:'checkin.q2_pain', type:'scale', lowLabel:'No pain', highLabel:'Worst pain' },
+  { ref:'q3_pain_change', key:'checkin.q3_pain_change', type:'single', options:[
+      {code:'better',label:'Better'},{code:'same',label:'Same'},{code:'worse',label:'Worse'}]},
+  { ref:'q4_wound', key:'checkin.q4_wound', type:'single', options:[
+      {code:'normal',label:'Normal'},{code:'a_little_red',label:'A little red'},
+      {code:'very_red_spreading',label:'Very red or spreading'},
+      {code:'leaking',label:'Leaking fluid or pus'},{code:'opening',label:'Opening'}]},
+  { ref:'q5_redflags', key:'checkin.q5_redflags', type:'multi', hint:'Select all that apply', options:[
+      {code:'chills',label:'Chills or shivering'},{code:'difficulty_breathing',label:'Difficulty breathing'},
+      {code:'chest_pain',label:'Chest pain'},{code:'confusion',label:'Confusion'},
+      {code:'very_hard_awake',label:'Very hard to stay awake'},{code:'heavy_bleeding',label:'Heavy bleeding'},
+      {code:'new_calf_pain',label:'New calf pain or swelling'},{code:'none',label:'None of these'}]},
+  { ref:'q6_intake', key:'checkin.q6_intake', type:'single', options:[
+      {code:'yes',label:'Yes'},{code:'some_difficulty',label:'Some difficulty'},{code:'no',label:'No'}]},
+  { ref:'q7_urine', key:'checkin.q7_urine', type:'single', options:[
+      {code:'yes',label:'Yes'},{code:'no',label:'No'}]},
+];
+
+/* =================================================================== */
+/*  ICONS                                                              */
+/* =================================================================== */
+const I = {
+  pill:'<path d="M10.6 20.4 20.4 10.6a5 5 0 0 0-7.1-7.1L3.6 13.4a5 5 0 0 0 7 7.1Z"/><path d="m8.5 8.5 7 7"/>',
+  walk:'<circle cx="13" cy="4.2" r="1.9"/><path d="M12.4 21.5 14 15l-3-2.6.9-4.6 2.8 2.9 2.4 1"/><path d="M9.4 21.5 12 16.6"/>',
+  bandage:'<rect x="2.6" y="7.6" width="18.8" height="8.8" rx="4.4" transform="rotate(-30 12 12)"/><path d="M10.3 10.3h.01M13.7 13.7h.01M10.3 13.7h.01M13.7 10.3h.01"/>',
+  book:'<path d="M12 7.6v13.2"/><path d="M3.2 18.4a1 1 0 0 1-1-1V4.6a1 1 0 0 1 1-1h4.6A4.2 4.2 0 0 1 12 7.6a4.2 4.2 0 0 1 4.2-4h4.6a1 1 0 0 1 1 1v12.8a1 1 0 0 1-1 1h-5.2A3 3 0 0 0 12 20.8a3 3 0 0 0-3.6-2.4Z"/>',
+  clipboard:'<rect x="5" y="4" width="14" height="17" rx="3"/><path d="M9 4V3.4A1.4 1.4 0 0 1 10.4 2h3.2A1.4 1.4 0 0 1 15 3.4V4"/><path d="m9.2 12.6 2.1 2.1 4.1-4.1"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  chevL:'<path d="M15 5l-7 7 7 7"/>', chevR:'<path d="M9 5l7 7-7 7"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  phone:'<path d="M15.6 21a17.6 17.6 0 0 1-12.6-12.6L3.6 5A1.6 1.6 0 0 1 5.2 3.6h2.9a1.6 1.6 0 0 1 1.6 1.3l.6 3a1.6 1.6 0 0 1-.6 1.6l-1.3 1a13.4 13.4 0 0 0 5.1 5.1l1-1.3a1.6 1.6 0 0 1 1.6-.6l3 .6a1.6 1.6 0 0 1 1.3 1.6v2.9A1.6 1.6 0 0 1 19 20.4Z"/>',
+  bell:'<path d="M18.2 9.4a6.2 6.2 0 1 0-12.4 0c0 5.1-2 6.4-2 6.4h16.4s-2-1.3-2-6.4"/><path d="M10.3 19.4a2 2 0 0 0 3.4 0"/>',
+  globe:'<circle cx="12" cy="12" r="8.8"/><path d="M3.2 12h17.6"/><path d="M12 3.2a14.4 14.4 0 0 1 0 17.6 14.4 14.4 0 0 1 0-17.6"/>',
+  alert:'<path d="M10.3 3.9a2 2 0 0 1 3.4 0l7.4 12.8a2 2 0 0 1-1.7 3H4.6a2 2 0 0 1-1.7-3Z"/><path d="M12 9.4v4.4M12 17.4v.01"/>',
+  info:'<circle cx="12" cy="12" r="8.8"/><path d="M12 11.2v5.6M12 7.6v.01"/>',
+  home:'<path d="M3.2 10.4 12 3.2l8.8 7.2v9.2a1.6 1.6 0 0 1-1.6 1.6H4.8a1.6 1.6 0 0 1-1.6-1.6Z"/><path d="M9.4 21.2v-7.6h5.2v7.6"/>',
+  chart:'<path d="M3.4 3.4v17.2h17.2"/><path d="m7 14.6 3.2-4.2 3 2.9 4.2-6"/>',
+  gear:'<circle cx="12" cy="12" r="3.1"/><path d="M19.2 14.8a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-2.88 1.2v.18a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.11-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0-1.2-2.88h-.18a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.3 8.75a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.08A1.7 1.7 0 0 0 9.8 2.86v-.18a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.88 1.2l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0 .34 1.87v.08a1.7 1.7 0 0 0 1.55 1.02h.18a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.48 1.02Z"/>',
+  wifiOff:'<path d="M3 3l18 18"/><path d="M5 12.2a11 11 0 0 1 4.2-2.6"/><path d="M8.6 15.9a6 6 0 0 1 2.6-1.5"/><path d="M12 19.5v.01"/>',
+  lock:'<rect x="4" y="10" width="16" height="11" rx="2.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+  logout:'<path d="M15 3.6h3.4A2 2 0 0 1 20.4 5.6v12.8a2 2 0 0 1-2 2H15"/><path d="m10 8-4 4 4 4M6 12h9"/>',
+  heart:'<path d="M12 20.4s-7.6-4.6-7.6-10a4.4 4.4 0 0 1 7.6-3 4.4 4.4 0 0 1 7.6 3c0 5.4-7.6 10-7.6 10Z"/>',
+  x:'<path d="m6 6 12 12M18 6 6 18"/>',
+};
+const svg = (n, cls) => '<svg viewBox="0 0 24 24" class="ic ' + (cls || 'h-6 w-6') + '">' + I[n] + '</svg>';
+
+/* =================================================================== */
+/*  STATE                                                              */
+/* =================================================================== */
+const initialTasks = () => ([
+  {id:'t1', type:'pill',    title:'Paracetamol 500 mg',          time:'08:00', done:true,  overdue:false, med:{name:'Paracetamol',dose:'500 mg'}},
+  {id:'t2', type:'pill',    title:'Antibiotic',                   time:'09:00', done:true,  overdue:false, med:{name:'Antibiotic',dose:'1 tablet'}},
+  {id:'t3', type:'bandage', title:'Wound care',                   time:'10:00', done:false, overdue:true,  contentKey:'clinical.laparoscopic_appendectomy.wound_care_day6'},
+  {id:'t4', type:'walk',    title:'Gentle walking, 20 minutes',   time:'11:00', done:true,  overdue:false},
+  {id:'t5', type:'pill',    title:'Paracetamol 500 mg',           time:'14:00', done:false, overdue:false, med:{name:'Paracetamol',dose:'500 mg'}},
+  {id:'t6', type:'pill',    title:'Paracetamol 500 mg',           time:'20:00', done:false, overdue:false, med:{name:'Paracetamol',dose:'500 mg'}},
+]);
+
+const S = {
+  screen:'p1', day:6, lang:null,
+  code:'', phone:'',
+  consentScrolled:false, consentChecked:false,
+  tasks:initialTasks(),
+  qi:0, answers:{}, tier:null, withinHours:true,
+  activeTask:null, activeArticle:null, survey:{},
+  emgOpen:false,
+  offline:false, clinicClosed:false, emptyDay:false, unapproved:false,
+};
+
+const CAPTIONS = {
+  p1:['P1 · Language selection','The only hardcoded strings in the entire app. Device language is read but never auto-selected — a wrong guess strands an elderly patient in an interface they cannot read.'],
+  p2:['P2 · Enrolment code','Continue stays disabled until 6 characters. Errors never reveal whether a code exists, which would let someone guess codes.'],
+  p3:['P3 · Phone number','+998 is fixed and not editable. A mismatch reveals nothing about the stored number. Three failures lock the code, enforced server-side.'],
+  p4:['P4 · Consent','Legally load-bearing. Agree stays disabled until the text is scrolled to the end AND the box is ticked. Decline writes zero personal data.'],
+  p5:['P5 · Welcome','Notifications are explained before the OS prompt, and denying them never blocks the programme.'],
+  p6:['P6 · Today','90% of app time lives here. Completed tasks stay visible; overdue is grey and never scolding. Red is reserved for medical emergency alone.'],
+  p7:['P7 · Task detail','Clinical text renders only from an approved content key. Missing content fails closed — nothing renders and an error is raised.'],
+  p8:['P8 · Medication','Exactly two actions. “Not yet” repeats the reminder once after 30 minutes. The patient can never edit a dose or a schedule.'],
+  p9:['P9 · Progress','The percentage excludes future tasks and always shows its denominator. No clinical interpretation, and nothing discouraging at low adherence.'],
+  p10:['P10 · Symptom check-in','One question per screen, zero free-text fields. The tier is assigned by the server — the client is never trusted with a safety decision.'],
+  p11:['P11 · Submitted — ROUTINE','Acknowledgement only. No “that sounds normal”, no reassurance, no interpretation of any kind.'],
+  p12:['P12 · Submitted — URGENT','Verbatim approved copy. No response-time promise anywhere: the SLA is an internal target, not a patient guarantee.'],
+  p13:['P13 · EMERGENCY','Renders and dials with no network. Identical in and out of clinic hours. Shown before staff are notified, and never suppressed or deduplicated.'],
+  p14:['P14 · Learn','Items not yet unlocked are hidden, not greyed — greying invites patients to seek out later-stage advice early.'],
+  p15:['P15 · Article','Rendered exactly as the clinician approved: no summarising, no simplifying, no AI adaptation. Disclaimer on every article.'],
+  p16:['P16 · Settings','Language changes instantly with no restart. Leaving requires confirmation and notifies the clinic — it stops the programme but never deletes data.'],
+  p17:['P17 · Day-30 survey','Exactly five questions, always skippable. The free-text answer never enters an analytics event.'],
+  blocked:['Offline · check-in blocked','The one action that requires connectivity. A patient reporting symptoms is never silently queued.'],
+};
+
+/* =================================================================== */
+/*  SHARED CHROME                                                      */
+/* =================================================================== */
+const statusBar = (dark) => `
+  <div class="relative z-30 flex h-[54px] shrink-0 items-end justify-between px-7 pb-1.5 text-[15px] font-semibold ${dark?'text-white':'text-ink'}">
+    <span>9:41</span>
+    <span class="flex items-center gap-1.5">
+      <svg viewBox="0 0 18 12" class="h-3 w-4 fill-current"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+      <svg viewBox="0 0 16 12" class="h-3 w-4 fill-current"><path d="M8 10.5l2-2.2a2.9 2.9 0 0 0-4 0zM8 6.2c1.4 0 2.7.5 3.7 1.4l1.4-1.5A7.6 7.6 0 0 0 8 4a7.6 7.6 0 0 0-5.1 2.1l1.4 1.5A5.5 5.5 0 0 1 8 6.2zM8 2c2.3 0 4.4.9 6 2.3l1.4-1.5A10.4 10.4 0 0 0 8 0a10.4 10.4 0 0 0-7.4 2.8L2 4.3A8.6 8.6 0 0 1 8 2z"/></svg>
+      <svg viewBox="0 0 26 12" class="h-3 w-6 fill-none stroke-current"><rect x=".8" y=".8" width="21" height="10.4" rx="3"/><rect x="2.6" y="2.6" width="16" height="6.8" rx="1.6" class="fill-current stroke-none"/><path d="M23.6 4.2v3.6" stroke-width="2.4" stroke-linecap="round"/></svg>
+    </span>
+  </div>`;
+
+/* ------------------------------------------------------------------
+   Emergency affordance.
+
+   Spec asks for a full-width 44dp red bar carrying the whole approved
+   string on every screen.  That string is 103 characters and wraps to
+   three lines at 360dp, so the bar could never actually be 44 tall —
+   and at three lines it dominates every screen.
+
+   So: a persistent red button, present on every screen, never
+   dismissible, in the spec's emergency colour, that expands into the
+   full verbatim text plus the dial actions.  The trade to weigh is
+   that the words are now one tap away instead of always on screen.
+   Flagged for the content owner, not decided here.
+   ------------------------------------------------------------------ */
+const banner = () => `
+  <button data-act="emgOpen" aria-label="Emergency instruction"
+    class="press emg-halo absolute right-4 top-[58px] z-40 flex h-11 w-11 items-center justify-center rounded-full bg-emergency text-white ring-[3px] ring-white/85">
+    ${svg('alert','h-[22px] w-[22px]')}
+  </button>`;
+
+/* the expanded sheet — full approved text, verbatim, then the actions */
+const emergencySheet = () => !S.emgOpen ? '' : `
+  <div class="absolute inset-0 z-50">
+    <button data-act="emgClose" aria-label="Close" class="sheet-back absolute inset-0 h-full w-full bg-ink/45 backdrop-blur-[2px]"></button>
+    <div class="sheet absolute inset-x-0 bottom-0 rounded-t-[30px] bg-surface px-6 pb-8 pt-3 shadow-[0_-20px_60px_rgba(15,26,52,.3)]">
+      <div class="mx-auto h-1 w-10 rounded-full bg-line"></div>
+
+      <div class="sheet-item mt-5 flex items-center gap-3.5">
+        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emergency text-white">${svg('alert','h-6 w-6')}</span>
+        <p class="text-[19px] font-extrabold leading-tight">In an emergency</p>
+        <button data-act="emgClose" aria-label="Close"
+          class="press ml-auto flex h-10 w-10 items-center justify-center rounded-full bg-canvas text-muted">${svg('x','h-5 w-5')}</button>
+      </div>
+
+      <p class="sheet-item mt-4 text-[17px] leading-relaxed">${C('emergency.banner')}</p>
+
+      <div class="sheet-item mt-6 space-y-3">
+        <button data-act="dial" data-num="103"
+          class="press flex h-[68px] w-full items-center justify-center gap-3 rounded-[20px] bg-emergency text-[22px] font-extrabold text-white shadow-[0_10px_26px_rgba(179,38,30,.4)]">
+          ${svg('phone','h-6 w-6')}Call 103
+        </button>
+        <button data-act="dial" data-num="${CLINIC.phone}"
+          class="press flex h-[60px] w-full items-center justify-center gap-2.5 rounded-[20px] bg-canvas text-[17px] font-semibold text-ink">
+          ${svg('phone','h-5 w-5')}Call ${CLINIC.name}
+        </button>
+      </div>
+
+      <p class="sheet-item mt-4 text-center text-[13px] text-muted">${CLINIC.hours} · ${CLINIC.days}</p>
+    </div>
+  </div>`;
+
+const offlineStrip = () => S.offline ? `
+  <div class="relative z-30 flex shrink-0 items-center gap-2 bg-brand-50 px-5 py-2 text-[13px] font-semibold text-brand-800">
+    ${svg('wifiOff','h-4 w-4')}<span>${C('offline.indicator')}</span>
+  </div>` : '';
+
+const NAVS = [['p6','home','nav.today'],['p9','chart','nav.progress'],['p14','book','nav.learn'],['p16','gear','nav.settings']];
+const bottomNav = (active) => `
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 z-30 bg-gradient-to-t from-canvas via-canvas/95 to-transparent px-4 pb-7 pt-10">
+    <nav class="pointer-events-auto flex h-[64px] items-center gap-1 rounded-[26px] bg-white/95 px-2 shadow-nav ring-1 ring-line backdrop-blur">
+      ${NAVS.map(([id,icon,key]) => {
+        const on = id === active;
+        return `<button data-act="go" data-to="${id}"
+          class="press flex h-[50px] flex-1 flex-col items-center justify-center gap-[3px] rounded-[19px] ${on?'bg-brand-600 text-white shadow-[0_4px_12px_rgba(59,110,246,.35)]':'text-muted'}">
+          ${svg(icon,'h-[21px] w-[21px]')}<span class="text-[10px] font-semibold tracking-tight">${C(key)}</span></button>`;
+      }).join('')}
+    </nav>
+  </div>`;
+
+const topBar = (title, backTo) => `
+  <div class="relative z-20 flex h-[60px] shrink-0 items-center gap-3 bg-canvas px-4">
+    <button data-act="go" data-to="${backTo}" class="press flex h-11 w-11 items-center justify-center rounded-full bg-white text-ink shadow-card ring-1 ring-line">
+      ${svg('chevL','h-5 w-5')}</button>
+    <p class="text-[17px] font-bold">${title}</p>
+  </div>`;
+
+const scroll = (inner, pb) => `<div class="scr noscroll flex-1 overflow-y-auto ${pb||'pb-8'}">${inner}</div>`;
+
+const bigBtn = (label, act, extra) =>
+  `<button data-act="${act}" ${extra||''} class="press flex h-[64px] w-full items-center justify-center gap-2.5 rounded-2xl bg-brand-600 text-[18px] font-semibold text-white shadow-[0_8px_20px_rgba(59,110,246,.35)]">${label}</button>`;
+const ghostBtn = (label, act, extra) =>
+  `<button data-act="${act}" ${extra||''} class="press flex h-[64px] w-full items-center justify-center gap-2.5 rounded-2xl bg-white text-[18px] font-semibold text-brand-700 shadow-card ring-1 ring-line">${label}</button>`;
+const deadBtn = (label) =>
+  `<div class="flex h-[64px] w-full items-center justify-center rounded-2xl bg-line text-[18px] font-semibold text-muted">${label}</div>`;
+
+/* content slot — used wherever no clinician-approved prose exists yet */
+const slot = (key, lines) => {
+  const w = [100,96,88,100,72,94,60];
+  let bars = '';
+  for (let i = 0; i < lines; i++) bars += `<div class="h-2.5 rounded-full bg-brand-200/70" style="width:${w[i%7]}%"></div>`;
+  return `<div class="rounded-xl3 border border-dashed border-brand-200 bg-brand-50/70 p-5">
+    <p class="break-all font-mono text-[11px] font-semibold uppercase tracking-wide text-brand-700">${key}</p>
+    <div class="mt-4 space-y-2.5">${bars}</div>
+    <p class="mt-4 text-[12px] leading-relaxed text-muted">Clinician-approved text renders here, resolved by content key. Nothing is generated.</p>
+  </div>`;
+};
+
+const failClosed = (title) => `
+  <div class="rounded-xl3 bg-white p-7 text-center shadow-card ring-1 ring-line">
+    <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-700">${svg('lock','h-8 w-8')}</div>
+    <p class="mt-5 text-[19px] font-bold leading-snug">${title}</p>
+    <p class="mt-2 text-[15px] leading-relaxed text-muted">Please contact your clinic if you need this information.</p>
+    <button data-act="dial" data-num="${CLINIC.phone}" class="press mt-5 flex h-[56px] w-full items-center justify-center gap-2.5 rounded-2xl bg-brand-50 text-[17px] font-semibold text-brand-700">
+      ${svg('phone','h-5 w-5')}${CLINIC.phone}</button>
+    <p class="mt-4 font-mono text-[11px] text-muted">CONTENT_NOT_APPROVED · nothing rendered · no language fallback</p>
+  </div>`;
+
+const TYPE_TINT = { pill:'bg-brand-50 text-brand-700', walk:'bg-[#E9F7F1] text-success',
+                    bandage:'bg-[#FDF1EC] text-[#C2603A]', clipboard:'bg-brand-50 text-brand-700',
+                    book:'bg-[#F2EEFB] text-[#6D53C7]' };
+
+/* =================================================================== */
+/*  SCREENS                                                            */
+/* =================================================================== */
+const V = {};
+
+/* ------------------------ P1 · language ------------------------ */
+V.p1 = () => `
+  ${statusBar()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-7 pb-10 pt-14">
+      <div class="flex flex-1 flex-col items-center justify-center">
+        <div class="flex h-[92px] w-[92px] items-center justify-center rounded-[28px] bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-[0_16px_36px_rgba(59,110,246,.4)]">
+          ${svg('heart','h-11 w-11')}
+        </div>
+        <p class="mt-6 text-[30px] font-extrabold tracking-tight">Hospital AI</p>
+      </div>
+      <div class="space-y-3">
+        ${[['UZ','Oʻzbekcha'],['RU','Русский'],['EN','English']].map(([c,l])=>`
+          <button data-act="lang" data-v="${c}"
+            class="press flex h-[68px] w-full items-center justify-between rounded-2xl bg-white px-6 text-[19px] font-semibold shadow-card ring-1 ring-line">
+            <span>${l}</span>${svg('chevR','h-5 w-5 text-muted')}
+          </button>`).join('')}
+      </div>
+    </div>`)}`;
+
+/* ------------------------ P2 · code ------------------------ */
+V.p2 = () => `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-10 pt-6">
+      <div class="flex-1">
+        <h1 class="text-[30px] font-extrabold leading-tight tracking-tight">${C('onboarding.code.title')}</h1>
+        <p class="mt-2 text-[17px] leading-relaxed text-muted">${C('onboarding.code.help')}</p>
+        <div class="mt-8 rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+          <p class="text-[13px] font-semibold uppercase tracking-wide text-muted">Code</p>
+          <input id="code-input" type="text" maxlength="6" autocomplete="off" autocorrect="off" spellcheck="false"
+            value="${S.code}" placeholder="••••••"
+            class="mt-2 w-full bg-transparent text-center font-mono text-[32px] font-bold tracking-[.35em] text-ink outline-none placeholder:text-line">
+        </div>
+        <p class="mt-3 text-center text-[13px] text-muted">Try <b class="text-ink">H7K9QP</b></p>
+      </div>
+      <div class="space-y-4">
+        <div id="code-btn">${S.code.length===6 ? bigBtn('Continue','submitCode') : deadBtn('Continue')}</div>
+        <div class="text-center">
+          <p class="text-[15px] text-muted">${C('onboarding.code.no_code')}</p>
+          <button data-act="dial" data-num="${CLINIC.phone}" class="press mt-2 inline-flex items-center gap-2 text-[17px] font-semibold text-brand-700">
+            ${svg('phone','h-5 w-5')}${CLINIC.phone}</button>
+        </div>
+      </div>
+    </div>`)}`;
+
+/* ------------------------ P3 · phone ------------------------ */
+V.p3 = () => `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-10 pt-6">
+      <div class="flex-1">
+        <h1 class="text-[30px] font-extrabold leading-tight tracking-tight">${C('onboarding.phone.title')}</h1>
+        <p class="mt-2 text-[17px] leading-relaxed text-muted">${C('onboarding.phone.help')}</p>
+        <div class="mt-8 flex gap-3">
+          <div class="flex h-[64px] w-[92px] items-center justify-center rounded-2xl bg-line/70 text-[19px] font-semibold text-muted">+998</div>
+          <div class="flex h-[64px] flex-1 items-center rounded-2xl bg-white px-5 shadow-card ring-1 ring-line">
+            <input id="phone-input" type="tel" inputmode="numeric" value="${S.phone}" placeholder="90 123 45 67"
+              class="w-full bg-transparent text-[19px] font-semibold tracking-wide text-ink outline-none placeholder:text-line">
+          </div>
+        </div>
+        <div class="mt-6 flex items-start gap-3 rounded-xl3 bg-brand-50 p-5">
+          ${svg('lock','h-6 w-6 shrink-0 text-brand-700')}
+          <p class="text-[14px] leading-relaxed text-muted">Spaces and dashes are removed before checking. A mismatch never reveals the stored number.</p>
+        </div>
+      </div>
+      <div id="phone-btn">${S.phone.length>=9 ? bigBtn('Continue','submitPhone') : deadBtn('Continue')}</div>
+    </div>`)}`;
+
+/* ------------------------ P4 · consent ------------------------ */
+V.p4 = () => `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-10 pt-6">
+      <h1 class="text-[30px] font-extrabold leading-tight tracking-tight">${C('onboarding.consent.title')}</h1>
+
+      <div id="consent-box" class="noscroll mt-5 h-[280px] overflow-y-auto rounded-xl3 bg-white p-5 text-[16px] leading-relaxed shadow-card ring-1 ring-line">
+        <p>${C('onboarding.consent.body')}</p>
+        <p class="mt-4">${C('onboarding.consent.collect')}</p>
+        <p class="mt-3">${C('onboarding.consent.who')}</p>
+        <p class="mt-3">${C('onboarding.consent.howlong')}</p>
+        <p class="mt-3">${C('onboarding.consent.choice')}</p>
+        <p class="mt-5 text-[13px] text-muted">Consent version 1.0</p>
+        <p class="mt-8 text-center text-[13px] font-semibold text-success">— end of text —</p>
+      </div>
+      <p id="scroll-hint" class="mt-2 text-center text-[13px] font-medium text-muted">Scroll to the end to continue</p>
+
+      <button id="cbox-row" class="press mt-5 flex w-full items-center gap-3.5 rounded-xl3 bg-white p-5 text-left shadow-card ring-1 ring-line">
+        <span id="cbox" class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-2 ring-line text-transparent">${svg('check','h-5 w-5')}</span>
+        <span class="text-[17px] font-medium">${C('onboarding.consent.checkbox')}</span>
+      </button>
+
+      <div class="mt-auto space-y-3 pt-6">
+        <div id="agree-btn">${deadBtn(C('onboarding.consent.agree'))}</div>
+        <button data-act="decline" class="press h-[56px] w-full rounded-2xl text-[17px] font-semibold text-muted">${C('onboarding.consent.decline')}</button>
+      </div>
+    </div>`)}`;
+
+/* ------------------------ P5 · welcome ------------------------ */
+V.p5 = () => `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-10 pt-6">
+      <div class="flex-1">
+        <div class="flex h-[72px] w-[72px] items-center justify-center rounded-[24px] bg-success text-white shadow-[0_12px_28px_rgba(27,127,90,.35)]">
+          ${svg('check','h-9 w-9')}</div>
+        <h1 class="mt-6 pr-14 text-[30px] font-extrabold leading-tight tracking-tight">${C('onboarding.welcome.title')}</h1>
+        <div class="mt-6 space-y-3">
+          ${[1,2,3].map(n=>`<div class="rounded-xl3 bg-white p-5 text-[17px] leading-relaxed shadow-card ring-1 ring-line">${C('onboarding.welcome.line'+n)}</div>`).join('')}
+        </div>
+        <div class="mt-4 flex items-start gap-3 rounded-xl3 bg-brand-50 p-5">
+          ${svg('bell','h-6 w-6 shrink-0 text-brand-700')}
+          <p class="text-[16px] leading-relaxed">${C('onboarding.notifications.why')}</p>
+        </div>
+      </div>
+      <div class="pt-6">${bigBtn(C('onboarding.welcome.start'),'go','data-to="p6"')}</div>
+    </div>`)}`;
+
+/* ------------------------ P6 · today ------------------------ */
+V.p6 = () => {
+  const empty = S.emptyDay;
+  const tasks = empty ? [] : S.tasks;
+  const done  = tasks.filter(t=>t.done).length;
+  const day   = empty ? 0 : S.day;
+  const R = 30, CIRC = 2 * Math.PI * R;
+
+  const taskCard = (t) => `
+    <div class="flex items-center gap-3 rounded-[20px] bg-white p-3.5 shadow-card ring-1 ring-line">
+      <button data-act="openTask" data-id="${t.id}" class="press flex min-w-0 flex-1 items-center gap-3.5 text-left">
+        <span class="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-[15px] ${t.done?'bg-[#E9F7F1] text-success':TYPE_TINT[t.type]}">${svg(t.type,'h-[22px] w-[22px]')}</span>
+        <span class="min-w-0 flex-1">
+          <span class="block text-[16.5px] font-semibold leading-snug ${t.done?'text-muted line-through decoration-muted/50':''}">${t.title}</span>
+          <span class="mt-1 flex items-center gap-1.5 text-[13.5px] ${t.overdue&&!t.done?'font-medium text-overdue':'text-muted'}">
+            ${t.overdue&&!t.done?'<span class="h-[5px] w-[5px] rounded-full bg-overdue"></span>':''}
+            ${t.time}${t.overdue&&!t.done?' · '+C('today.overdue'):''}
+          </span>
+        </span>
+      </button>
+      <button data-act="toggleTask" data-id="${t.id}" aria-label="${t.done?'Un-complete':'Complete'} ${t.title}"
+        class="press -mr-1 flex h-14 w-14 shrink-0 items-center justify-center">
+        <span class="flex h-[34px] w-[34px] items-center justify-center rounded-[11px] ${t.done?'bg-success text-white':'text-transparent ring-2 ring-line'}">${svg('check','h-[18px] w-[18px]')}</span>
+      </button>
+    </div>`;
+
+  return `
+  ${statusBar()}${banner()}${offlineStrip()}
+  ${scroll(`
+    <!-- hero -->
+    <div class="rounded-b-[32px] bg-gradient-to-br from-brand-500 to-brand-700 px-5 pb-14 pt-1 text-white">
+      <div class="flex items-center gap-3 pr-14">
+        <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/20 text-[16px] font-bold ring-1 ring-white/25">A</span>
+        <span>
+          <span class="block text-[13px] font-medium text-white/75">Good morning</span>
+          <span class="block text-[19px] font-extrabold leading-tight tracking-tight">Aziz</span>
+        </span>
+      </div>
+
+      <div class="mt-5 flex items-center gap-4 rounded-[22px] bg-white/15 p-4 ring-1 ring-white/20">
+        <div class="relative h-[66px] w-[66px] shrink-0">
+          <svg viewBox="0 0 76 76" class="h-full w-full -rotate-90">
+            <circle cx="38" cy="38" r="${R}" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="7"/>
+            <circle cx="38" cy="38" r="${R}" fill="none" stroke="white" stroke-width="7" stroke-linecap="round"
+              stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC*(1-day/30)}"/>
+          </svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <span class="text-[19px] font-extrabold leading-none">${day}</span>
+            <span class="text-[9px] font-semibold text-white/75">of 30</span>
+          </div>
+        </div>
+        <div class="min-w-0 flex-1">
+          <p class="text-[19px] font-extrabold leading-tight tracking-tight">${C('today.title',{N:day})}</p>
+          <p class="mt-0.5 text-[13.5px] text-white/80">${empty?'Nothing scheduled':done+' of '+tasks.length+' tasks done today'}</p>
+          <div class="mt-2.5 h-1.5 w-full rounded-full bg-white/25">
+            <div class="h-1.5 rounded-full bg-white" style="width:${empty?0:Math.round(done/tasks.length*100)}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative z-10 -mt-9 px-5 pb-[132px]">
+      ${empty ? `
+        <div class="rounded-xl3 bg-white p-8 text-center shadow-lift ring-1 ring-line">
+          <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-brand-700">${svg('check','h-8 w-8')}</div>
+          <p class="mt-5 text-[19px] font-bold leading-snug">${C('today.empty')}</p>
+        </div>` : `
+        <button data-act="startCheckin" class="press flex w-full items-center gap-3.5 rounded-[22px] bg-white p-4 text-left shadow-lift ring-1 ring-brand-100">
+          <span class="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-[17px] bg-gradient-to-br from-brand-500 to-brand-700 text-white">${svg('clipboard','h-[25px] w-[25px]')}</span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-[17px] font-bold leading-snug">${C('today.checkin_prompt')}</span>
+            <span class="block text-[13.5px] text-muted">7 questions · about 2 minutes</span>
+          </span>
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-600 text-white">${svg('arrow','h-[18px] w-[18px]')}</span>
+        </button>
+        <p class="mb-2.5 mt-6 px-1 text-[12px] font-bold uppercase tracking-[.16em] text-muted">Today’s plan</p>
+        <div class="space-y-2.5">${tasks.map(taskCard).join('')}</div>`}
+      <button data-act="contact" class="press mt-3 flex h-[58px] w-full items-center justify-center gap-2.5 rounded-[18px] bg-white text-[16px] font-semibold text-brand-700 shadow-card ring-1 ring-line">
+        ${svg('phone','h-[19px] w-[19px]')}${C('contact.button')}</button>
+    </div>`,'pb-0')}
+  ${bottomNav('p6')}`;
+};
+
+/* ------------------------ P7 · task detail ------------------------ */
+V.p7 = () => {
+  const t = S.tasks.find(x=>x.id===S.activeTask) || S.tasks[2];
+  const body = t.contentKey ? C(t.contentKey) : null;
+  return `
+  ${statusBar()}${banner()}${topBar('Today','p6')}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-8">
+      <div class="flex-1">
+        <div class="flex items-center gap-4">
+          <span class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl ${TYPE_TINT[t.type]}">${svg(t.type,'h-7 w-7')}</span>
+          <div>
+            <h1 class="text-[24px] font-extrabold leading-tight">${t.title}</h1>
+            <p class="text-[14px] ${t.overdue&&!t.done?'text-overdue':'text-muted'}">${t.time}${t.overdue&&!t.done?' · '+C('today.overdue'):''}</p>
+          </div>
+        </div>
+        <div class="mt-6">
+          ${ (t.contentKey && body === null) ? failClosed('This is not yet available in your language.')
+             : slot(t.contentKey || 'content.task_generic', 6) }
+        </div>
+        <div class="mt-4 flex h-[130px] items-center justify-center rounded-xl3 border border-dashed border-line bg-white/60">
+          <p class="text-[13px] text-muted">Approved image (optional)</p>
+        </div>
+      </div>
+      <div class="pt-6">
+        ${ t.done
+          ? `<div class="mb-3 flex items-center justify-center gap-2 rounded-2xl bg-[#E9F7F1] py-3 text-[15px] font-semibold text-success">${svg('check','h-5 w-5')}${C('task.done')}</div>
+             ${ghostBtn('Undo','toggleTask','data-id="'+t.id+'" data-stay="1"')}`
+          : bigBtn(C('task.mark_done'),'toggleTask','data-id="'+t.id+'"') }
+      </div>
+    </div>`)}`;
+};
+
+/* ------------------------ P8 · medication ------------------------ */
+V.p8 = () => {
+  const t = S.tasks.find(x=>x.id===S.activeTask && x.med) || S.tasks.find(x=>x.med);
+  const m = t.med;
+  return `
+  ${statusBar()}${banner()}${topBar('Today','p6')}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-8">
+      <div class="flex-1">
+        <div class="rounded-[28px] bg-gradient-to-br from-brand-500 to-brand-700 p-7 text-white shadow-[0_16px_40px_rgba(59,110,246,.32)]">
+          <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20">${svg('pill','h-7 w-7')}</div>
+          <p class="mt-5 text-[13px] font-semibold uppercase tracking-[.14em] text-white/75">Scheduled by your clinic</p>
+          <p class="mt-1 text-[34px] font-extrabold leading-tight tracking-tight">${m.name}</p>
+          <div class="mt-4 flex gap-2.5">
+            <span class="rounded-full bg-white/20 px-4 py-1.5 text-[15px] font-semibold">${m.dose}</span>
+            <span class="rounded-full bg-white/20 px-4 py-1.5 text-[15px] font-semibold">${t.time}</span>
+          </div>
+        </div>
+        <div class="mt-5 flex items-start gap-3 rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+          ${svg('info','h-6 w-6 shrink-0 text-brand-700')}
+          <p class="text-[15px] leading-relaxed text-muted">Dose and schedule are set by your clinic and cannot be changed here.</p>
+        </div>
+      </div>
+      <div class="space-y-3 pt-6">
+        ${bigBtn(C('medication.taken'),'medTaken','data-id="'+t.id+'"')}
+        ${ghostBtn(C('medication.not_yet'),'medNotYet')}
+      </div>
+    </div>`)}`;
+};
+
+/* ------------------------ P9 · progress ------------------------ */
+V.p9 = () => {
+  let cells = '';
+  for (let d = 1; d <= 30; d++) {
+    cells += d < S.day  ? '<div class="aspect-square rounded-[10px] bg-success"></div>'
+          : d === S.day ? '<div class="aspect-square rounded-[10px] bg-brand-100 ring-2 ring-brand-600"></div>'
+          :               '<div class="aspect-square rounded-[10px] bg-line/70"></div>';
+  }
+  return `
+  ${statusBar()}${banner()}${offlineStrip()}
+  ${scroll(`
+    <div class="px-6 pb-[120px] pt-6">
+      <h1 class="text-[30px] font-extrabold tracking-tight">${C('progress.title')}</h1>
+      <div class="mt-5 grid grid-cols-2 gap-3">
+        <div class="rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+          <p class="text-[13px] font-semibold uppercase tracking-wide text-muted">Days</p>
+          <p class="mt-1 text-[30px] font-extrabold leading-none text-brand-700">${S.day}<span class="text-[16px] font-bold text-muted">/30</span></p>
+          <div class="mt-3 h-2 w-full rounded-full bg-line"><div class="h-2 rounded-full bg-brand-600" style="width:${S.day/30*100}%"></div></div>
+        </div>
+        <div class="rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+          <p class="text-[13px] font-semibold uppercase tracking-wide text-muted">Completed</p>
+          <p class="mt-1 text-[30px] font-extrabold leading-none text-brand-700">80%</p>
+          <p class="mt-2 text-[13px] leading-snug text-muted">8 of 10 tasks<br>future tasks not counted</p>
+        </div>
+      </div>
+      <div class="mt-3 rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+        <p class="text-[17px] font-bold">30-day programme</p>
+        <div class="mt-4 grid grid-cols-10 gap-1.5">${cells}</div>
+        <div class="mt-4 flex flex-wrap gap-4 text-[12px] font-medium text-muted">
+          <span class="flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-success"></span>Completed</span>
+          <span class="flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-brand-100 ring-2 ring-brand-600"></span>Today</span>
+          <span class="flex items-center gap-1.5"><span class="h-3 w-3 rounded bg-line"></span>Upcoming</span>
+        </div>
+      </div>
+      <div class="mt-3 rounded-xl3 bg-gradient-to-br from-brand-500 to-brand-700 p-6 text-white">
+        <p class="text-[19px] font-bold">${C('progress.encouragement.1')}</p>
+        <p class="mt-1 text-[14px] text-white/80">${C('progress.days',{N:S.day})}</p>
+      </div>
+    </div>`,'pb-0')}
+  ${bottomNav('p9')}`;
+};
+
+/* ------------------------ P10 · check-in ------------------------ */
+V.p10 = () => {
+  const q = QUESTIONS[S.qi];
+  const val = S.answers[q.ref];
+  const last = S.qi === QUESTIONS.length - 1;
+  let body = '';
+
+  if (q.type === 'single') {
+    body = '<div class="mt-6 space-y-3">' + q.options.map(o => {
+      const on = val === o.code;
+      return `<button data-act="pick" data-ref="${q.ref}" data-code="${o.code}"
+        class="press flex min-h-[64px] w-full items-center gap-3.5 rounded-2xl px-5 py-4 text-left text-[17px] font-medium ${on?'bg-brand-50 ring-2 ring-brand-600':'bg-white shadow-card ring-1 ring-line'}">
+        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${on?'bg-brand-600 text-white':'text-transparent ring-2 ring-line'}">${svg('check','h-4 w-4')}</span>
+        <span class="flex-1">${o.label}</span></button>`;
+    }).join('') + '</div>';
+  }
+  else if (q.type === 'multi') {
+    const sel = val || [];
+    body = `<p class="mt-1 text-[15px] text-muted">${q.hint}</p><div class="mt-5 space-y-2.5">` + q.options.map(o => {
+      const on = sel.indexOf(o.code) !== -1;
+      return `<button data-act="pickMulti" data-ref="${q.ref}" data-code="${o.code}"
+        class="press flex min-h-[60px] w-full items-center gap-3.5 rounded-2xl px-5 py-3.5 text-left text-[17px] font-medium ${on?'bg-brand-50 ring-2 ring-brand-600':'bg-white shadow-card ring-1 ring-line'}">
+        <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${on?'bg-brand-600 text-white':'text-transparent ring-2 ring-line'}">${svg('check','h-4 w-4')}</span>
+        <span class="flex-1">${o.label}</span></button>`;
+    }).join('') + '</div>';
+  }
+  else {
+    let circles = '';
+    for (let n = 0; n <= 10; n++) {
+      const on = val === n;
+      circles += `<button data-act="pick" data-ref="${q.ref}" data-code="${n}" data-num="1"
+        class="press flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-2xl text-[19px] font-bold ${on?'bg-brand-600 text-white shadow-[0_8px_18px_rgba(59,110,246,.4)]':'bg-white text-ink shadow-card ring-1 ring-line'}">${n}</button>`;
+    }
+    body = `<div class="noscroll -mx-6 mt-8 overflow-x-auto px-6"><div class="flex w-max gap-2.5">${circles}</div></div>
+      <div class="mt-3 flex justify-between text-[14px] font-medium text-muted"><span>0 · ${q.lowLabel}</span><span>10 · ${q.highLabel}</span></div>`;
+  }
+
+  const answered = q.type === 'multi' ? !!(val && val.length) : val !== undefined;
+
+  return `
+  ${statusBar()}${banner()}${offlineStrip()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-8 pt-5">
+      <div class="flex-1">
+        <div class="flex items-center justify-between">
+          <button data-act="exitCheckin" class="press flex h-11 w-11 items-center justify-center rounded-full bg-white text-ink shadow-card ring-1 ring-line">${svg('chevL','h-5 w-5')}</button>
+          <p class="text-[14px] font-semibold text-muted">Question ${S.qi+1} of ${QUESTIONS.length}</p>
+          <div class="h-11 w-11"></div>
+        </div>
+        <div class="mt-4 flex gap-1.5">${QUESTIONS.map((_,i)=>`<span class="h-1.5 flex-1 rounded-full ${i<=S.qi?'bg-brand-600':'bg-line'}"></span>`).join('')}</div>
+        <h1 class="mt-7 text-[25px] font-extrabold leading-snug tracking-tight">${C(q.key)}</h1>
+        ${body}
+      </div>
+      <div class="flex gap-3 pt-8">
+        ${S.qi>0 ? `<button data-act="prevQ" class="press flex h-[64px] flex-1 items-center justify-center gap-2 rounded-2xl bg-white text-[17px] font-semibold text-brand-700 shadow-card ring-1 ring-line">${svg('chevL','h-5 w-5')}Back</button>` : ''}
+        <button data-act="nextQ" ${answered?'':'disabled'}
+          class="press flex h-[64px] flex-[1.4] items-center justify-center gap-2 rounded-2xl text-[17px] font-semibold ${answered?'bg-brand-600 text-white shadow-[0_8px_20px_rgba(59,110,246,.35)]':'bg-line text-muted'}">
+          ${last?'Submit':'Next'}${last?'':svg('chevR','h-5 w-5')}</button>
+      </div>
+    </div>`)}`;
+};
+
+/* ------------------------ offline · blocked ------------------------ */
+V.blocked = () => `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-8 pt-6">
+      <div class="flex-1">
+        <div class="flex h-[72px] w-[72px] items-center justify-center rounded-[24px] bg-brand-50 text-brand-700">${svg('wifiOff','h-9 w-9')}</div>
+        <h1 class="mt-6 text-[28px] font-extrabold leading-tight tracking-tight">No connection</h1>
+        <p class="mt-3 text-[17px] leading-relaxed">${C('offline.checkin_blocked')}</p>
+        <div class="mt-6 flex items-start gap-3 rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+          ${svg('info','h-6 w-6 shrink-0 text-brand-700')}
+          <p class="text-[15px] leading-relaxed text-muted">Your answers have <b class="text-ink">not</b> been sent, and they are not waiting in a queue.</p>
+        </div>
+      </div>
+      <div class="space-y-3 pt-6">
+        ${bigBtn('Call clinic','dial','data-num="'+CLINIC.phone+'"')}
+        ${bigBtn('Call 103','dial','data-num="103"')}
+        ${ghostBtn(C('checkin.back_to_today'),'go','data-to="p6"')}
+      </div>
+    </div>`)}`;
+
+/* ------------------------ P11 · routine ------------------------ */
+V.p11 = () => `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-8 pt-6">
+      <div class="flex-1">
+        <span class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[14px] font-bold text-routine ring-2 ring-routine">
+          ${svg('check','h-4 w-4')}Routine</span>
+        <h1 class="mt-5 text-[28px] font-extrabold leading-tight tracking-tight">${C('checkin.submitted.routine.title')}</h1>
+        <div class="mt-5">${slot('checkin.submitted.routine',4)}</div>
+        <div class="mt-4 rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+          <p class="text-[13px] font-semibold uppercase tracking-wide text-muted">${CLINIC.name}</p>
+          <p class="mt-2 text-[17px] leading-relaxed">If your symptoms get worse, call the clinic or 103.</p>
+          <button data-act="dial" data-num="${CLINIC.phone}" class="press mt-4 flex h-[56px] w-full items-center justify-center gap-2.5 rounded-2xl bg-brand-50 text-[17px] font-semibold text-brand-700">
+            ${svg('phone','h-5 w-5')}${CLINIC.phone}</button>
+        </div>
+      </div>
+      <div class="pt-6">${bigBtn(C('checkin.back_to_today'),'go','data-to="p6"')}</div>
+    </div>`)}`;
+
+/* ------------------------ P12 · urgent ------------------------ */
+V.p12 = () => {
+  const oo = !S.withinHours;
+  return `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="flex min-h-full flex-col px-6 pb-8 pt-6">
+      <div class="flex-1">
+        <span class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[14px] font-bold text-urgent ring-2 ring-urgent">
+          ${svg('alert','h-4 w-4')}Urgent${oo?' · clinic closed':''}</span>
+        <h1 class="mt-5 text-[28px] font-extrabold leading-tight tracking-tight">${C('checkin.submitted.urgent.title')}</h1>
+        <p class="mt-5 text-[17px] leading-relaxed">${C(oo?'checkin.submitted.out_of_hours':'checkin.submitted.urgent')}</p>
+      </div>
+      <div class="space-y-3 pt-6">
+        ${bigBtn('Call clinic','dial','data-num="'+CLINIC.phone+'"')}
+        ${bigBtn('Call 103','dial','data-num="103"')}
+        ${ghostBtn(C('checkin.back_to_today'),'go','data-to="p6"')}
+      </div>
+    </div>`)}`;
+};
+
+/* ------------------------ P13 · emergency ------------------------ */
+V.p13 = () => `
+  <div class="flex h-full flex-col bg-emergency">
+    ${statusBar(true)}
+    ${scroll(`
+      <div class="flex min-h-full flex-col px-6 pb-8 pt-4 text-white">
+        <div class="flex-1">
+          <div class="flex h-[76px] w-[76px] items-center justify-center rounded-[26px] bg-white/15">${svg('alert','h-10 w-10')}</div>
+          <h1 class="mt-6 text-[32px] font-extrabold leading-[1.15] tracking-tight">${C('emergency.headline')}</h1>
+          <p class="mt-5 text-[18px] leading-relaxed text-white/90">${C('emergency.body')}</p>
+        </div>
+        <div class="space-y-3 pt-8">
+          <button data-act="dial" data-num="103"
+            class="press flex h-[76px] w-full items-center justify-center gap-3 rounded-[22px] bg-white text-[26px] font-extrabold text-emergency shadow-[0_16px_40px_rgba(0,0,0,.28)]">
+            ${svg('phone','h-7 w-7')}Call 103</button>
+          <button data-act="dial" data-num="${CLINIC.phone}"
+            class="press flex h-[64px] w-full items-center justify-center gap-2.5 rounded-[22px] text-[17px] font-semibold text-white ring-2 ring-white/70">
+            ${svg('phone','h-5 w-5')}Call ${CLINIC.name}</button>
+          <button data-act="go" data-to="p6" class="press mx-auto block py-3 text-[14px] text-white/60 underline">Close</button>
+        </div>
+      </div>`)}
+  </div>`;
+
+/* ------------------------ P14 / P15 · learn ------------------------ */
+const ARTICLES = [
+  {key:'clinical.laparoscopic_appendectomy.warning_signs_day5', title:'Warning signs to watch for', cat:'Wound care',     read:'2 min', unlock:5, icon:'bandage'},
+  {key:'clinical.laparoscopic_appendectomy.wound_care_day3',    title:'Caring for your wound',      cat:'Wound care',     read:'4 min', unlock:3, icon:'bandage'},
+  {key:'clinical.laparoscopic_appendectomy.what_to_expect_day1',title:'What to expect',             cat:'What to expect', read:'3 min', unlock:1, icon:'book'},
+  {key:'clinical.laparoscopic_appendectomy.activity_day7',      title:'Getting back to activity',   cat:'Activity',       read:'3 min', unlock:7, icon:'walk'},
+];
+
+V.p14 = () => {
+  const open = ARTICLES.filter(a => a.unlock <= S.day);
+  const row = (a, hero) => `
+    <button data-act="openArticle" data-key="${a.key}"
+      class="press flex w-full items-center gap-4 rounded-xl3 bg-white p-4 text-left shadow-card ring-1 ${hero?'ring-brand-200':'ring-line'}">
+      <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${TYPE_TINT[a.icon]||'bg-brand-50 text-brand-700'}">${svg(a.icon,'h-6 w-6')}</span>
+      <span class="min-w-0 flex-1">
+        <span class="block truncate text-[17px] font-semibold">${a.title}</span>
+        <span class="block text-[14px] text-muted">${a.cat} · ${a.read} read</span>
+      </span>${svg('chevR','h-5 w-5 shrink-0 text-muted')}</button>`;
+
+  return `
+  ${statusBar()}${banner()}${offlineStrip()}
+  ${scroll(`
+    <div class="px-6 pb-[120px] pt-6">
+      <h1 class="text-[30px] font-extrabold tracking-tight">Learn</h1>
+      <p class="mt-1 text-[16px] text-muted">Approved by ${CLINIC.name} for your recovery.</p>
+      <p class="mb-3 mt-7 px-1 text-[13px] font-bold uppercase tracking-[.14em] text-brand-700">Relevant today</p>
+      ${row(open[0], true)}
+      <p class="mb-3 mt-6 px-1 text-[13px] font-bold uppercase tracking-[.14em] text-muted">All articles</p>
+      <div class="space-y-3">${open.slice(1).map(a=>row(a)).join('')}</div>
+      <p class="mt-6 px-1 text-[14px] leading-relaxed text-muted">More articles unlock as your recovery continues.</p>
+    </div>`,'pb-0')}
+  ${bottomNav('p14')}`;
+};
+
+V.p15 = () => {
+  const a = ARTICLES.filter(x=>x.key===S.activeArticle)[0] || ARTICLES[0];
+  const body = C(a.key);
+  return `
+  ${statusBar()}${banner()}${topBar('Learn','p14')}
+  ${scroll(`
+    <div class="px-6 pb-8">
+      <h1 class="text-[26px] font-extrabold leading-tight tracking-tight">${a.title}</h1>
+      <p class="mt-1.5 text-[14px] text-muted">${a.cat} · ${a.read} read · unlocked day ${a.unlock}</p>
+      <div class="mt-5">${ body === null ? failClosed('This is not yet available in your language.') : slot(a.key, 7) }</div>
+      <div class="mt-6 border-t border-line pt-5">
+        <p class="text-[14px] leading-relaxed text-muted">${C('content.disclaimer')}</p>
+      </div>
+    </div>`)}`;
+};
+
+/* ------------------------ P16 · settings ------------------------ */
+V.p16 = () => {
+  const langRow = (code, label) => {
+    const on = S.lang === code;
+    return `<button data-act="setLang" data-v="${code}"
+      class="press flex min-h-[60px] w-full items-center gap-3.5 rounded-2xl px-5 py-3.5 text-left ${on?'bg-brand-50 ring-2 ring-brand-600':'bg-white shadow-card ring-1 ring-line'}">
+      ${svg('globe','h-6 w-6 '+(on?'text-brand-700':'text-muted'))}
+      <span class="flex-1 text-[17px] font-semibold">${label}</span>
+      ${on?svg('check','h-5 w-5 text-brand-700'):''}</button>`;
+  };
+  return `
+  ${statusBar()}${banner()}${offlineStrip()}
+  ${scroll(`
+    <div class="px-6 pb-[120px] pt-6">
+      <h1 class="text-[30px] font-extrabold tracking-tight">Settings</h1>
+
+      <div class="mt-5 flex items-start gap-3.5 rounded-xl3 bg-gradient-to-br from-brand-500 to-brand-700 p-5 text-white">
+        ${svg('info','h-6 w-6 shrink-0')}
+        <p class="text-[15px] leading-relaxed">${C('settings.cover_hours')}</p>
+      </div>
+
+      <p class="mb-3 mt-7 px-1 text-[13px] font-bold uppercase tracking-[.14em] text-muted">${C('settings.language')}</p>
+      <div class="space-y-2.5">${langRow('UZ','Oʻzbekcha')}${langRow('RU','Русский')}${langRow('EN','English')}</div>
+
+      <p class="mb-3 mt-7 px-1 text-[13px] font-bold uppercase tracking-[.14em] text-muted">Your clinic</p>
+      <div class="rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+        <p class="text-[19px] font-bold">${CLINIC.name}</p>
+        <p class="mt-1 text-[14px] text-muted">${CLINIC.hours} · ${CLINIC.days} · Asia/Tashkent</p>
+        <button data-act="dial" data-num="${CLINIC.phone}" class="press mt-4 flex h-[60px] w-full items-center justify-center gap-2.5 rounded-2xl bg-brand-600 text-[17px] font-semibold text-white shadow-[0_8px_20px_rgba(59,110,246,.35)]">
+          ${svg('phone','h-5 w-5')}${CLINIC.phone}</button>
+      </div>
+
+      <p class="mb-3 mt-7 px-1 text-[13px] font-bold uppercase tracking-[.14em] text-muted">Notifications</p>
+      <button data-act="toast" data-msg="Opens the system settings for Hospital AI"
+        class="press flex min-h-[60px] w-full items-center gap-3.5 rounded-2xl bg-white px-5 py-3.5 shadow-card ring-1 ring-line">
+        ${svg('bell','h-6 w-6 text-brand-700')}<span class="flex-1 text-left text-[17px] font-semibold">Reminder settings</span>${svg('chevR','h-5 w-5 text-muted')}</button>
+
+      <p class="mb-3 mt-7 px-1 text-[13px] font-bold uppercase tracking-[.14em] text-muted">Programme</p>
+      <div class="space-y-1 rounded-xl3 bg-white p-5 shadow-card ring-1 ring-line">
+        ${[['Started','18 July 2026'],['Today','Day '+S.day+' of 30'],['Ends','17 August 2026']]
+          .map(r=>`<div class="flex justify-between py-1.5 text-[16px]"><span class="text-muted">${r[0]}</span><span class="font-semibold">${r[1]}</span></div>`).join('')}
+      </div>
+
+      <button data-act="openSurvey" class="press mt-3 flex min-h-[60px] w-full items-center gap-3.5 rounded-2xl bg-white px-5 py-3.5 shadow-card ring-1 ring-line">
+        ${svg('clipboard','h-6 w-6 text-brand-700')}<span class="flex-1 text-left text-[17px] font-semibold">Day-30 survey (demo)</span>${svg('chevR','h-5 w-5 text-muted')}</button>
+
+      <button data-act="leave" class="press mt-7 flex h-[60px] w-full items-center justify-center gap-2.5 rounded-2xl text-[17px] font-semibold text-muted ring-1 ring-line">
+        ${svg('logout','h-5 w-5')}${C('settings.leave')}</button>
+      <p class="mt-5 text-center text-[13px] text-muted">Hospital AI 1.0.0 · support@hospital-ai.uz</p>
+    </div>`,'pb-0')}
+  ${bottomNav('p16')}`;
+};
+
+/* ------------------------ P17 · survey ------------------------ */
+V.p17 = () => {
+  const scaleRow = (q, low, high) => {
+    let out = '<div class="mt-3 flex gap-2">';
+    for (let n = 1; n <= 5; n++) {
+      const on = S.survey[q] === n;
+      out += `<button data-act="survey" data-q="${q}" data-v="${n}"
+        class="press h-[56px] flex-1 rounded-2xl text-[18px] font-bold ${on?'bg-brand-600 text-white shadow-[0_8px_18px_rgba(59,110,246,.35)]':'bg-white text-ink shadow-card ring-1 ring-line'}">${n}</button>`;
+    }
+    return out + `</div><div class="mt-2 flex justify-between text-[13px] font-medium text-muted"><span>${low}</span><span>${high}</span></div>`;
+  };
+  const pickRow = (q, opts) => '<div class="mt-3 flex gap-2">' + opts.map(o => {
+    const on = S.survey[q] === o;
+    return `<button data-act="survey" data-q="${q}" data-v="${o}"
+      class="press h-[56px] flex-1 rounded-2xl text-[16px] font-semibold ${on?'bg-brand-600 text-white':'bg-white text-ink shadow-card ring-1 ring-line'}">${o}</button>`;
+  }).join('') + '</div>';
+
+  return `
+  ${statusBar()}${banner()}
+  ${scroll(`
+    <div class="px-6 pb-8 pt-6">
+      <h1 class="text-[28px] font-extrabold leading-tight tracking-tight">Five quick questions</h1>
+      <p class="mt-2 text-[16px] text-muted">There are no right answers.</p>
+      <p class="mt-8 text-[17px] font-semibold leading-snug">1. ${C('survey.q1')}</p>${scaleRow('q1','Not helpful','Very helpful')}
+      <p class="mt-7 text-[17px] font-semibold leading-snug">2. ${C('survey.q2')}</p>${scaleRow('q2','Very difficult','Very easy')}
+      <p class="mt-7 text-[17px] font-semibold leading-snug">3. ${C('survey.q3')}</p>${pickRow('q3',['Yes','Somewhat','No'])}
+      <p class="mt-7 text-[17px] font-semibold leading-snug">4. ${C('survey.q4')}</p>${pickRow('q4',['Yes','Maybe','No'])}
+      <p class="mt-7 text-[17px] font-semibold leading-snug">5. ${C('survey.q5')} <span class="font-normal text-muted">(optional)</span></p>
+      <textarea rows="3" placeholder="Type here…" class="noscroll mt-3 w-full resize-none rounded-2xl bg-white p-4 text-[16px] shadow-card outline-none ring-1 ring-line placeholder:text-muted/60"></textarea>
+      <div class="mt-7">${bigBtn('Submit','submitSurvey')}</div>
+      <button data-act="go" data-to="p6" class="press mx-auto mt-3 block py-3 text-[16px] font-semibold text-muted">Skip</button>
+    </div>`)}`;
+};
+
+/* =================================================================== */
+/*  ROUTER                                                             */
+/* =================================================================== */
+const app = document.getElementById('app');
+
+function go(to) { S.screen = to; S.emgOpen = false; render(); }
+
+let toastTimer;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.firstElementChild.textContent = msg;
+  el.style.opacity = '1';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.style.opacity = '0'; }, 2600);
+}
+
+function render() {
+  app.innerHTML = (V[S.screen] || V.p1)() + emergencySheet();
+  const cap = CAPTIONS[S.screen] || ['',''];
+  document.getElementById('caption-id').textContent   = cap[0];
+  document.getElementById('caption-note').textContent = cap[1];
+  mount();
+  syncPanel();
+}
+
+/* per-screen wiring that must survive typing (avoids re-render on keystroke) */
+function mount() {
+  if (S.screen === 'p2') {
+    const inp = document.getElementById('code-input');
+    inp.addEventListener('input', () => {
+      inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      S.code = inp.value;
+      document.getElementById('code-btn').innerHTML =
+        S.code.length === 6 ? bigBtn('Continue','submitCode') : deadBtn('Continue');
+    });
+  }
+
+  if (S.screen === 'p3') {
+    const inp = document.getElementById('phone-input');
+    inp.addEventListener('input', () => {
+      const d = inp.value.replace(/\D/g, '').slice(0, 9);
+      S.phone = d;
+      const parts = [d.slice(0,2), d.slice(2,5), d.slice(5,7), d.slice(7,9)].filter(Boolean);
+      inp.value = parts.join(' ');
+      document.getElementById('phone-btn').innerHTML =
+        d.length >= 9 ? bigBtn('Continue','submitPhone') : deadBtn('Continue');
+    });
+  }
+
+  if (S.screen === 'p4') {
+    const box  = document.getElementById('consent-box');
+    const hint = document.getElementById('scroll-hint');
+    const cbox = document.getElementById('cbox');
+
+    const sync = () => {
+      document.getElementById('agree-btn').innerHTML =
+        (S.consentScrolled && S.consentChecked)
+          ? bigBtn(C('onboarding.consent.agree'), 'agree')
+          : deadBtn(C('onboarding.consent.agree'));
+      hint.textContent = S.consentScrolled
+        ? (S.consentChecked ? 'Ready to continue' : 'Now tick the box below')
+        : 'Scroll to the end to continue';
+      hint.className = 'mt-2 text-center text-[13px] font-medium ' + (S.consentScrolled ? 'text-success' : 'text-muted');
+      cbox.className = 'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ring-2 ' +
+        (S.consentChecked ? 'bg-brand-600 text-white ring-brand-600' : 'text-transparent ring-line');
+    };
+
+    box.addEventListener('scroll', () => {
+      if (box.scrollTop + box.clientHeight >= box.scrollHeight - 6) { S.consentScrolled = true; sync(); }
+    });
+    document.getElementById('cbox-row').addEventListener('click', () => {
+      S.consentChecked = !S.consentChecked; sync();
+    });
+    sync();
+  }
+}
+
+/* ------------------------ actions ------------------------ */
+app.addEventListener('click', (e) => {
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+
+  switch (el.dataset.act) {
+    case 'go': go(el.dataset.to); break;
+
+    /* the emergency affordance is never dismissible — only its sheet closes */
+    case 'emgOpen':  S.emgOpen = true;  render(); break;
+    case 'emgClose': S.emgOpen = false; render(); break;
+
+    case 'lang':
+      S.lang = el.dataset.v;
+      if (S.lang !== 'EN') toast('UZ and RU copy arrives from the content library once a native speaker has reviewed it. Prototype stays in English.');
+      go('p2');
+      break;
+
+    case 'submitCode':  go('p3'); break;
+    case 'submitPhone': go('p4'); break;
+    case 'agree':       go('p5'); break;
+    case 'decline':     toast('Nothing was saved. Please contact your clinic.'); break;
+
+    case 'openTask': {
+      const t = S.tasks.filter(x => x.id === el.dataset.id)[0];
+      S.activeTask = t.id;
+      go(t.med ? 'p8' : 'p7');
+      break;
+    }
+
+    case 'toggleTask': {
+      const t = S.tasks.filter(x => x.id === el.dataset.id)[0];
+      t.done = !t.done;
+      if (t.done) t.overdue = false;
+      toast(t.done ? 'Marked as done' : 'Un-completed — logged as a new event, the original is never changed');
+      if (el.dataset.stay) render();
+      else go(S.screen === 'p7' ? 'p6' : S.screen);
+      break;
+    }
+
+    case 'medTaken': {
+      const t = S.tasks.filter(x => x.id === el.dataset.id)[0];
+      t.done = true; t.overdue = false;
+      toast('Recorded · medication_confirmed');
+      go('p6');
+      break;
+    }
+    case 'medNotYet': toast('The reminder will repeat once, in 30 minutes'); go('p6'); break;
+
+    case 'startCheckin':
+      if (S.offline) { go('blocked'); break; }
+      S.qi = 0; S.answers = {}; go('p10');
+      break;
+
+    case 'exitCheckin': go('p6'); break;
+
+    case 'pick':
+      S.answers[el.dataset.ref] = el.dataset.num ? Number(el.dataset.code) : el.dataset.code;
+      render();
+      break;
+
+    case 'pickMulti': {
+      const ref = el.dataset.ref, code = el.dataset.code;
+      let sel = S.answers[ref] || [];
+      if (code === 'none') {
+        sel = sel.indexOf('none') !== -1 ? [] : ['none'];
+      } else {
+        sel = sel.filter(c => c !== 'none');
+        sel = sel.indexOf(code) !== -1 ? sel.filter(c => c !== code) : sel.concat(code);
+      }
+      S.answers[ref] = sel;
+      render();
+      break;
+    }
+
+    case 'prevQ': S.qi = Math.max(0, S.qi - 1); render(); break;
+
+    case 'nextQ': {
+      if (el.hasAttribute('disabled')) break;
+      if (S.qi < QUESTIONS.length - 1) { S.qi++; render(); break; }
+      if (S.offline) { go('blocked'); break; }
+      const res = mockServer.postCheckin(S.answers);       // tier decided server-side
+      S.tier = res.tier;
+      S.withinHours = res.withinClinicHours;
+      go(res.tier === 'emergency' ? 'p13' : res.tier === 'urgent' ? 'p12' : 'p11');
+      break;
+    }
+
+    case 'openArticle': S.activeArticle = el.dataset.key; go('p15'); break;
+
+    case 'setLang':
+      S.lang = el.dataset.v;
+      toast(el.dataset.v === 'EN' ? 'Language set to English' : 'Applies instantly, no restart — copy comes from the content library');
+      render();
+      break;
+
+    case 'openSurvey': go('p17'); break;
+    case 'survey':
+      S.survey[el.dataset.q] = isNaN(Number(el.dataset.v)) ? el.dataset.v : Number(el.dataset.v);
+      render();
+      break;
+    case 'submitSurvey': toast('survey_completed · scores only, the free text never enters an event'); go('p6'); break;
+
+    case 'leave':   toast(C('settings.leave_confirm')); break;
+    case 'contact': toast(C('contact.body')); break;
+    case 'toast':   toast(el.dataset.msg); break;
+
+    case 'dial': {
+      const n = el.dataset.num;
+      toast('Dialling ' + n + ' …');
+      window.location.href = 'tel:' + n.replace(/\s/g, '');
+      break;
+    }
+  }
+});
+
+/* ------------------------ dev panel ------------------------ */
+const SCREENS = [
+  ['p1','P1 Language'],['p2','P2 Enrolment code'],['p3','P3 Phone'],['p4','P4 Consent'],['p5','P5 Welcome'],
+  ['p6','P6 Today'],['p7','P7 Task detail'],['p8','P8 Medication'],['p9','P9 Progress'],
+  ['p10','P10 Check-in'],['p11','P11 Routine'],['p12','P12 Urgent'],['p13','P13 EMERGENCY'],
+  ['p14','P14 Learn'],['p15','P15 Article'],['p16','P16 Settings'],['p17','P17 Survey'],
+  ['blocked','Offline · check-in blocked'],
+];
+
+const panel = document.getElementById('panel');
+document.getElementById('panel-toggle').onclick = () => panel.classList.toggle('hidden');
+
+document.getElementById('panel-list').innerHTML =
+  SCREENS.map(s => `<button data-jump="${s[0]}" class="w-full rounded-lg px-3 py-2 text-left text-[14px] font-medium">${s[1]}</button>`).join('');
+
+document.getElementById('panel-list').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-jump]');
+  if (!b) return;
+  const id = b.dataset.jump;
+  if (id === 'p10') { S.qi = 0; S.answers = {}; }
+  if (id === 'p7')  S.activeTask = 't3';
+  if (id === 'p8')  S.activeTask = 't5';
+  if (id === 'p15') S.activeArticle = ARTICLES[0].key;
+  go(id);
+});
+
+function syncPanel() {
+  const nodes = document.querySelectorAll('#panel-list [data-jump]');
+  for (let i = 0; i < nodes.length; i++) {
+    nodes[i].className = 'w-full rounded-lg px-3 py-2 text-left text-[14px] font-medium ' +
+      (nodes[i].dataset.jump === S.screen ? 'bg-brand-600 text-white' : 'hover:bg-canvas');
+  }
+}
+
+document.getElementById('sim-offline').onchange    = e => { S.offline = e.target.checked; render(); };
+document.getElementById('sim-closed').onchange     = e => { S.clinicClosed = e.target.checked; S.withinHours = !e.target.checked; render(); };
+document.getElementById('sim-empty').onchange      = e => { S.emptyDay = e.target.checked; render(); };
+document.getElementById('sim-unapproved').onchange = e => { S.unapproved = e.target.checked; render(); };
+
+document.getElementById('reset').onclick = () => {
+  S.screen='p1'; S.lang=null; S.code=''; S.phone='';
+  S.consentScrolled=false; S.consentChecked=false;
+  S.tasks=initialTasks(); S.qi=0; S.answers={}; S.tier=null;
+  S.activeTask=null; S.activeArticle=null; S.survey={};
+  render();
+};
+
+render();
+</script>
+</body>
+</html>
