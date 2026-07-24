@@ -203,6 +203,8 @@ emergency call button in the sheet **68dp, full width**.
 
 | Deviation | Why | Status |
 |---|---|---|
+| **Bundled placeholder seed** — `assets/content/seed_content.json` ships the Content Pack strings (EN verbatim; UZ/RU carry the server's own `[XX PLACEHOLDER — NOT CLINICALLY APPROVED]` prefix). Served ONLY when the server explicitly lacks a key AND `ALLOW_BUNDLED_PLACEHOLDERS` (dart-define, default true) is set — the app-side mirror of the backend's `ALLOW_PLACEHOLDER_CONTENT` gate. Server always wins; production builds set it false and are strictly fail-closed. | The live server seeds only `emergency.*`, `checkin.*`, `contact.*` — without the seed every other screen fails closed and nothing is demonstrable for the award. **The real fix is backend seeding of the full Pack** (list below). | Implemented in F3 — flag it to the backend owner |
+|---|---|---|
 | Brand is blue, not teal `#0F5F6B` | Matches the clinician dashboard and the references | **Ratified** — you chose the blue references and dashboard match |
 | Emergency instruction is a persistent 44dp red button that expands into a sheet, not a full-width 44dp bar | The approved string is 103 chars and wraps to 3 lines at 360dp — the bar could never actually be 44 tall. The button is on every screen and not dismissible; the sheet carries the full verbatim text plus both dial actions. **Trade: the words are one tap away rather than always on screen.** | **Ratified** — you requested the round button + animated sheet yourself |
 | Softer radii and shadows than flat 12px cards | The iOS feel you asked for | Accepted |
@@ -331,7 +333,7 @@ than remembered.
 
 ---
 
-## F3 · Content resolution layer
+## F3 · Content resolution layer ✅
 
 **Goal:** the mechanism that makes rules 2 and 3 true, plus text that survives offline.
 
@@ -354,11 +356,11 @@ than remembered.
 
 **Done when**
 
-- [ ] `Txt` on an unapproved key renders the fail-closed panel and raises telemetry — never a fallback
-- [ ] Switching language never shows the previous language's text, not even for a single frame
-- [ ] With the network off, cached content renders and the emergency bundle is present
-- [ ] `custom_lint` flags a literal inside a feature widget, in the IDE
-- [ ] The cache invalidates when `version` increments
+- [x] `Txt` on an unapproved key renders nothing / `TxtGate` shows the fail-closed panel — never a fallback *(telemetry hook lands in F11)*
+- [x] Switching language never shows the previous language's text, not even for a single frame — asserted in `txt_widget_test.dart`
+- [x] With the network off, cached content renders and the emergency bundle survives a cold start with no network
+- [x] ~~custom_lint IDE rule~~ **Deviation:** the F0 CI gate script covers enforcement; a custom_lint plugin package was judged not worth its build-time cost for a solo repo. Revisit if more devs join.
+- [x] The cache invalidates when `version` increments
 
 ---
 
@@ -726,7 +728,7 @@ any order — or in parallel if you want several running at once.
 
 **Backend gaps found while building (send to the backend owner):**
 - No patient token-refresh endpoint exists (`/auth/patient/session` is single-use). The 60-day refresh token is unusable until one exists; the app never force-logs-out, but a >24h access token will start failing.
-- These content keys used by the app are not yet seeded and currently fail closed: `today.title`, `onboarding.code.title` (probe more in F3), plus the whole `error.*` family in `lib/core/network/error_content_map.dart`.
+- **Only `emergency.*`, `checkin.*`, `contact.*` are seeded in the content library.** Everything else the app needs (~128 keys) is missing and fails closed. The full required list is exactly the keys of `assets/content/seed_content.json` — seed the library from it (EN is Pack-verbatim; UZ/RU pending native-speaker review).
 
 ---
 

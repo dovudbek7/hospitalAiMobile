@@ -1,0 +1,2178 @@
+{
+ "onboarding.code.title": {
+  "EN": {
+   "text": "Enter your code",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Enter your code",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Enter your code",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.code.help": {
+  "EN": {
+   "text": "Your clinic gave you a 6-character code when you were discharged.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic gave you a 6-character code when you were discharged.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic gave you a 6-character code when you were discharged.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.code.no_code": {
+  "EN": {
+   "text": "Don’t have a code? Contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Don’t have a code? Contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Don’t have a code? Contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.code.error": {
+  "EN": {
+   "text": "That code isn’t valid. Please check it or contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] That code isn’t valid. Please check it or contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] That code isn’t valid. Please check it or contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.phone.title": {
+  "EN": {
+   "text": "Your phone number",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your phone number",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your phone number",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.phone.help": {
+  "EN": {
+   "text": "Enter the number you gave your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Enter the number you gave your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Enter the number you gave your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.phone.error": {
+  "EN": {
+   "text": "We couldn’t match that. Please contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] We couldn’t match that. Please contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] We couldn’t match that. Please contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.title": {
+  "EN": {
+   "text": "Before we begin",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Before we begin",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Before we begin",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.body": {
+  "EN": {
+   "text": "This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact {CLINIC_NAME} directly or seek emergency care.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact {CLINIC_NAME} directly or seek emergency care.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact {CLINIC_NAME} directly or seek emergency care.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.collect": {
+  "EN": {
+   "text": "What we collect: which recovery tasks and medicines you complete, and your answers to symptom check-ins.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] What we collect: which recovery tasks and medicines you complete, and your answers to symptom check-ins.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] What we collect: which recovery tasks and medicines you complete, and your answers to symptom check-ins.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.who": {
+  "EN": {
+   "text": "Who sees it: your care team at {CLINIC_NAME}, and the technical team supporting the app.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Who sees it: your care team at {CLINIC_NAME}, and the technical team supporting the app.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Who sees it: your care team at {CLINIC_NAME}, and the technical team supporting the app.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.howlong": {
+  "EN": {
+   "text": "How long: for the duration of your programme and your clinic’s record-keeping period.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] How long: for the duration of your programme and your clinic’s record-keeping period.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] How long: for the duration of your programme and your clinic’s record-keeping period.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.choice": {
+  "EN": {
+   "text": "Your choice: you can leave the programme at any time from Settings.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your choice: you can leave the programme at any time from Settings.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your choice: you can leave the programme at any time from Settings.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.checkbox": {
+  "EN": {
+   "text": "I have read and agree",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] I have read and agree",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] I have read and agree",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.agree": {
+  "EN": {
+   "text": "Agree and continue",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Agree and continue",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Agree and continue",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.decline": {
+  "EN": {
+   "text": "Decline",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Decline",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Decline",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.consent.scroll_hint": {
+  "EN": {
+   "text": "Scroll to the end to continue",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Scroll to the end to continue",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Scroll to the end to continue",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.welcome.title": {
+  "EN": {
+   "text": "You’re all set, {FIRST_NAME}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] You’re all set, {FIRST_NAME}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] You’re all set, {FIRST_NAME}",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.welcome.line1": {
+  "EN": {
+   "text": "Each day you’ll see the tasks your doctor set for you.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Each day you’ll see the tasks your doctor set for you.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Each day you’ll see the tasks your doctor set for you.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.welcome.line2": {
+  "EN": {
+   "text": "Your programme runs for 30 days.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your programme runs for 30 days.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your programme runs for 30 days.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.welcome.line3": {
+  "EN": {
+   "text": "Your clinic reviews check-ins during opening hours only. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins during opening hours only. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins during opening hours only. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.notifications.why": {
+  "EN": {
+   "text": "We’ll remind you when to take your medication.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] We’ll remind you when to take your medication.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] We’ll remind you when to take your medication.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "onboarding.welcome.start": {
+  "EN": {
+   "text": "Start",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Start",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Start",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "common.continue": {
+  "EN": {
+   "text": "Continue",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Continue",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Continue",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.title": {
+  "EN": {
+   "text": "Day {N} of 30",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Day {N} of 30",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Day {N} of 30",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.greeting": {
+  "EN": {
+   "text": "Good morning",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Good morning",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Good morning",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.empty": {
+  "EN": {
+   "text": "Nothing scheduled today. Rest well.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Nothing scheduled today. Rest well.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Nothing scheduled today. Rest well.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.checkin_prompt": {
+  "EN": {
+   "text": "Today’s check-in",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s check-in",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s check-in",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.checkin_meta": {
+  "EN": {
+   "text": "7 questions · about 2 minutes",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] 7 questions · about 2 minutes",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] 7 questions · about 2 minutes",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.plan_header": {
+  "EN": {
+   "text": "Today’s plan",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s plan",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s plan",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.done_count": {
+  "EN": {
+   "text": "{N} of {TOTAL} tasks done today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks done today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks done today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.overdue": {
+  "EN": {
+   "text": "Earlier today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Earlier today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Earlier today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "task.mark_done": {
+  "EN": {
+   "text": "Mark as done",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Mark as done",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Mark as done",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "task.done": {
+  "EN": {
+   "text": "Done",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Done",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Done",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "task.undo": {
+  "EN": {
+   "text": "Undo",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Undo",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Undo",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "task.image_optional": {
+  "EN": {
+   "text": "Approved image (optional)",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Approved image (optional)",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Approved image (optional)",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "medication.taken": {
+  "EN": {
+   "text": "Taken",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Taken",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Taken",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "medication.not_yet": {
+  "EN": {
+   "text": "Not yet",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Not yet",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Not yet",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "medication.scheduled_by_clinic": {
+  "EN": {
+   "text": "Scheduled by your clinic",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Scheduled by your clinic",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Scheduled by your clinic",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "medication.cannot_change": {
+  "EN": {
+   "text": "Dose and schedule are set by your clinic and cannot be changed here.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Dose and schedule are set by your clinic and cannot be changed here.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Dose and schedule are set by your clinic and cannot be changed here.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.title": {
+  "EN": {
+   "text": "My recovery",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] My recovery",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] My recovery",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.days": {
+  "EN": {
+   "text": "{N} of 30 days",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of 30 days",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of 30 days",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.days_label": {
+  "EN": {
+   "text": "Days",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Days",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Days",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.completed_label": {
+  "EN": {
+   "text": "Completed",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.tasks_frac": {
+  "EN": {
+   "text": "{N} of {TOTAL} tasks",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.not_counted": {
+  "EN": {
+   "text": "future tasks not counted",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] future tasks not counted",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] future tasks not counted",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.programme": {
+  "EN": {
+   "text": "30-day programme",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] 30-day programme",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] 30-day programme",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.legend.completed": {
+  "EN": {
+   "text": "Completed",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.legend.today": {
+  "EN": {
+   "text": "Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.legend.upcoming": {
+  "EN": {
+   "text": "Upcoming",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Upcoming",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Upcoming",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.encouragement.1": {
+  "EN": {
+   "text": "Every day counts.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Every day counts.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Every day counts.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "progress.encouragement.2": {
+  "EN": {
+   "text": "Keep going — your care team can see your progress.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Keep going — your care team can see your progress.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Keep going — your care team can see your progress.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "nav.today": {
+  "EN": {
+   "text": "Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "nav.progress": {
+  "EN": {
+   "text": "Progress",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Progress",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Progress",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "nav.learn": {
+  "EN": {
+   "text": "Learn",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "nav.settings": {
+  "EN": {
+   "text": "Settings",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Settings",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Settings",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "contact.button": {
+  "EN": {
+   "text": "Contact clinic",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Contact clinic",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Contact clinic",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "contact.body": {
+  "EN": {
+   "text": "Call {CLINIC_NAME} on {CLINIC_PHONE}. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME} on {CLINIC_PHONE}. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME} on {CLINIC_PHONE}. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.language": {
+  "EN": {
+   "text": "Language",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Language",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Language",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.cover_hours": {
+  "EN": {
+   "text": "Your clinic reviews check-ins {WORKING_HOURS}, {WORKING_DAYS}. Outside these hours no one is monitoring. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins {WORKING_HOURS}, {WORKING_DAYS}. Outside these hours no one is monitoring. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins {WORKING_HOURS}, {WORKING_DAYS}. Outside these hours no one is monitoring. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.your_clinic": {
+  "EN": {
+   "text": "Your clinic",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.notifications": {
+  "EN": {
+   "text": "Notifications",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Notifications",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Notifications",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.reminder_settings": {
+  "EN": {
+   "text": "Reminder settings",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Reminder settings",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Reminder settings",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.programme": {
+  "EN": {
+   "text": "Programme",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Programme",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Programme",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.started": {
+  "EN": {
+   "text": "Started",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Started",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Started",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.today_row": {
+  "EN": {
+   "text": "Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.ends": {
+  "EN": {
+   "text": "Ends",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Ends",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Ends",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.leave": {
+  "EN": {
+   "text": "Leave programme",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Leave programme",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Leave programme",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.leave_confirm": {
+  "EN": {
+   "text": "Are you sure? Your clinic will be told you have left.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Are you sure? Your clinic will be told you have left.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Are you sure? Your clinic will be told you have left.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "offline.indicator": {
+  "EN": {
+   "text": "Offline — your progress will be saved",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Offline — your progress will be saved",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Offline — your progress will be saved",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "offline.checkin_blocked": {
+  "EN": {
+   "text": "You need a connection to send a check-in. If you are worried now, call {CLINIC_PHONE} or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] You need a connection to send a check-in. If you are worried now, call {CLINIC_PHONE} or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] You need a connection to send a check-in. If you are worried now, call {CLINIC_PHONE} or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "offline.blocked_title": {
+  "EN": {
+   "text": "No connection",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No connection",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No connection",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "offline.not_queued": {
+  "EN": {
+   "text": "Your answers have not been sent, and they are not waiting in a queue.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers have not been sent, and they are not waiting in a queue.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers have not been sent, and they are not waiting in a queue.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "offline.saved_on_device": {
+  "EN": {
+   "text": "saved on this device",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] saved on this device",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] saved on this device",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.progress": {
+  "EN": {
+   "text": "Question {N} of {TOTAL}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Question {N} of {TOTAL}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Question {N} of {TOTAL}",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.next": {
+  "EN": {
+   "text": "Next",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Next",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Next",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.back": {
+  "EN": {
+   "text": "Back",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Back",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Back",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.submit": {
+  "EN": {
+   "text": "Submit",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.multi_hint": {
+  "EN": {
+   "text": "Select all that apply",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Select all that apply",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Select all that apply",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q2_pain.low": {
+  "EN": {
+   "text": "No pain",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No pain",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No pain",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q2_pain.high": {
+  "EN": {
+   "text": "Worst pain",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Worst pain",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Worst pain",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.received.title": {
+  "EN": {
+   "text": "Answers received",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Answers received",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Answers received",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.sent.title": {
+  "EN": {
+   "text": "Sent to your care team",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Sent to your care team",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Sent to your care team",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.back_to_today": {
+  "EN": {
+   "text": "Back to Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Back to Today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Back to Today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.worsen_line": {
+  "EN": {
+   "text": "If your symptoms get worse, call the clinic or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] If your symptoms get worse, call the clinic or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] If your symptoms get worse, call the clinic or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.failed": {
+  "EN": {
+   "text": "Your answers were NOT sent. Please try again, or call {CLINIC_PHONE}.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers were NOT sent. Please try again, or call {CLINIC_PHONE}.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers were NOT sent. Please try again, or call {CLINIC_PHONE}.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "tier.routine": {
+  "EN": {
+   "text": "Routine",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Routine",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Routine",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "tier.urgent": {
+  "EN": {
+   "text": "Urgent",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Urgent",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Urgent",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "tier.emergency": {
+  "EN": {
+   "text": "Emergency",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "tier.clinic_closed": {
+  "EN": {
+   "text": "clinic closed",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] clinic closed",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] clinic closed",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "emergency.sheet_title": {
+  "EN": {
+   "text": "In an emergency",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] In an emergency",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] In an emergency",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "emergency.call_103": {
+  "EN": {
+   "text": "Call 103",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Call 103",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Call 103",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "emergency.call_clinic": {
+  "EN": {
+   "text": "Call {CLINIC_NAME}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME}",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "emergency.close": {
+  "EN": {
+   "text": "Close",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Close",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Close",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "a11y.emergency_button": {
+  "EN": {
+   "text": "Emergency instruction",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency instruction",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency instruction",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.title": {
+  "EN": {
+   "text": "Learn",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.subtitle": {
+  "EN": {
+   "text": "Approved by {CLINIC_NAME} for your recovery.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Approved by {CLINIC_NAME} for your recovery.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Approved by {CLINIC_NAME} for your recovery.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.relevant": {
+  "EN": {
+   "text": "Relevant today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Relevant today",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Relevant today",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.all": {
+  "EN": {
+   "text": "All articles",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] All articles",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] All articles",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.more_unlock": {
+  "EN": {
+   "text": "More articles unlock as your recovery continues.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] More articles unlock as your recovery continues.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] More articles unlock as your recovery continues.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.empty": {
+  "EN": {
+   "text": "No articles yet for your procedure. Your clinic will add them.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No articles yet for your procedure. Your clinic will add them.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No articles yet for your procedure. Your clinic will add them.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.min_read": {
+  "EN": {
+   "text": "{N} min read",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} min read",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} min read",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "learn.unlocked_day": {
+  "EN": {
+   "text": "unlocked day {N}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] unlocked day {N}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] unlocked day {N}",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "content.unavailable_in_language": {
+  "EN": {
+   "text": "This is not yet available in your language.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] This is not yet available in your language.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] This is not yet available in your language.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "content.contact_hint": {
+  "EN": {
+   "text": "Please contact your clinic if you need this information.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Please contact your clinic if you need this information.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Please contact your clinic if you need this information.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.title": {
+  "EN": {
+   "text": "Five quick questions",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.intro": {
+  "EN": {
+   "text": "There are no right answers.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] There are no right answers.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] There are no right answers.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q1": {
+  "EN": {
+   "text": "Overall, how helpful was the app during your recovery?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Overall, how helpful was the app during your recovery?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Overall, how helpful was the app during your recovery?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q1.low": {
+  "EN": {
+   "text": "Not helpful",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Not helpful",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Not helpful",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q1.high": {
+  "EN": {
+   "text": "Very helpful",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Very helpful",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Very helpful",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q2": {
+  "EN": {
+   "text": "How easy was the app to use?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] How easy was the app to use?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] How easy was the app to use?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q2.low": {
+  "EN": {
+   "text": "Very difficult",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Very difficult",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Very difficult",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q2.high": {
+  "EN": {
+   "text": "Very easy",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Very easy",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Very easy",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q3": {
+  "EN": {
+   "text": "Did it help you remember your medication and daily tasks?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Did it help you remember your medication and daily tasks?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Did it help you remember your medication and daily tasks?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q3.yes": {
+  "EN": {
+   "text": "Yes",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q3.somewhat": {
+  "EN": {
+   "text": "Somewhat",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Somewhat",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Somewhat",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q3.no": {
+  "EN": {
+   "text": "No",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q4": {
+  "EN": {
+   "text": "Would you recommend it to another patient having surgery?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Would you recommend it to another patient having surgery?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Would you recommend it to another patient having surgery?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q4.yes": {
+  "EN": {
+   "text": "Yes",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q4.maybe": {
+  "EN": {
+   "text": "Maybe",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Maybe",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Maybe",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q4.no": {
+  "EN": {
+   "text": "No",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.q5": {
+  "EN": {
+   "text": "What would you change?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] What would you change?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] What would you change?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.optional": {
+  "EN": {
+   "text": "optional",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] optional",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] optional",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.free_hint": {
+  "EN": {
+   "text": "Type here…",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Type here…",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Type here…",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.submit": {
+  "EN": {
+   "text": "Submit",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "survey.skip": {
+  "EN": {
+   "text": "Skip",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Skip",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Skip",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "error.generic": {
+  "EN": {
+   "text": "Something went wrong. Please try again, or contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Something went wrong. Please try again, or contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Something went wrong. Please try again, or contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "error.session": {
+  "EN": {
+   "text": "Please close and reopen the app. If this continues, contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Please close and reopen the app. If this continues, contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Please close and reopen the app. If this continues, contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ }
+}
