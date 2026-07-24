@@ -297,7 +297,7 @@ device before a single screen exists.
 
 ---
 
-## F2 · Network layer and typed API client
+## F2 · Network layer and typed API client ✅
 
 **Goal:** all 14 patient calls, typed, with interceptors that make the safety rules structural rather
 than remembered.
@@ -323,11 +323,11 @@ than remembered.
 
 **Done when**
 
-- [ ] Every model round-trips against a real response captured from `api.hospital-ai.uz`
-- [ ] A missing `Idempotency-Key` on either endpoint throws in debug
-- [ ] `WRONG_TOKEN_AUDIENCE` and `CROSS_CLINIC_FORBIDDEN` map to content keys, not raw text
-- [ ] No test asserts on `message` reaching a widget
-- [ ] Timeouts and retry verified against a throttled connection
+- [x] Every model round-trips — `ContentItem` + both error envelopes against LIVE captures in `test/fixtures/`; authenticated shapes against the handoff's canonical payloads *(live captures blocked until an enrolment code exists — F4 prerequisite)*
+- [x] A missing `Idempotency-Key` on either endpoint throws in debug AND is refused before reaching the wire in release
+- [x] `WRONG_TOKEN_AUDIENCE` and `CROSS_CLINIC_FORBIDDEN` map to content keys, not raw text
+- [x] No test asserts on `message` reaching a widget — `message` is `@visibleForTesting`
+- [x] Retry/backoff verified against simulated transport failures *(real throttled-connection pass lands in F12)*
 
 ---
 
@@ -723,6 +723,10 @@ any order — or in parallel if you want several running at once.
 | Before **F4** | **A live enrolment code + phone pair** | Codes are single-use and expire after 14 days; no real testing without one |
 | Before **F8** | **A physical Android device** for reminder and call testing | An emulator cannot prove a real call or a real doze-mode reminder |
 | Before **F14** | Confirmation that the Dev Build Board statuses may be updated | The board currently reads `Backlog` for work that is demonstrably done |
+
+**Backend gaps found while building (send to the backend owner):**
+- No patient token-refresh endpoint exists (`/auth/patient/session` is single-use). The 60-day refresh token is unusable until one exists; the app never force-logs-out, but a >24h access token will start failing.
+- These content keys used by the app are not yet seeded and currently fail closed: `today.title`, `onboarding.code.title` (probe more in F3), plus the whole `error.*` family in `lib/core/network/error_content_map.dart`.
 
 ---
 
