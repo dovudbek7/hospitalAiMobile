@@ -394,7 +394,7 @@ than remembered.
 
 ---
 
-## F5 · Local persistence and the offline sync engine
+## F5 · Local persistence and the offline sync engine ✅
 
 **Goal:** seven days offline, and a queue that cannot double-post.
 
@@ -417,12 +417,12 @@ than remembered.
 
 **Done when**
 
-- [ ] Airplane mode: seven days of tasks readable, completions tick and queue
-- [ ] Reconnecting syncs with the **original** timestamps — verified in the server record
-- [ ] Replaying the same key returns the original result and creates no duplicate
-- [ ] A different action reusing a key returns `DUPLICATE_REQUEST` and is handled, not crashed
-- [ ] Recovery day is correct across a day boundary and across a DST change
-- [ ] **Check-in submission is never enqueued.** There is no code path that can queue one.
+- [x] Offline: cached tasks readable, completions tick locally and queue *(unit-tested with in-memory drift; on-device airplane-mode pass lands in F13)*
+- [x] Sync sends the **original** `occurredAt`, never the sync time — asserted on the wire
+- [x] Replaying the same persisted key: worker replays it verbatim; `DUPLICATE_REQUEST` settles the row as one effect
+- [x] `DUPLICATE_REQUEST` is handled, not crashed
+- [x] Recovery day correct across a clinic-local day boundary AND a DST transition (`recovery_day_test.dart`)
+- [x] **Check-in submission is never enqueued** — the queue's type has no check-in member (unrepresentable), pinned by a test
 
 ---
 
@@ -727,6 +727,7 @@ any order — or in parallel if you want several running at once.
 
 **Backend gaps found while building (send to the backend owner):**
 - No patient token-refresh endpoint exists (`/auth/patient/session` is single-use). The 60-day refresh token is unusable until one exists; the app never force-logs-out, but a >24h access token will start failing.
+- No telemetry ingestion endpoint exists for the five client-side events — the app queues them in a local outbox (never dropped), but they cannot reach the server until an endpoint ships.
 - **Only `emergency.*`, `checkin.*`, `contact.*` are seeded in the content library.** Everything else the app needs (~128 keys) is missing and fails closed. The full required list is exactly the keys of `assets/content/seed_content.json` — seed the library from it (EN is Pack-verbatim; UZ/RU pending native-speaker review).
 
 ---

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -104,6 +106,12 @@ class ErrorMappingInterceptor extends Interceptor {
       case DioExceptionType.cancel:
       case DioExceptionType.unknown:
       default:
+        // Custom adapters (and some platforms) surface socket failures as
+        // `unknown` — still a transport failure, still NetworkUnavailable.
+        if (err.error is SocketException) {
+          handler.reject(err.copyWith(error: NetworkUnavailable(err.error)));
+          return;
+        }
         handler.next(err);
     }
   }
