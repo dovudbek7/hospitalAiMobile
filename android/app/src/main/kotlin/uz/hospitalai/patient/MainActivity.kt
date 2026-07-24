@@ -1,4 +1,4 @@
-package com.example.hospital_ai
+package uz.hospitalai.patient
 
 import io.flutter.embedding.android.FlutterActivity
 
