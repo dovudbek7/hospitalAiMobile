@@ -50,10 +50,15 @@ class ScaleSelector extends StatelessWidget {
           DefaultTextStyle.merge(
             style: AppText.caption.copyWith(fontWeight: FontWeight.w500),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                lowLabel ?? const SizedBox.shrink(),
-                highLabel ?? const SizedBox.shrink(),
+                Expanded(child: lowLabel ?? const SizedBox.shrink()),
+                const SizedBox(width: AppSpace.s12),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: highLabel ?? const SizedBox.shrink(),
+                  ),
+                ),
               ],
             ),
           ),

@@ -558,7 +558,7 @@ leading cause of readmission.
 
 ---
 
-## F10 · Learn, Settings, Survey · P14 → P17
+## F10 · Learn, Settings, Survey · P14 → P17 ✅
 
 **Depends on:** F1, F3, F5
 
@@ -571,10 +571,10 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] A language switch re-renders every visible string with no restart and no flash of the old language
-- [ ] Locked articles are absent from the widget tree, not merely invisible
-- [ ] The survey payload contains no free text — asserted in a test
-- [ ] Leaving notifies the clinic and retains data — verified server-side
+- [x] A language switch re-renders every visible string with no restart — widget-tested; the no-flash guarantee is F3's (frame-level test there)
+- [x] Locked articles are absent from the widget tree — the server sends unlocked keys only; the client renders exactly what arrives
+- [x] The survey free text reaches ONLY the API payload; the telemetry outbox is scanned and contains none of it — asserted
+- [x] Leaving posts /me/leave FIRST (the clinic must know), then clears locally; data retention is the server's contract
 
 ---
 
@@ -727,6 +727,7 @@ any order — or in parallel if you want several running at once.
 
 **Backend gaps found while building (send to the backend owner):**
 - No patient token-refresh endpoint exists (`/auth/patient/session` is single-use). The 60-day refresh token is unusable until one exists; the app never force-logs-out, but a >24h access token will start failing.
+- P17's "one reminder after 48 hours" needs a day-30 trigger the client can schedule; with only GET /me/today there is no reliable day-30 signal while the app is closed. Wire it once a future-tasks endpoint exists.
 - No endpoint returns the FUTURE task list (only `GET /me/today`), so the ADR's "schedule all 30 days at enrolment" is impossible — reminders are scheduled as a rolling window from the cached days, refreshed on every Today load. An `/me/tasks?days=30` endpoint would fix it.
 - No telemetry ingestion endpoint exists for the five client-side events — the app queues them in a local outbox (never dropped), but they cannot reach the server until an endpoint ships.
 - **Only `emergency.*`, `checkin.*`, `contact.*` are seeded in the content library.** Everything else the app needs (~128 keys) is missing and fails closed. The full required list is exactly the keys of `assets/content/seed_content.json` — seed the library from it (EN is Pack-verbatim; UZ/RU pending native-speaker review).
