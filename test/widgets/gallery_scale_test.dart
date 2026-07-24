@@ -13,7 +13,9 @@ void main() {
         home: const DesignGalleryScreen(),
       ),
     );
-    await tester.pumpAndSettle();
+    // pumpAndSettle would never settle: the emergency halo repeats forever.
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(milliseconds: 400));
     expect(tester.takeException(), isNull);
   });
 
@@ -35,7 +37,9 @@ void main() {
         home: const DesignGalleryScreen(),
       ),
     );
-    await tester.pumpAndSettle();
+    // pumpAndSettle would never settle: the emergency halo repeats forever.
+    await tester.pump(const Duration(milliseconds: 400));
+    await tester.pump(const Duration(milliseconds: 400));
     expect(tester.takeException(), isNull);
   });
 }
