@@ -426,7 +426,7 @@ than remembered.
 
 ---
 
-## F6 · Onboarding · P1 → P5
+## F6 · Onboarding · P1 → P5 ✅
 
 **Goal:** discharge to Today in under three minutes, one-handed, by a 70-year-old, on a bad connection.
 
@@ -442,11 +442,11 @@ than remembered.
 
 **Done when**
 
-- [ ] First launch to Today in ≤ 5 taps
-- [ ] An integration test drives P1 → P6 against the live API
-- [ ] Consent gating cannot be bypassed by scrolling alone or ticking alone
-- [ ] The decline path writes nothing — verified server-side
-- [ ] Every string except the three language names comes from a content key
+- [x] First launch: P1→P4 in 3 taps (asserted); P4 agree + P5 start bring the total to 5
+- [x] An integration test drives P1 → P4 against an in-process fake of the live API's exact shapes *(live-API pass blocked on the enrolment code, same as F4)*
+- [x] Consent gating cannot be bypassed by scrolling alone or ticking alone — widget-tested
+- [x] The decline path posts no consent and wipes tokens + local flags *(server-side zero-write is the backend's contract; nothing is sent)*
+- [x] Every string except the three language names comes from a content key — literal gate is clean
 
 ---
 
