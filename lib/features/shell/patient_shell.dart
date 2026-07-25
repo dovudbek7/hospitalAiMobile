@@ -42,6 +42,12 @@ class PatientShell extends ConsumerWidget {
     );
   }
 
+  String? _labelOf(WidgetRef ref, String key) =>
+      switch (ref.watch(txtProvider(key))) {
+        AsyncData(value: final ContentResolved r) => r.text,
+        _ => null,
+      };
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -72,19 +78,26 @@ class PatientShell extends ConsumerWidget {
             i,
             initialLocation: i == shell.currentIndex,
           ),
-          items: const [
-            BottomNavItem(icon: Icons.home_outlined, label: Txt('nav.today')),
+          items: [
+            BottomNavItem(
+              icon: Icons.home_outlined,
+              label: const Txt('nav.today'),
+              semanticLabel: _labelOf(ref, 'nav.today'),
+            ),
             BottomNavItem(
               icon: Icons.insert_chart_outlined_rounded,
-              label: Txt('nav.progress'),
+              label: const Txt('nav.progress'),
+              semanticLabel: _labelOf(ref, 'nav.progress'),
             ),
             BottomNavItem(
               icon: Icons.menu_book_outlined,
-              label: Txt('nav.learn'),
+              label: const Txt('nav.learn'),
+              semanticLabel: _labelOf(ref, 'nav.learn'),
             ),
             BottomNavItem(
               icon: Icons.settings_outlined,
-              label: Txt('nav.settings'),
+              label: const Txt('nav.settings'),
+              semanticLabel: _labelOf(ref, 'nav.settings'),
             ),
           ],
         ),

@@ -27,6 +27,11 @@ class DemoServer implements HttpClientAdapter {
   final Set<String> _uncompletedTaskIds = {};
   bool _consented = false;
 
+  /// Patient language — set at PATCH /me/language (the app persists the P1
+  /// choice there after enrolment, per the handoff), echoed by /me/profile,
+  /// and used to localise question labels + content.
+  String _lang = 'EN';
+
   static const _latency = Duration(milliseconds: 250);
 
   // ---------------------------------------------------------------- clinic
@@ -95,6 +100,188 @@ class DemoServer implements HttpClientAdapter {
         '[PLACEHOLDER — demo body] The clinic-approved instruction for this '
             'task renders here once the content library is seeded.',
   };
+
+  static const Map<String, String> _contentUz = {
+    'emergency.headline':
+        'Klinikangiz ko‘rsatmasi: hoziroq 103 ga qo‘ng‘iroq qiling.',
+    'emergency.body':
+        'Sehat Clinic (DEMO) operatsiyadan keyin bunday alomatlari bo‘lgan '
+            'har kimga zudlik bilan tez tibbiy yordamga qo‘ng‘iroq qilishni '
+            'tavsiya qiladi. Bu ilovadan javob kutmang.',
+    'emergency.banner':
+        'Klinikangiz ko‘rsatmasi: favqulodda holatda 103 ga qo‘ng‘iroq '
+            'qiling. Shoshilinch alomatlar haqida xabar berish uchun bu '
+            'ilovadan foydalanmang.',
+    'checkin.submitted.urgent':
+        'Rahmat. Javoblaringiz Sehat Clinic (DEMO) parvarish jamoasiga '
+            'yuborildi. Bu ilova alomatlaringizga baho bera olmaydi — ularni '
+            'xodim ko‘rib chiqadi. Sehat Clinic (DEMO) ko‘rsatmasi: kutish '
+            'paytida alomatlaringiz yomonlashsa, darhol 103 yoki '
+            '+998712000000 ga qo‘ng‘iroq qiling.',
+    'checkin.submitted.out_of_hours':
+        'Sehat Clinic (DEMO) yopiq. Javoblaringiz 09:00 da ko‘rib chiqiladi. '
+            'Sehat Clinic (DEMO) ko‘rsatmasi: hozir xavotirda bo‘lsangiz, '
+            '103 yoki +998712000000 ga qo‘ng‘iroq qiling.',
+    'checkin.submitted.routine':
+        'Rahmat. Javoblaringiz Sehat Clinic (DEMO) parvarish jamoasiga '
+            'yuborildi; ular so‘rovnomalarni keyingi ish kunida ko‘rib '
+            'chiqadi.',
+    'content.disclaimer':
+        'Bu ma’lumot klinikangiz tomonidan tasdiqlangan. Bu umumiy '
+            'yo‘riqnoma bo‘lib, sizning holatingiz bo‘yicha maslahat emas. '
+            'O‘z tiklanishingiz haqidagi savollar uchun Sehat Clinic '
+            '(DEMO)ga murojaat qiling.',
+    'medication.paracetamol_500': 'Paratsetamol 500 mg',
+    'medication.antibiotic': 'Antibiotik — 1 tabletka',
+    'task.wound_care': 'Jarohatni parvarishlash',
+    'task.walking': 'Yengil yurish, 20 daqiqa',
+    'clinical.laparoscopic_appendectomy.what_to_expect_day1.title':
+        'Nimalarni kutish mumkin',
+    'clinical.laparoscopic_appendectomy.wound_care_day3.title':
+        'Jarohatingizni parvarishlash',
+    'clinical.laparoscopic_appendectomy.warning_signs_day5.title':
+        'E’tibor berish kerak bo‘lgan xavf belgilari',
+    'clinical.laparoscopic_appendectomy.what_to_expect_day1':
+        '[NAMUNA — demo matn] Kontent kutubxonasi to‘ldirilgach, bu yerda '
+            'klinisist tasdiqlagan matn ko‘rinadi.',
+    'clinical.laparoscopic_appendectomy.wound_care_day3':
+        '[NAMUNA — demo matn] Kontent kutubxonasi to‘ldirilgach, bu yerda '
+            'klinisist tasdiqlagan matn ko‘rinadi.',
+    'clinical.laparoscopic_appendectomy.warning_signs_day5':
+        '[NAMUNA — demo matn] Kontent kutubxonasi to‘ldirilgach, bu yerda '
+            'klinisist tasdiqlagan matn ko‘rinadi.',
+    'task.wound_care.instructions':
+        '[NAMUNA — demo matn] Kontent kutubxonasi to‘ldirilgach, bu yerda '
+            'klinika tasdiqlagan ko‘rsatma ko‘rinadi.',
+  };
+
+  static const Map<String, String> _contentRu = {
+    'emergency.headline':
+        'Инструкция вашей клиники: немедленно позвоните 103.',
+    'emergency.body':
+        'Sehat Clinic (DEMO) рекомендует всем с такими симптомами после '
+            'операции немедленно звонить в скорую помощь. Не ждите ответа '
+            'от этого приложения.',
+    'emergency.banner':
+        'Инструкция вашей клиники: в экстренной ситуации звоните 103. Не '
+            'используйте это приложение для сообщения о срочных симптомах.',
+    'checkin.submitted.urgent':
+        'Спасибо. Ваши ответы отправлены лечащей команде Sehat Clinic '
+            '(DEMO). Это приложение не может оценить ваши симптомы — их '
+            'просмотрит сотрудник. Инструкция Sehat Clinic (DEMO): если во '
+            'время ожидания симптомы ухудшатся, немедленно позвоните 103 '
+            'или +998712000000.',
+    'checkin.submitted.out_of_hours':
+        'Sehat Clinic (DEMO) закрыта. Ваши ответы будут просмотрены в '
+            '09:00. Инструкция Sehat Clinic (DEMO): если вы обеспокоены '
+            'сейчас, позвоните 103 или +998712000000.',
+    'checkin.submitted.routine':
+        'Спасибо. Ваши ответы отправлены лечащей команде Sehat Clinic '
+            '(DEMO); они просматривают опросы на следующий рабочий день.',
+    'content.disclaimer':
+        'Эта информация одобрена вашей клиникой. Это общие рекомендации, а '
+            'не советы по вашему конкретному случаю. С вопросами о вашем '
+            'восстановлении обращайтесь в Sehat Clinic (DEMO).',
+    'medication.paracetamol_500': 'Парацетамол 500 мг',
+    'medication.antibiotic': 'Антибиотик — 1 таблетка',
+    'task.wound_care': 'Уход за раной',
+    'task.walking': 'Лёгкая ходьба, 20 минут',
+    'clinical.laparoscopic_appendectomy.what_to_expect_day1.title':
+        'Чего ожидать',
+    'clinical.laparoscopic_appendectomy.wound_care_day3.title':
+        'Уход за вашей раной',
+    'clinical.laparoscopic_appendectomy.warning_signs_day5.title':
+        'Тревожные признаки, за которыми нужно следить',
+    'clinical.laparoscopic_appendectomy.what_to_expect_day1':
+        '[ОБРАЗЕЦ — демо-текст] Здесь появится текст, одобренный '
+            'клиницистом, когда библиотека контента будет заполнена.',
+    'clinical.laparoscopic_appendectomy.wound_care_day3':
+        '[ОБРАЗЕЦ — демо-текст] Здесь появится текст, одобренный '
+            'клиницистом, когда библиотека контента будет заполнена.',
+    'clinical.laparoscopic_appendectomy.warning_signs_day5':
+        '[ОБРАЗЕЦ — демо-текст] Здесь появится текст, одобренный '
+            'клиницистом, когда библиотека контента будет заполнена.',
+    'task.wound_care.instructions':
+        '[ОБРАЗЕЦ — демо-текст] Здесь появится инструкция, одобренная '
+            'клиникой, когда библиотека контента будет заполнена.',
+  };
+
+  /// Pre-translated answer labels — the API contract is that option labels
+  /// arrive in the patient's language and render directly.
+  static const Map<String, Map<String, String>> _optionLabels = {
+    'UZ': {
+      'Under 37.5': '37,5 dan past',
+      '37.5–38.4': '37,5–38,4',
+      '38.5 or above': '38,5 va undan yuqori',
+      'Haven’t measured': 'O‘lchamadim',
+      'Better': 'Yaxshiroq',
+      'Same': 'O‘zgarmadi',
+      'Worse': 'Yomonroq',
+      'Normal': 'Odatdagidek',
+      'A little red': 'Biroz qizargan',
+      'Very red or spreading': 'Juda qizargan yoki kengaymoqda',
+      'Leaking fluid or pus': 'Suyuqlik yoki yiring oqmoqda',
+      'Opening': 'Ochilmoqda',
+      'Chills or shivering': 'Titroq yoki qaltirash',
+      'Difficulty breathing': 'Nafas olish qiyin',
+      'Chest pain': 'Ko‘krakdagi og‘riq',
+      'Confusion': 'Es-hushning chalkashishi',
+      'Very hard to stay awake': 'Uyg‘oq turish juda qiyin',
+      'Heavy bleeding': 'Kuchli qon ketish',
+      'New calf pain or swelling': 'Boldirda yangi og‘riq yoki shish',
+      'None of these': 'Bularning hech biri yo‘q',
+      'Yes': 'Ha',
+      'Some difficulty': 'Biroz qiynalayapman',
+      'No': 'Yo‘q',
+    },
+    'RU': {
+      'Under 37.5': 'Ниже 37,5',
+      '37.5–38.4': '37,5–38,4',
+      '38.5 or above': '38,5 и выше',
+      'Haven’t measured': 'Не измерял(а)',
+      'Better': 'Лучше',
+      'Same': 'Так же',
+      'Worse': 'Хуже',
+      'Normal': 'Нормально',
+      'A little red': 'Немного покраснела',
+      'Very red or spreading': 'Сильно покраснела или расширяется',
+      'Leaking fluid or pus': 'Выделяется жидкость или гной',
+      'Opening': 'Расходится',
+      'Chills or shivering': 'Озноб или дрожь',
+      'Difficulty breathing': 'Затруднённое дыхание',
+      'Chest pain': 'Боль в груди',
+      'Confusion': 'Спутанность сознания',
+      'Very hard to stay awake': 'Очень трудно бодрствовать',
+      'Heavy bleeding': 'Сильное кровотечение',
+      'New calf pain or swelling': 'Новая боль или отёк в голени',
+      'None of these': 'Ничего из перечисленного',
+      'Yes': 'Да',
+      'Some difficulty': 'С некоторым трудом',
+      'No': 'Нет',
+    },
+  };
+
+  List<Map<String, dynamic>> _localizedQuestions() {
+    final labels = _optionLabels[_lang];
+    if (labels == null) {
+      return _questions.cast<Map<String, dynamic>>();
+    }
+    return [
+      for (final q in _questions.cast<Map<String, dynamic>>())
+        {
+          ...q,
+          if (q['options'] != null)
+            'options': [
+              for (final o
+                  in (q['options']! as List).cast<Map<String, dynamic>>())
+                {
+                  'code': o['code'],
+                  'label': labels[o['label']] ?? o['label'],
+                },
+            ],
+        },
+    ];
+  }
 
   // ------------------------------------------------------------ questions
   static const _questions = [
@@ -306,7 +493,7 @@ class DemoServer implements HttpClientAdapter {
           'name': 'Aziz Demo',
           'recoveryDay': 6,
           'programmeDays': 30,
-          'language': o.headers['x-demo-lang'] as String? ?? 'EN',
+          'language': _lang,
           'procedureType': 'laparoscopic_appendectomy',
           'consentVersion': _consented ? 'v1' : null,
           'clinic': _clinic,
@@ -344,7 +531,9 @@ class DemoServer implements HttpClientAdapter {
         }
       );
     }
-    if (path.endsWith('/me/checkin/questions')) return (200, _questions);
+    if (path.endsWith('/me/checkin/questions')) {
+      return (200, _localizedQuestions());
+    }
     if (path.endsWith('/checkins')) {
       final data = o.data as Map<String, dynamic>;
       final answers = <String, Object?>{
@@ -411,9 +600,11 @@ class DemoServer implements HttpClientAdapter {
           }
         );
       }
-      final localized = lang == 'EN'
-          ? text
-          : '[$lang PLACEHOLDER — NOT CLINICALLY APPROVED] $text';
+      final localized = switch (lang) {
+        'UZ' => _contentUz[key] ?? text,
+        'RU' => _contentRu[key] ?? text,
+        _ => text,
+      };
       return (
         200,
         {
@@ -425,7 +616,14 @@ class DemoServer implements HttpClientAdapter {
         }
       );
     }
-    // /me/language, /me/leave, /me/survey, /me/app-opened, everything else.
+    if (path.endsWith('/me/language')) {
+      final data = o.data;
+      if (data is Map<String, dynamic> && data['language'] is String) {
+        _lang = data['language'] as String;
+      }
+      return (200, {'ok': true});
+    }
+    // /me/leave, /me/survey, /me/app-opened, everything else.
     if (path.endsWith('/me/leave')) return (200, {'tasksStopped': 12});
     return (200, {'ok': true});
   }

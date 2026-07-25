@@ -4,12 +4,20 @@ import '../theme/tokens.dart';
 import '../theme/typography.dart';
 
 class BottomNavItem {
-  const BottomNavItem({required this.icon, required this.label});
+  const BottomNavItem({
+    required this.icon,
+    required this.label,
+    this.semanticLabel,
+  });
 
   final IconData icon;
 
   /// Patient-visible — resolved from the content library by the caller.
   final Widget label;
+
+  /// Screen-reader name (resolved string). Inactive tabs render icon-only,
+  /// so this is what TalkBack/VoiceOver announces for them.
+  final String? semanticLabel;
 }
 
 /// Floating pill navigation from the prototype: 64dp white bar, the active
@@ -73,6 +81,7 @@ class _NavButton extends StatelessWidget {
     return Semantics(
       button: true,
       selected: active,
+      label: item.semanticLabel,
       child: Material(
         color: active ? AppColors.brand600 : Colors.transparent,
         borderRadius: BorderRadius.circular(19),
@@ -82,20 +91,30 @@ class _NavButton extends StatelessWidget {
           child: Container(
             height: 50,
             alignment: Alignment.center,
-            child: Column(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpace.s8),
+            // Active: icon + label pill. Inactive: icon only — the label
+            // stays in the tree invisibly so screen readers still hear it.
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(item.icon, size: 21, color: color),
-                const SizedBox(height: 3),
-                DefaultTextStyle.merge(
-                  style: AppText.caption.copyWith(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
-                    color: color,
-                    height: 1,
+                Icon(item.icon, size: 22, color: color),
+                if (active) ...[
+                  const SizedBox(width: 6),
+                  Flexible(
+                    child: DefaultTextStyle.merge(
+                      style: AppText.caption.copyWith(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: color,
+                        height: 1.1,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      child: item.label,
+                    ),
                   ),
-                  child: item.label,
-                ),
+                ],
               ],
             ),
           ),

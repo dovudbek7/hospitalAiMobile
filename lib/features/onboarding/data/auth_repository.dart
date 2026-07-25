@@ -52,6 +52,16 @@ class AuthRepository {
   Future<Profile?> consentAndBootstrap({required String version}) async {
     await _api.submitConsent(version: version);
     await _session.markConsented();
+    // Handoff §4: persist the P1 language choice server-side after
+    // enrolment, BEFORE reading the (authoritative) profile back.
+    final localLang = _ref.read(sessionProvider).language;
+    if (localLang != null) {
+      try {
+        await _api.setLanguage(localLang);
+      } on Exception {
+        // Non-fatal; the local choice keeps working offline.
+      }
+    }
     return bootstrapProfile();
   }
 
