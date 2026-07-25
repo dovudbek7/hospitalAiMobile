@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,6 +8,7 @@ import 'config/env.dart';
 import 'demo/demo_server.dart';
 import 'content/content_repository.dart';
 import 'content/content_result.dart';
+import 'auth/session.dart';
 import 'network/dio_client.dart';
 import 'network/token_store.dart';
 import 'storage/app_database.dart';
@@ -46,7 +49,14 @@ final databaseProvider = Provider<AppDatabase>((ref) {
 /// Changing it re-renders every Txt instantly — no restart (P16 rule).
 class LanguageNotifier extends Notifier<String> {
   @override
-  String build() => 'EN';
+  String build() {
+    // Returning patients wake up in their chosen language even offline.
+    try {
+      return ref.read(sessionProvider).language ?? 'EN';
+    } catch (_) {
+      return 'EN'; // tests that override without prefs
+    }
+  }
 
   void set(String lang) => state = lang;
 }
@@ -57,13 +67,38 @@ final languageProvider =
 /// {TOKEN} values for content interpolation — clinic config + patient data.
 /// Filled by auth/profile loading (F4/F6); screens may add N/TOTAL locally.
 class InterpolationVarsNotifier extends Notifier<Map<String, String>> {
+  static const _prefsKey = 'cache.interpolation_vars_v1';
+
   @override
-  Map<String, String> build() => const {};
+  Map<String, String> build() {
+    // Last-known clinic/profile vars survive an offline cold start, so
+    // {CLINIC_NAME}-style tokens never render raw for a returning patient.
+    try {
+      final raw = ref.read(sharedPrefsProvider).getString(_prefsKey);
+      if (raw != null) {
+        final decoded = jsonDecode(raw) as Map<String, dynamic>;
+        return Map.unmodifiable(decoded.cast<String, String>());
+      }
+    } catch (_) {}
+    return const {};
+  }
 
-  void set(Map<String, String> vars) => state = Map.unmodifiable(vars);
+  void _persist() {
+    try {
+      // Fire-and-forget; ignore result deliberately.
+      ref.read(sharedPrefsProvider).setString(_prefsKey, jsonEncode(state));
+    } catch (_) {}
+  }
 
-  void merge(Map<String, String> vars) =>
-      state = Map.unmodifiable({...state, ...vars});
+  void set(Map<String, String> vars) {
+    state = Map.unmodifiable(vars);
+    _persist();
+  }
+
+  void merge(Map<String, String> vars) {
+    state = Map.unmodifiable({...state, ...vars});
+    _persist();
+  }
 }
 
 final interpolationVarsProvider =

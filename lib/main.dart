@@ -3,10 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dart:async';
+
 import 'app.dart';
-import 'core/notifications/reminders.dart';
-import 'core/router/app_router.dart';
 import 'core/auth/session.dart';
+import 'core/notifications/reminders.dart';
+import 'features/onboarding/data/auth_repository.dart';
+import 'core/router/app_router.dart';
 import 'core/network/token_store.dart';
 import 'core/providers.dart';
 import 'core/storage/secure_store.dart';
@@ -33,6 +36,18 @@ Future<void> main() async {
         );
   } on Exception {
     // Continue without local notifications.
+  }
+
+  // Returning patient: refresh profile-derived state (clinic vars for
+  // {TOKEN} interpolation, authoritative language, emergency bundle) in the
+  // background. Failures are absorbed — cached values keep working.
+  if (container.read(sessionProvider).onboarded) {
+    unawaited(
+      container
+          .read(authRepositoryProvider)
+          .bootstrapProfile()
+          .catchError((Object _) => null),
+    );
   }
 
   runApp(
