@@ -675,6 +675,29 @@ leading cause of readmission.
 
 ---
 
+## SP7 · AI Assistant (added post-v1, per HOSPITAL_AI_FLUTTER_API_CONNECTION.md) ✅
+
+A grounded explanation-and-navigation chat. It explains the clinic's approved
+guidance and routes to humans; it never assesses a symptom. **Safety is enforced
+server-side** — the client only renders the SSE stream and honours the
+`contentKey` the server returns.
+
+- `lib/features/assistant/` — models (delta/done/error), streaming API over Dio
+  (`ResponseType.stream`, same interceptors + demo adapter), controller, chat screen.
+- Routing on `done.verdict`: `passed` → the streamed text is the answer ·
+  `red_flag_bypass` → route to **P13 emergency** (never a chat bubble) ·
+  `replaced`/`error` → resolve the `contentKey` and show approved content.
+- Emergency affordance stays on the screen; offline **blocks** and never queues
+  (§9); the app adds no reassurance around a reply.
+- Entry point: Today → "Ask about your care".
+- Demo server streams real SSE, including a red-flag path (type "chest pain" /
+  "nafas" / "боль в груди").
+- Backend gap: the assistant needs an AI key server-side; without it the endpoint
+  still answers safely (`verdict: replaced` → `contact.body`), which the client
+  already handles.
+
+---
+
 ## Explicitly out of scope — do not build
 
 Deliberately cut, not reopenable before launch:

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/checkin/p10_checkin_screen.dart';
 import '../../features/checkin/p11_routine_screen.dart';
 import '../../features/checkin/p12_urgent_screen.dart';
+import '../../features/assistant/assistant_screen.dart';
 import '../../features/checkin/p13_emergency_screen.dart';
 import '../../features/dev/design_gallery_screen.dart';
 import '../../features/learn/p14_learn_screen.dart';
@@ -137,6 +138,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             P15ArticleScreen(contentKey: state.pathParameters['key']!),
       ),
       GoRoute(path: Routes.survey, builder: (context, state) => const P17SurveyScreen()),
+      GoRoute(
+        path: Routes.assistant,
+        builder: (context, state) => const AssistantScreen(),
+      ),
 
       // Debug-only design gallery.
       GoRoute(

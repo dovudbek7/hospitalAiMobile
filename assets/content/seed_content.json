@@ -16,6 +16,23 @@
    "isPlaceholder": true
   }
  },
+ "onboarding.step": {
+  "EN": {
+   "text": "{N}/{TOTAL}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "{N}/{TOTAL}",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "{N}/{TOTAL}",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
  "onboarding.code.help": {
   "EN": {
    "text": "Your clinic gave you a 6-character code when you were discharged.",
@@ -2290,6 +2307,414 @@
   },
   "RU": {
    "text": "Напоминания о приёме лекарств, назначенные вашей клиникой.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "common.back": {
+  "EN": {
+   "text": "Back",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Orqaga",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Назад",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q1_temp": {
+  "EN": {
+   "text": "What is your temperature today?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Bugun haroratingiz qancha?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Какая у вас сегодня температура?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q2_pain": {
+  "EN": {
+   "text": "How strong is your pain right now?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Hozir og‘rig‘ingiz qanchalik kuchli?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Насколько сильна ваша боль сейчас?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q3_pain_change": {
+  "EN": {
+   "text": "Compared with yesterday, your pain is:",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Kechagiga nisbatan og‘rig‘ingiz:",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "По сравнению со вчерашним днём ваша боль:",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q4_wound": {
+  "EN": {
+   "text": "How does your wound look today?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Bugun jarohatingiz qanday ko‘rinishda?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Как сегодня выглядит ваша рана?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q5_redflags": {
+  "EN": {
+   "text": "Do you have any of these symptoms?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Sizda quyidagi alomatlardan biri bormi?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Есть ли у вас какие-либо из этих симптомов?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q6_intake": {
+  "EN": {
+   "text": "Are you able to eat and drink?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Ovqat yeyish va suv icha olyapsizmi?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Можете ли вы есть и пить?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.q7_urine": {
+  "EN": {
+   "text": "Have you passed urine today?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Bugun siydik ajraldimi?",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Было ли у вас мочеиспускание сегодня?",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "checkin.scale_hint": {
+  "EN": {
+   "text": "Turn the wheel to choose a number",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Raqam tanlash uchun aylantiring",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Прокрутите, чтобы выбрать число",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.text_size": {
+  "EN": {
+   "text": "Text size",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Matn o‘lchami",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Размер текста",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.text_size.small": {
+  "EN": {
+   "text": "Small",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Kichik",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Мелкий",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.text_size.medium": {
+  "EN": {
+   "text": "Medium",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "O‘rtacha",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Средний",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "settings.text_size.large": {
+  "EN": {
+   "text": "Large",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Katta",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Крупный",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.title": {
+  "EN": {
+   "text": "Ask about your care",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Parvarish haqida so‘rang",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Спросите об уходе",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.subtitle": {
+  "EN": {
+   "text": "Explains your clinic’s guidance. It cannot assess symptoms.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Klinikangiz ko‘rsatmalarini tushuntiradi. Alomatlarga baho bera olmaydi.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Объясняет рекомендации вашей клиники. Не может оценивать симптомы.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.intro": {
+  "EN": {
+   "text": "Ask about the guidance your clinic gave you — medicines, wound care, activity. For symptoms, use the daily check-in.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Klinikangiz bergan ko‘rsatmalar — dorilar, jarohat parvarishi, harakat haqida so‘rang. Alomatlar uchun kundalik so‘rovnomadan foydalaning.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Спросите о рекомендациях вашей клиники — лекарства, уход за раной, активность. Для симптомов используйте ежедневный опрос.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.input_hint": {
+  "EN": {
+   "text": "Type your question…",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Savolingizni yozing…",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Введите ваш вопрос…",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.send": {
+  "EN": {
+   "text": "Send",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Yuborish",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Отправить",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.disclaimer": {
+  "EN": {
+   "text": "This assistant explains your clinic’s approved guidance. It is not a doctor and cannot assess your symptoms. In an emergency, call 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Bu yordamchi klinikangizning tasdiqlangan ko‘rsatmalarini tushuntiradi. U shifokor emas va alomatlaringizga baho bera olmaydi. Favqulodda holatda 103 ga qo‘ng‘iroq qiling.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Этот помощник объясняет одобренные рекомендации вашей клиники. Он не врач и не может оценивать ваши симптомы. В экстренной ситуации звоните 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.checkin_nudge": {
+  "EN": {
+   "text": "Reporting symptoms? Use today’s check-in — your care team reviews it.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Alomatlar haqidami? Bugungi so‘rovnomadan foydalaning — parvarish jamoangiz uni ko‘rib chiqadi.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Сообщаете о симптомах? Используйте сегодняшний опрос — его просмотрит ваша команда.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.open_checkin": {
+  "EN": {
+   "text": "Open today’s check-in",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Bugungi so‘rovnomani ochish",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Открыть сегодняшний опрос",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.offline": {
+  "EN": {
+   "text": "You need a connection to use the assistant. For symptoms, call {CLINIC_PHONE} or 103.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Yordamchidan foydalanish uchun internet kerak. Alomatlar uchun {CLINIC_PHONE} yoki 103 ga qo‘ng‘iroq qiling.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Для помощника нужно соединение. При симптомах звоните {CLINIC_PHONE} или 103.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "assistant.error": {
+  "EN": {
+   "text": "The assistant is unavailable right now. If you have a question about your recovery, contact your clinic.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Yordamchi hozir mavjud emas. Tiklanishingiz haqida savolingiz bo‘lsa, klinikangizga murojaat qiling.",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Помощник сейчас недоступен. Если у вас вопрос о восстановлении, свяжитесь с клиникой.",
+   "version": 0,
+   "isPlaceholder": true
+  }
+ },
+ "today.ask_assistant": {
+  "EN": {
+   "text": "Ask about your care",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "UZ": {
+   "text": "Parvarish haqida so‘rang",
+   "version": 0,
+   "isPlaceholder": true
+  },
+  "RU": {
+   "text": "Спросите об уходе",
    "version": 0,
    "isPlaceholder": true
   }

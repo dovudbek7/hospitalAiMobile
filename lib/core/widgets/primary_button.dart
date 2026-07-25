@@ -42,6 +42,12 @@ class PrimaryButton extends StatelessWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(horizontal: AppSpace.s16),
             child: DefaultTextStyle.merge(
+              // One line, never per-character wrapping: a narrow button in a
+              // Row used to render "Back" as a vertical letter stack.
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
               style: AppText.button.copyWith(
                 color: disabled ? AppColors.muted : foreground,
               ),

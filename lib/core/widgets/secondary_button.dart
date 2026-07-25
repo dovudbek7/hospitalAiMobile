@@ -45,6 +45,10 @@ class SecondaryButton extends StatelessWidget {
                 border: Border.all(color: AppColors.line),
               ),
               child: DefaultTextStyle.merge(
+                maxLines: 1,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: AppText.button.copyWith(color: foreground),
                 child: IconTheme.merge(
                   data: IconThemeData(color: foreground, size: 20),

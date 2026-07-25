@@ -7,6 +7,7 @@ import 'dart:async';
 
 import 'app.dart';
 import 'core/auth/session.dart';
+import 'core/boot_failure_app.dart';
 import 'core/notifications/reminders.dart';
 import 'features/onboarding/data/auth_repository.dart';
 import 'core/router/app_router.dart';
@@ -16,6 +17,19 @@ import 'core/storage/secure_store.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    await _boot();
+  } on Object catch (error, stack) {
+    // A throw before runApp() leaves the platform view empty — the OS shows
+    // the launch icon and then a black screen with nothing to report. Draw
+    // the reason instead; a broken build must say so.
+    debugPrintStack(stackTrace: stack, label: '$error');
+    runApp(BootFailureApp(error: '$error'));
+  }
+}
+
+Future<void> _boot() async {
   Env.requireValid();
 
   // Session flags load BEFORE the first frame so a returning patient's

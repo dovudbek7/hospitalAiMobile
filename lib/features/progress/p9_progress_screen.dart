@@ -41,7 +41,7 @@ class P9ProgressScreen extends ConsumerWidget {
           data: (p) => ListView(
             padding: const EdgeInsets.fromLTRB(
               AppSpace.s16,
-              AppSpace.s8,
+              AppSpace.s24,
               AppSpace.s16,
               120,
             ),
