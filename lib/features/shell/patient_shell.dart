@@ -150,7 +150,7 @@ class _AssistantFab extends ConsumerWidget {
       label: label,
       child: Container(
         // Sits just above the floating bottom-nav pill.
-        margin: const EdgeInsets.only(bottom: 80),
+        margin: const EdgeInsets.only(bottom: 12),
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
           boxShadow: AppShadow.nav,
