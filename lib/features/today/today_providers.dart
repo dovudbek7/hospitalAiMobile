@@ -8,10 +8,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/auth/session.dart';
 import '../../core/notifications/reminders.dart';
 import '../../core/models/api_models.dart';
+import '../../core/network/api_error.dart';
 import '../../core/providers.dart';
 import '../../core/storage/app_database.dart';
 import '../../core/sync/connectivity.dart';
 import '../../core/sync/task_cache.dart';
+import '../onboarding/data/auth_repository.dart';
 
 /// One task as the Today screen renders it — merged from server truth and
 /// local (possibly still-queued) completions.
@@ -125,7 +127,17 @@ class TodayNotifier extends AsyncNotifier<TodayView> {
         checkinDue: today.checkinDue,
         fromCache: false,
       );
-    } on DioException {
+    } on DioException catch (e) {
+      final err = e.error;
+      // Invalid/absent token → clear the dead session; the router sends the
+      // patient to enrolment (also self-heals a stale token from an earlier
+      // build). Rethrow so this provider surfaces as error, not a blank day.
+      if (err is ApiError &&
+          (err.code == ApiErrorCode.unauthorized ||
+              err.code == ApiErrorCode.wrongTokenAudience)) {
+        await ref.read(authRepositoryProvider).invalidateSession();
+        rethrow;
+      }
       // Offline (or server trouble): the cached day keeps working.
       final day = _lastKnownDay;
       final rows = await cache.tasksForDay(day);

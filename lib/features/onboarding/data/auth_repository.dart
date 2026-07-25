@@ -103,12 +103,27 @@ class AuthRepository {
       }
       return profile;
     } on DioException catch (e) {
-      // Offline or transient server trouble: keep going with cached state.
-      // A patient mid-programme is NEVER logged out over this (§3).
       final err = e.error;
+      // A genuinely invalid/absent token (no valid session to preserve) →
+      // clear it and send the patient to enrolment. This is NOT the
+      // "never force re-login" case — there is nothing to keep. It also
+      // self-heals a stale token left by an earlier build.
+      if (err is ApiError &&
+          (err.code == ApiErrorCode.unauthorized ||
+              err.code == ApiErrorCode.wrongTokenAudience)) {
+        await invalidateSession();
+        return null;
+      }
+      // Offline or transient server trouble: keep the cached session (§3).
       if (err is ApiError || err is NetworkUnavailable) return null;
       rethrow;
     }
+  }
+
+  /// Wipe an invalid session so the router redirects to enrolment.
+  Future<void> invalidateSession() async {
+    await _tokens.clear();
+    await _ref.read(sessionProvider.notifier).clear();
   }
 
   /// P4 Decline: no consent recorded, all local traces removed.
