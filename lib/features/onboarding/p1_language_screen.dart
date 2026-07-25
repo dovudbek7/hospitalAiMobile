@@ -83,6 +83,29 @@ class P1LanguageScreen extends ConsumerWidget {
                       'Hospital AI',
                       style: AppText.display.copyWith(fontSize: 30),
                     ),
+                    // Build-mode badge: makes it unmistakable whether this
+                    // build talks to the real backend or the in-app demo.
+                    if (Env.demoMode) ...[
+                      const SizedBox(height: AppSpace.s8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppSpace.s12,
+                          vertical: AppSpace.s4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.urgent.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(AppRadius.chip),
+                          border: Border.all(color: AppColors.urgent),
+                        ),
+                        child: Text(
+                          'DEMO — offline, any code works', // literal-ok: dev badge, not patient prose
+                          style: AppText.caption.copyWith(
+                            color: AppColors.urgent,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
                   ],
                 ),
               ),
