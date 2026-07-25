@@ -114,4 +114,42 @@ void main() {
     final kept = await EmergencyBundle.load();
     expect(kept!.headline, 'h', reason: 'previous bundle must survive');
   });
+
+  test('server {CLINIC_NAME} tokens are interpolated into the bundle',
+      () async {
+    SharedPreferences.setMockInitialValues({});
+    final db = AppDatabase.memory();
+    addTearDown(db.close);
+
+    final adapter = FakeAdapter((o) {
+      final key = o.uri.path.split('/').last;
+      final text = key == 'emergency.body'
+          ? '{CLINIC_NAME} advises calling {CLINIC_PHONE} now.'
+          : 'text for $key';
+      return FakeResponse(200, {
+        'contentKey': key,
+        'language': 'EN',
+        'text': text,
+        'version': 1,
+        'isPlaceholder': true,
+      });
+    });
+    final dio = buildDio(
+      tokens: InMemoryTokenStore(),
+      baseUrl: 'https://fake.test/v1',
+    );
+    dio.httpClientAdapter = adapter;
+    final repo = ContentRepository(PatientApi(dio), db,
+        loadAsset: (_) async => '{}');
+
+    final bundle = await EmergencyBundle.refresh(
+      content: repo,
+      language: 'EN',
+      clinicName: 'Sehat Clinic (DEMO)',
+      clinicPhone: '+998712000000',
+    );
+    expect(bundle!.body, 'Sehat Clinic (DEMO) advises calling '
+        '+998712000000 now.');
+    expect(bundle.body.contains('{CLINIC_NAME}'), isFalse);
+  });
 }

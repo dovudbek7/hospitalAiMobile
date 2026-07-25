@@ -15,6 +15,26 @@ class AssistantApi {
 
   final Dio _dio;
 
+  /// GET /me/assistant/threads → raw thread list (newest first). The server
+  /// response is untyped, so callers must treat entries defensively.
+  Future<List<Map<String, dynamic>>> threads() async {
+    final r = await _dio.get<dynamic>('/me/assistant/threads');
+    final data = r.data;
+    if (data is List) {
+      return [
+        for (final t in data)
+          if (t is Map<String, dynamic>) t,
+      ];
+    }
+    return const [];
+  }
+
+  /// GET /me/assistant/threads/{id} → the raw thread (with messages). Untyped.
+  Future<Map<String, dynamic>?> thread(String id) async {
+    final r = await _dio.get<dynamic>('/me/assistant/threads/$id');
+    return r.data is Map<String, dynamic> ? r.data as Map<String, dynamic> : null;
+  }
+
   /// POST /me/assistant/messages → a stream of parsed [AssistantChunk]s.
   Stream<AssistantChunk> sendMessage({
     required String message,

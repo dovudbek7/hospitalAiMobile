@@ -142,6 +142,65 @@ class AssistantController extends Notifier<AssistantState> {
   }
 
   void clearOutcome() => state = state.copyWith(outcome: AssistantOutcome.none);
+
+  /// Best-effort: load the most recent thread's history so returning to the
+  /// assistant shows past messages. The server response is untyped, so this
+  /// is fully defensive — any unexpected shape leaves the chat empty rather
+  /// than crashing. Only runs when the chat is currently empty.
+  Future<void> loadHistory() async {
+    if (state.messages.isNotEmpty || state.sending) return;
+    try {
+      final api = ref.read(assistantApiProvider);
+      final threads = await api.threads();
+      if (threads.isEmpty) return;
+      final id = _firstString(threads.first, ['id', 'threadId', '_id']);
+      if (id == null) return;
+      final thread = await api.thread(id);
+      final rawMessages = _listField(thread, ['messages', 'items', 'history']);
+      final parsed = <ChatMessage>[];
+      for (final m in rawMessages) {
+        if (m is! Map<String, dynamic>) continue;
+        final role = _firstString(m, ['role', 'sender', 'from', 'author']);
+        final text = _firstString(m, ['text', 'content', 'message', 'body']);
+        final contentKey = _firstString(m, ['contentKey', 'content_key']);
+        if (text == null && contentKey == null) continue;
+        final isPatient =
+            role == 'patient' || role == 'user' || role == 'me';
+        parsed.add(
+          ChatMessage(
+            role: isPatient ? ChatRole.patient : ChatRole.assistant,
+            text: text ?? '',
+            contentKey: isPatient ? null : contentKey,
+          ),
+        );
+      }
+      if (parsed.isNotEmpty && state.messages.isEmpty) {
+        state = state.copyWith(messages: parsed, threadId: id);
+      }
+    } on Object {
+      // Untyped/absent history — leave the chat empty. Never breaks the UI.
+    }
+  }
+
+  static String? _firstString(Map<String, dynamic> m, List<String> keys) {
+    for (final k in keys) {
+      final v = m[k];
+      if (v is String && v.isNotEmpty) return v;
+    }
+    return null;
+  }
+
+  static List<dynamic> _listField(
+    Map<String, dynamic>? m,
+    List<String> keys,
+  ) {
+    if (m == null) return const [];
+    for (final k in keys) {
+      final v = m[k];
+      if (v is List) return v;
+    }
+    return const [];
+  }
 }
 
 final assistantProvider =

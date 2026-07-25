@@ -321,8 +321,12 @@ class _OptionTile extends StatelessWidget {
             ),
             child: Row(
               children: [
-                AnimatedContainer(
-                  duration: AppDur.fast,
+                Container(
+                  // NOT AnimatedContainer: reusing one element across a
+                  // single→multi question would lerp a circle into a
+                  // rounded rect and crash ("a circle cannot have a border
+                  // radius"). A plain box, keyed by shape, is safe.
+                  key: ValueKey(square),
                   width: 28,
                   height: 28,
                   decoration: BoxDecoration(
