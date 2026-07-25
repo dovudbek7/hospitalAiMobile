@@ -16,6 +16,7 @@ import '../../core/theme/typography.dart';
 import '../../core/widgets/app_sheet.dart';
 import '../../core/widgets/primary_button.dart';
 import 'data/auth_repository.dart';
+import 'enrolment_form.dart';
 import 'onboarding_header.dart';
 
 /// The consent document version the patient accepts (server example: "v1").
@@ -57,17 +58,42 @@ class _P4ConsentScreenState extends ConsumerState<P4ConsentScreen> {
     super.dispose();
   }
 
+  bool _failed = false;
+  bool _offline = false;
+
   bool get _canAgree => _scrolledToEnd && _checked && !_submitting;
 
   Future<void> _agree() async {
-    setState(() => _submitting = true);
+    setState(() {
+      _submitting = true;
+      _failed = false;
+      _offline = false;
+    });
+    final form = ref.read(enrolmentFormProvider);
     try {
+      // Enrolment happens HERE (spec P4: "Agree → create patient session,
+      // write consent record"). The code+phone pair is validated by the
+      // session call; nothing was created before this point.
+      await ref.read(authRepositoryProvider).enrol(
+            code: form.code,
+            phone: '+998${form.phone}',
+          );
+      await ref.read(enrolmentFormProvider.notifier).clearDraft();
       await ref
           .read(authRepositoryProvider)
           .consentAndBootstrap(version: consentVersion);
       if (mounted) context.go(Routes.welcome);
-    } on Exception {
-      if (mounted) setState(() => _submitting = false);
+    } on Exception catch (e) {
+      // Generic failure — reveals nothing about code/phone. Network gets a
+      // clear retry note and keeps the typed values.
+      final offline = e.toString().contains('NetworkUnavailable');
+      if (mounted) {
+        setState(() {
+          _failed = !offline;
+          _offline = offline;
+          _submitting = false;
+        });
+      }
     }
   }
 
@@ -113,9 +139,12 @@ class _P4ConsentScreenState extends ConsumerState<P4ConsentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // No back control: the session already exists, so the guard
-              // pins this screen until Agree or Decline. Decline is the exit.
-              const OnboardingHeader(step: 3),
+              // Enrolment is deferred to Agree, so Back to P3 is lossless
+              // (the draft keeps code + phone). Decline is the other exit.
+              OnboardingHeader(
+                step: 3,
+                onBack: _submitting ? null : () => context.go(Routes.phone),
+              ),
               const SizedBox(height: AppSpace.s24),
               Txt(
                 'onboarding.consent.title',
@@ -161,10 +190,33 @@ class _P4ConsentScreenState extends ConsumerState<P4ConsentScreen> {
                 checked: _checked,
                 onChanged: (v) => setState(() => _checked = v),
               ),
+              if (_failed) ...[
+                const SizedBox(height: AppSpace.s12),
+                Txt(
+                  'onboarding.phone.error',
+                  style: AppText.body.copyWith(color: AppColors.emergency),
+                ),
+              ],
+              if (_offline) ...[
+                const SizedBox(height: AppSpace.s12),
+                Txt(
+                  'offline.indicator',
+                  style: AppText.body.copyWith(color: AppColors.brand800),
+                ),
+              ],
               const SizedBox(height: AppSpace.s16),
               PrimaryButton(
                 onPressed: _canAgree ? _agree : null,
-                child: const Txt('onboarding.consent.agree'),
+                child: _submitting
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: AppColors.surface,
+                        ),
+                      )
+                    : const Txt('onboarding.consent.agree'),
               ),
               const SizedBox(height: AppSpace.s8),
               TextButton(

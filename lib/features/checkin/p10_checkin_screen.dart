@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/content/emergency_bundle.dart';
 import '../../core/content/txt.dart';
+import '../../core/providers.dart';
 import '../../core/models/api_models.dart';
 import '../../core/router/guards.dart';
 import '../../core/theme/tokens.dart';
@@ -62,6 +63,10 @@ class _QuestionPager extends ConsumerWidget {
     };
     final last = index == questions.length - 1;
     final notifier = ref.read(checkinFlowProvider.notifier);
+    final backLabel = switch (ref.watch(txtProvider('common.back'))) {
+      AsyncData(value: final ContentResolved r) => r.text,
+      _ => null,
+    };
 
     return Padding(
       padding: const EdgeInsets.all(AppSpace.s24),
@@ -142,17 +147,38 @@ class _QuestionPager extends ConsumerWidget {
           Row(
             children: [
               if (index > 0) ...[
-                Expanded(
-                  child: SecondaryButton(
-                    onPressed: () => notifier.goTo(index - 1),
-                    icon: const Icon(Icons.chevron_left_rounded),
-                    child: const Txt('checkin.back'),
+                // Compact icon-only Back so the labelled Next always fits,
+                // at any font scale / language. The label lives in
+                // semantics for screen readers.
+                Semantics(
+                  button: true,
+                  label: backLabel,
+                  child: SizedBox(
+                    width: AppHit.key,
+                    height: AppHit.key,
+                    child: Material(
+                      color: AppColors.surface,
+                      borderRadius: AppRadius.buttonAll,
+                      child: InkWell(
+                        onTap: () => notifier.goTo(index - 1),
+                        borderRadius: AppRadius.buttonAll,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: AppRadius.buttonAll,
+                            border: Border.all(color: AppColors.line),
+                          ),
+                          child: const Icon(
+                            Icons.chevron_left_rounded,
+                            color: AppColors.brand700,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(width: AppSpace.s12),
               ],
               Expanded(
-                flex: 2,
                 child: PrimaryButton(
                   onPressed: !answered || flow.submitting
                       ? null

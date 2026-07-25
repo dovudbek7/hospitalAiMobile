@@ -4,16 +4,17 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 
 /// Environment configuration.
 ///
-/// Nothing is hardcoded (ADR: "Configuration — nothing hardcoded").
-/// The API base URL arrives at build time:
+/// The API base URL defaults to production so a plain `flutter build` ships
+/// an API-connected app; override for a local backend:
 ///
-///   flutter run --dart-define=API_BASE_URL=https://api.hospital-ai.uz/v1
+///   flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3000/v1
 ///
-/// The app refuses to start without it — see [Env.requireValid] called
-/// from `main()`. Failing at startup beats failing on the first request
-/// a patient makes.
+/// The region stays configurable (ADR); only the default is baked.
 abstract final class Env {
-  static const String apiBaseUrl = String.fromEnvironment('API_BASE_URL');
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://api.hospital-ai.uz/v1',
+  );
 
   /// True under `flutter test` (the runner exports FLUTTER_TEST in the
   /// process environment; the dart-define variant is not reliable here).

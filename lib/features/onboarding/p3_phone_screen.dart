@@ -1,6 +1,7 @@
-// P3 · Phone number. Submits the code+phone PAIR. The error path reveals
-// nothing: not whether the code exists, not what number is stored, not
-// which half failed. Lockout after 3 attempts is enforced server-side.
+// P3 · Phone number. Captures the 9-digit national number; the code+phone
+// PAIR is validated together at P4 Agree (there is a single session
+// endpoint, so validating = enrolling — deferred to the consent step so
+// Back stays lossless and no session exists before consent).
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,6 @@ import '../../core/theme/tokens.dart';
 import '../../core/theme/typography.dart';
 import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/primary_button.dart';
-import 'data/auth_repository.dart';
 import 'enrolment_form.dart';
 import 'onboarding_header.dart';
 
@@ -26,9 +26,6 @@ class P3PhoneScreen extends ConsumerStatefulWidget {
 
 class _P3PhoneScreenState extends ConsumerState<P3PhoneScreen> {
   late final TextEditingController _controller;
-  bool _submitting = false;
-  bool _failed = false;
-  bool _offline = false;
 
   @override
   void initState() {
@@ -55,35 +52,6 @@ class _P3PhoneScreenState extends ConsumerState<P3PhoneScreen> {
     return parts.where((p) => p.isNotEmpty).join(' ');
   }
 
-  Future<void> _submit() async {
-    final form = ref.read(enrolmentFormProvider);
-    setState(() {
-      _submitting = true;
-      _failed = false;
-      _offline = false;
-    });
-    try {
-      await ref.read(authRepositoryProvider).enrol(
-            code: form.code,
-            phone: '+998${form.phone}',
-          );
-      await ref.read(enrolmentFormProvider.notifier).clearDraft();
-      if (mounted) context.go(Routes.consent);
-    } on Exception catch (e) {
-      // NetworkUnavailable → clear retry message, KEEP the typed values.
-      // Anything else → the generic mismatch copy; nothing is revealed.
-      final offline = e.toString().contains('NetworkUnavailable');
-      if (mounted) {
-        setState(() {
-          _failed = !offline;
-          _offline = offline;
-        });
-      }
-    } finally {
-      if (mounted) setState(() => _submitting = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final form = ref.watch(enrolmentFormProvider);
@@ -99,7 +67,7 @@ class _P3PhoneScreenState extends ConsumerState<P3PhoneScreen> {
               OnboardingHeader(
                 step: 2,
                 // The draft keeps the typed code, so going back is lossless.
-                onBack: _submitting ? null : () => context.go(Routes.code),
+                onBack: () => context.go(Routes.code),
               ),
               const SizedBox(height: AppSpace.s24),
               Txt(
@@ -133,34 +101,12 @@ class _P3PhoneScreenState extends ConsumerState<P3PhoneScreen> {
                   }
                 },
               ),
-              if (_failed) ...[
-                const SizedBox(height: AppSpace.s12),
-                Txt(
-                  'onboarding.phone.error',
-                  style: AppText.body.copyWith(color: AppColors.emergency),
-                ),
-              ],
-              if (_offline) ...[
-                const SizedBox(height: AppSpace.s12),
-                Txt(
-                  'offline.indicator',
-                  style: AppText.body.copyWith(color: AppColors.brand800),
-                ),
-              ],
               const SizedBox(height: AppSpace.s24),
               PrimaryButton(
-                onPressed:
-                    form.phoneComplete && !_submitting ? _submit : null,
-                child: _submitting
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: AppColors.surface,
-                        ),
-                      )
-                    : const Txt('common.continue'),
+                onPressed: form.phoneComplete
+                    ? () => context.go(Routes.consent)
+                    : null,
+                child: const Txt('common.continue'),
               ),
               const SizedBox(height: AppSpace.s24),
               Container(
