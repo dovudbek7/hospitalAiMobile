@@ -1,7 +1,5 @@
 import 'dart:io' show Platform;
 
-import 'package:flutter/foundation.dart' show kDebugMode;
-
 /// Environment configuration.
 ///
 /// The API base URL defaults to production so a plain `flutter build` ships
@@ -28,15 +26,11 @@ abstract final class Env {
   }
 
   /// DEMO MODE: the in-app fake server (lib/core/demo/demo_server.dart).
-  /// Defaults ON in debug builds so the product is walkable before a real
-  /// enrolment code exists; OFF in release/profile. Override explicitly:
-  ///   --dart-define=DEMO_MODE=false   (debug run against the live API)
-  ///   --dart-define=DEMO_MODE=true    (a demo release build)
-  static bool get demoMode =>
-      !isTest &&
-      (const bool.hasEnvironment('DEMO_MODE')
-          ? const bool.fromEnvironment('DEMO_MODE')
-          : kDebugMode);
+  /// OFF by default everywhere — a plain `flutter run` / build talks to the
+  /// live API and really validates the code + phone. Turn it on explicitly
+  /// only when you want the offline walkthrough:
+  ///   --dart-define=DEMO_MODE=true
+  static const bool demoMode = bool.fromEnvironment('DEMO_MODE');
 
   static bool get isConfigured => apiBaseUrl.isNotEmpty;
 
