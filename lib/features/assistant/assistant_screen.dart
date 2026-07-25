@@ -17,15 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/content/emergency_bundle.dart';
 import '../../core/providers.dart';
 import '../../core/content/txt.dart';
 import '../../core/router/guards.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/theme/typography.dart';
-import '../../core/util/dial.dart';
-import '../../core/widgets/emergency_button.dart';
-import '../../core/widgets/emergency_sheet.dart';
 import 'assistant_models.dart';
 import 'assistant_providers.dart';
 
@@ -72,24 +68,6 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
     });
   }
 
-  Future<void> _openEmergency() async {
-    final bundle = await EmergencyBundle.load();
-    if (!mounted) return;
-    await EmergencySheet.show(
-      context,
-      title: const Txt('emergency.sheet_title'),
-      instruction: const Txt('emergency.banner'),
-      callAmbulanceLabel: const Txt('emergency.call_103'),
-      callClinicLabel: const Txt('emergency.call_clinic'),
-      onCallAmbulance: () => dial(bundle?.ambulanceNumber ?? '103'),
-      onCallClinic: () {
-        final p = bundle?.clinicPhone;
-        if (p != null) dial(p);
-      },
-      hoursLine: const Txt('emergency.hours_line'),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(assistantProvider);
@@ -99,12 +77,6 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
       appBar: AppBar(
         titleSpacing: 0,
         title: const Txt('assistant.title', style: AppText.h2),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: AppSpace.s12),
-            child: _AssistantEmergencyButton(onPressed: _openEmergency),
-          ),
-        ],
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(28),
           child: Padding(
@@ -151,24 +123,6 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _AssistantEmergencyButton extends ConsumerWidget {
-  const _AssistantEmergencyButton({required this.onPressed});
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final label = switch (ref.watch(txtProvider('a11y.emergency_button'))) {
-      AsyncData(value: final ContentResolved r) => r.text,
-      _ => '103',
-    };
-    return SizedBox(
-      width: 44,
-      height: 44,
-      child: EmergencyButton(semanticLabel: label, onPressed: onPressed),
     );
   }
 }
@@ -223,12 +177,13 @@ class _Bubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isPatient = message.role == ChatRole.patient;
+    final fg = isPatient ? AppColors.surface : AppColors.ink;
     final child = message.contentKey != null
         // Approved content (replaced / error) — resolved, never composed.
-        ? Txt(message.contentKey!, style: AppText.bodyL)
+        ? Txt(message.contentKey!, style: AppText.bodyL.copyWith(color: fg))
         : (message.text.isEmpty && message.streaming)
             ? const _TypingDots()
-            : Text(message.text, style: AppText.bodyL);
+            : Text(message.text, style: AppText.bodyL.copyWith(color: fg));
 
     return Align(
       alignment: isPatient ? Alignment.centerRight : Alignment.centerLeft,
