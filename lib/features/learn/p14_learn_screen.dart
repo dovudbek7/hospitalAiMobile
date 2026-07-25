@@ -38,7 +38,7 @@ class P14LearnScreen extends ConsumerWidget {
             return ListView(
               padding: const EdgeInsets.fromLTRB(
                 AppSpace.s16,
-                AppSpace.s8,
+                AppSpace.s24,
                 AppSpace.s16,
                 120,
               ),

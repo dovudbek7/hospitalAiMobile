@@ -15,6 +15,7 @@ import '../../core/widgets/app_text_field.dart';
 import '../../core/widgets/primary_button.dart';
 import 'data/auth_repository.dart';
 import 'enrolment_form.dart';
+import 'onboarding_header.dart';
 
 class P3PhoneScreen extends ConsumerStatefulWidget {
   const P3PhoneScreen({super.key});
@@ -95,6 +96,12 @@ class _P3PhoneScreenState extends ConsumerState<P3PhoneScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              OnboardingHeader(
+                step: 2,
+                // The draft keeps the typed code, so going back is lossless.
+                onBack: _submitting ? null : () => context.go(Routes.code),
+              ),
+              const SizedBox(height: AppSpace.s24),
               Txt(
                 'onboarding.phone.title',
                 style: AppText.display.copyWith(fontSize: 30),

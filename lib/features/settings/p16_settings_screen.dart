@@ -12,6 +12,7 @@ import '../../core/content/emergency_bundle.dart';
 import '../../core/content/txt.dart';
 import '../../core/providers.dart';
 import '../../core/telemetry/client_events.dart';
+import '../../core/theme/text_size.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/theme/typography.dart';
 import '../../core/util/dial.dart';
@@ -109,7 +110,7 @@ class P16SettingsScreen extends ConsumerWidget {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(
             AppSpace.s16,
-            AppSpace.s8,
+            AppSpace.s24,
             AppSpace.s16,
             120,
           ),
@@ -157,7 +158,12 @@ class P16SettingsScreen extends ConsumerWidget {
               const SizedBox(height: AppSpace.s8),
             ],
 
-            const SizedBox(height: AppSpace.s16),
+            const SizedBox(height: AppSpace.s24),
+            const Eyebrow(child: Txt('settings.text_size')),
+            const SizedBox(height: AppSpace.s12),
+            const _TextSizeRow(),
+
+            const SizedBox(height: AppSpace.s24),
             const Eyebrow(child: Txt('settings.your_clinic')),
             const SizedBox(height: AppSpace.s12),
             const _ClinicCard(),
@@ -217,6 +223,89 @@ class P16SettingsScreen extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Three sizes, Medium default, Large for older eyes. The preview letter in
+/// each tile is drawn at that tile's own factor, so the choice is visible
+/// before it is made.
+class _TextSizeRow extends ConsumerWidget {
+  const _TextSizeRow();
+
+  static const _labelKeys = {
+    TextSizeChoice.small: 'settings.text_size.small',
+    TextSizeChoice.medium: 'settings.text_size.medium',
+    TextSizeChoice.large: 'settings.text_size.large',
+  };
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final current = ref.watch(textSizeProvider);
+
+    return Row(
+      children: [
+        for (final choice in TextSizeChoice.values) ...[
+          if (choice != TextSizeChoice.values.first)
+            const SizedBox(width: AppSpace.s8),
+          Expanded(
+            child: Semantics(
+              button: true,
+              selected: choice == current,
+              child: Material(
+                color: choice == current
+                    ? AppColors.brand50
+                    : AppColors.surface,
+                borderRadius: AppRadius.cardAll,
+                child: InkWell(
+                  onTap: () => ref.read(textSizeProvider.notifier).set(choice),
+                  borderRadius: AppRadius.cardAll,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppSpace.s12,
+                      horizontal: AppSpace.s8,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: AppRadius.cardAll,
+                      border: Border.all(
+                        color: choice == current
+                            ? AppColors.brand600
+                            : AppColors.line,
+                        width: choice == current ? 2 : 1,
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'A', // literal-ok: a type specimen, not prose
+                          style: AppText.display.copyWith(
+                            fontSize: 20 * choice.factor,
+                            color: choice == current
+                                ? AppColors.brand700
+                                : AppColors.ink,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpace.s4),
+                        Txt(
+                          _labelKeys[choice]!,
+                          style: AppText.caption.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: choice == current
+                                ? AppColors.brand700
+                                : AppColors.muted,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ],
     );
   }
 }

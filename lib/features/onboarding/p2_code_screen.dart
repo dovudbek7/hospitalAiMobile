@@ -13,7 +13,9 @@ import '../../core/theme/typography.dart';
 import '../../core/util/dial.dart';
 import '../../core/widgets/code_field.dart';
 import '../../core/widgets/primary_button.dart';
+import '../../core/widgets/secondary_button.dart';
 import 'enrolment_form.dart';
+import 'onboarding_header.dart';
 
 class P2CodeScreen extends ConsumerStatefulWidget {
   const P2CodeScreen({super.key});
@@ -50,6 +52,11 @@ class _P2CodeScreenState extends ConsumerState<P2CodeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              OnboardingHeader(
+                step: 1,
+                onBack: () => context.go(Routes.language),
+              ),
+              const SizedBox(height: AppSpace.s24),
               Txt(
                 'onboarding.code.title',
                 style: AppText.display.copyWith(fontSize: 30),
@@ -102,10 +109,11 @@ class _ClinicPhoneLink extends StatelessWidget {
       builder: (context, snapshot) {
         final phone = snapshot.data?.clinicPhone;
         if (phone == null) return const SizedBox.shrink();
-        return TextButton.icon(
+        return SecondaryButton(
+          height: 56,
           onPressed: () => dial(phone),
-          icon: const Icon(Icons.call_rounded, size: 20),
-          label: Text(
+          icon: const Icon(Icons.call_rounded),
+          child: Text(
             phone, // a phone number is data, not prose
             style: AppText.button.copyWith(color: AppColors.brand700),
           ),

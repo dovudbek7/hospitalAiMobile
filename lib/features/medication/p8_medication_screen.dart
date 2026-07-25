@@ -105,39 +105,58 @@ class P8MedicationScreen extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: 56,
-                                  height: 56,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.surface
-                                        .withValues(alpha: .2),
-                                    borderRadius: BorderRadius.circular(17),
-                                  ),
-                                  child: const Icon(
-                                    Icons.medication_outlined,
-                                    color: AppColors.surface,
-                                    size: 28,
-                                  ),
+                                // Icon beside the name, not stacked above
+                                // it — the stacked version pushed the dose
+                                // and the time chip off a small screen.
+                                Row(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 52,
+                                      height: 52,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.surface
+                                            .withValues(alpha: .2),
+                                        borderRadius:
+                                            BorderRadius.circular(16),
+                                      ),
+                                      child: const Icon(
+                                        Icons.medication_outlined,
+                                        color: AppColors.surface,
+                                        size: 26,
+                                      ),
+                                    ),
+                                    const SizedBox(width: AppSpace.s16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Txt(
+                                            'medication.scheduled_by_clinic',
+                                            style: AppText.eyebrow.copyWith(
+                                              color: AppColors.surface
+                                                  .withValues(alpha: .75),
+                                              letterSpacing: 1,
+                                            ),
+                                          ),
+                                          const SizedBox(height: AppSpace.s4),
+                                          // Name + dose = the clinic-approved
+                                          // content string, verbatim.
+                                          Txt(
+                                            task.contentRef,
+                                            style: AppText.display.copyWith(
+                                              color: AppColors.surface,
+                                              fontSize: 26,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: AppSpace.s16),
-                                Txt(
-                                  'medication.scheduled_by_clinic',
-                                  style: AppText.eyebrow.copyWith(
-                                    color: AppColors.surface
-                                        .withValues(alpha: .75),
-                                  ),
-                                ),
-                                const SizedBox(height: AppSpace.s4),
-                                // Name + dose = the clinic-approved content
-                                // string, verbatim.
-                                Txt(
-                                  task.contentRef,
-                                  style: AppText.display.copyWith(
-                                    color: AppColors.surface,
-                                    fontSize: 30,
-                                  ),
-                                ),
-                                const SizedBox(height: AppSpace.s12),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: AppSpace.s16,

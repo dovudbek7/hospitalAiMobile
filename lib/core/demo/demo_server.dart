@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show visibleForTesting;
 
 class DemoServer implements HttpClientAdapter {
   final Set<String> _completedTaskIds = {};
@@ -389,6 +390,71 @@ class DemoServer implements HttpClientAdapter {
     return urgent ? 'urgent' : 'routine';
   }
 
+  /// Words that trip the server-side red-flag screen (integration guide
+  /// §7.2). Demo mirror only — the client never runs this; it reads the
+  /// verdict off the response.
+  @visibleForTesting
+  static const redFlagWords = [
+    'chest pain', 'can\'t breathe', 'cannot breathe', 'trouble breathing',
+    'difficulty breathing', 'heavy bleeding', 'passing out', 'unconscious',
+    'ko\u02bbkrak', 'nafas', 'qon ket', 'behush',
+    'боль в груди', 'не могу дышать', 'кровотечение', 'теряю сознание',
+  ];
+
+  static bool _isRedFlag(String message) {
+    final m = message.toLowerCase();
+    return redFlagWords.any(m.contains);
+  }
+
+  /// SSE frames for one assistant turn. Grounded, explanation-only; nudges
+  /// to the check-in; never assesses. A red-flag message bypasses the model
+  /// and returns approved emergency content.
+  List<String> _assistantFrames(String message) {
+    String sse(Map<String, dynamic> o) => 'data: ${jsonEncode(o)}\n\n';
+    if (_isRedFlag(message)) {
+      return [
+        sse({'type': 'done', 'verdict': 'red_flag_bypass',
+             'contentKey': 'emergency.headline'}),
+      ];
+    }
+    final reply = switch (_lang) {
+      'UZ' => 'Klinikangiz ko\u2018rsatmasiga ko\u2018ra: bu haqda '
+          'ma\u2019lumot Materiallar bo\u2018limidagi tasdiqlangan '
+          'maqolalarda bor. Alomatlaringiz bo\u2018lsa, bugungi '
+          'so\u2018rovnomadan foydalaning \u2014 uni parvarish jamoangiz '
+          'ko\u2018rib chiqadi.',
+      'RU' => '\u0421\u043e\u0433\u043b\u0430\u0441\u043d\u043e '
+          '\u0440\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0430'
+          '\u0446\u0438\u044f\u043c \u0432\u0430\u0448\u0435\u0439 '
+          '\u043a\u043b\u0438\u043d\u0438\u043a\u0438: \u043e\u0431 '
+          '\u044d\u0442\u043e\u043c \u0435\u0441\u0442\u044c '
+          '\u043e\u0434\u043e\u0431\u0440\u0435\u043d\u043d\u044b'
+          '\u0435 \u0441\u0442\u0430\u0442\u044c\u0438 \u0432 '
+          '\u0440\u0430\u0437\u0434\u0435\u043b\u0435 '
+          '\u00ab\u041c\u0430\u0442\u0435\u0440\u0438\u0430\u043b'
+          '\u044b\u00bb. \u041f\u0440\u0438 \u0441\u0438\u043c'
+          '\u043f\u0442\u043e\u043c\u0430\u0445 '
+          '\u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0439'
+          '\u0442\u0435 \u0441\u0435\u0433\u043e\u0434\u043d\u044f'
+          '\u0448\u043d\u0438\u0439 \u043e\u043f\u0440\u043e\u0441 '
+          '\u2014 \u0435\u0433\u043e \u043f\u0440\u043e\u0441'
+          '\u043c\u043e\u0442\u0440\u0438\u0442 \u0432\u0430\u0448'
+          '\u0430 \u043a\u043e\u043c\u0430\u043d\u0434\u0430.',
+      _ => 'Your clinic\u2019s guidance on this is in the approved '
+          'articles under Learn. If you are noticing symptoms, use today\u2019s '
+          'check-in \u2014 your care team reviews it.',
+    };
+    // Split into a few deltas so the UI shows real streaming.
+    final words = reply.split(' ');
+    final frames = <String>[];
+    for (var i = 0; i < words.length; i += 6) {
+      final slice = words.sublist(i, (i + 6).clamp(0, words.length));
+      frames.add(sse({'type': 'delta', 'text': '${slice.join(' ')} '}));
+    }
+    frames.add(sse({'type': 'done', 'verdict': 'passed'}));
+    return frames;
+  }
+
   bool get _withinClinicHours {
     // Asia/Tashkent = UTC+5, clinic 09:00–18:00 Mon–Sat.
     final local = DateTime.now().toUtc().add(const Duration(hours: 5));
@@ -456,6 +522,28 @@ class DemoServer implements HttpClientAdapter {
     Future<void>? cancelFuture,
   ) async {
     await Future<void>.delayed(_latency);
+
+    // Assistant: stream Server-Sent Events, like the real endpoint.
+    if (options.uri.path.endsWith('/me/assistant/messages')) {
+      final data = options.data;
+      final message =
+          data is Map<String, dynamic> ? (data['message'] as String? ?? '') : '';
+      final frames = _assistantFrames(message);
+      final stream = () async* {
+        for (final f in frames) {
+          await Future<void>.delayed(const Duration(milliseconds: 120));
+          yield Uint8List.fromList(utf8.encode(f));
+        }
+      }();
+      return ResponseBody(
+        stream,
+        201,
+        headers: {
+          Headers.contentTypeHeader: ['text/event-stream'],
+        },
+      );
+    }
+
     final (status, body) = _route(options);
     return ResponseBody.fromString(
       jsonEncode(body),
@@ -530,6 +618,15 @@ class DemoServer implements HttpClientAdapter {
           'perDay': <dynamic>[],
         }
       );
+    }
+    if (path.endsWith('/me/assistant/threads')) {
+      // GET list or POST create — demo keeps a single ephemeral thread.
+      return o.method == 'POST'
+          ? (201, {'id': 'demo-thread-1'})
+          : (200, <dynamic>[]);
+    }
+    if (path.contains('/me/assistant/threads/')) {
+      return (200, {'id': path.split('/').last, 'messages': <dynamic>[]});
     }
     if (path.endsWith('/me/checkin/questions')) {
       return (200, _localizedQuestions());

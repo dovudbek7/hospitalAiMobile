@@ -20,6 +20,7 @@ abstract final class Routes {
   static const emergency = '/emergency';
   static const article = '/article';
   static const survey = '/survey';
+  static const assistant = '/assistant';
   static const gallery = '/dev/gallery';
 }
 

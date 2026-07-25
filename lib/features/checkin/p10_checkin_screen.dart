@@ -203,6 +203,7 @@ class _AnswerArea extends ConsumerWidget {
           onChanged: (v) => notifier.answer(question.ref, v),
           lowLabel: Txt('${question.questionContentKey}.low'),
           highLabel: Txt('${question.questionContentKey}.high'),
+          hint: const Txt('checkin.scale_hint'),
         );
       case 'multi':
         final selected =
@@ -274,6 +275,10 @@ class _OptionTile extends StatelessWidget {
               vertical: AppSpace.s12,
             ),
             decoration: BoxDecoration(
+              // The fill belongs on the SAME box as the shadow: without it
+              // the card shadow was painting through the transparent tile
+              // and washing the row grey.
+              color: selected ? AppColors.brand50 : AppColors.surface,
               borderRadius: AppRadius.cardAll,
               border: Border.all(
                 color: selected ? AppColors.brand600 : AppColors.line,

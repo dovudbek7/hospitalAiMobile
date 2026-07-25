@@ -16,6 +16,7 @@ import '../../core/theme/typography.dart';
 import '../../core/widgets/app_sheet.dart';
 import '../../core/widgets/primary_button.dart';
 import 'data/auth_repository.dart';
+import 'onboarding_header.dart';
 
 /// The consent document version the patient accepts (server example: "v1").
 /// Stored server-side with the acceptance timestamp.
@@ -101,10 +102,21 @@ class _P4ConsentScreenState extends ConsumerState<P4ConsentScreen> {
         // The whole screen scrolls at large font scales; the consent text
         // keeps its own inner scroll for the read-to-the-end gate.
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpace.s24),
+          // Extra bottom room so Agree never sits flush against the
+          // system navigation bar on a 3-button Android phone.
+          padding: const EdgeInsets.fromLTRB(
+            AppSpace.s24,
+            AppSpace.s24,
+            AppSpace.s24,
+            AppSpace.s48,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // No back control: the session already exists, so the guard
+              // pins this screen until Agree or Decline. Decline is the exit.
+              const OnboardingHeader(step: 3),
+              const SizedBox(height: AppSpace.s24),
               Txt(
                 'onboarding.consent.title',
                 style: AppText.display.copyWith(fontSize: 30),

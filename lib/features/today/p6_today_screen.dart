@@ -133,6 +133,13 @@ class P6TodayScreen extends ConsumerWidget {
                     const SizedBox(height: AppSpace.s4),
                     SecondaryButton(
                       height: 58,
+                      onPressed: () => context.push(Routes.assistant),
+                      icon: const Icon(Icons.auto_awesome_outlined),
+                      child: const Txt('today.ask_assistant'),
+                    ),
+                    const SizedBox(height: AppSpace.s12),
+                    SecondaryButton(
+                      height: 58,
                       onPressed: () => _contactClinic(context),
                       icon: const Icon(Icons.call_rounded),
                       child: const Txt('contact.button'),
@@ -163,7 +170,7 @@ class _Hero extends ConsumerWidget {
       borderRadius: const BorderRadius.vertical(bottom: Radius.circular(32)),
       padding: EdgeInsets.fromLTRB(
         AppSpace.s16,
-        MediaQuery.paddingOf(context).top + AppSpace.s8,
+        MediaQuery.paddingOf(context).top + AppSpace.s16,
         AppSpace.s16,
         AppSpace.s24,
       ),
