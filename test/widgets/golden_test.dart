@@ -1,3 +1,11 @@
+// Pixel-exact tests, generated/verified on macOS; Linux CI rasterises
+// fonts slightly differently (<1% diff), so this whole file is excluded on
+// CI via --exclude-tags=golden. The SCREEN-level no-red scan
+// (test/a11y/no_red_outside_emergency_test.dart) is untagged and still
+// runs on CI.
+@Tags(['golden'])
+library;
+
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
