@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -156,10 +157,11 @@ void main() {
     taps++;
     await tester.pumpAndSettle();
 
-    // P4 — consent reached; session exists but is not consented.
+    // P4 — consent reached BEFORE any session (enrolment happens at Agree),
+    // which is what lets P4 keep a working Back to P3.
     expect(find.byType(P4ConsentScreen), findsOneWidget);
     final s = container.read(sessionProvider);
-    expect(s.hasSession, isTrue);
+    expect(s.hasSession, isFalse);
     expect(s.consented, isFalse);
     expect(taps, lessThanOrEqualTo(5));
   });
@@ -171,11 +173,12 @@ void main() {
     addTearDown(tester.view.reset);
 
     final container = await pumpApp(tester);
-    // Jump straight to consent state.
+    // Consent is reachable once a language is chosen (enrolment is at Agree).
     await container.read(sessionProvider.notifier).setLanguage('EN');
-    await container
-        .read(sessionProvider.notifier)
-        .sessionCreated(patientId: 'p', clinicId: 'c');
+    await tester.pumpAndSettle();
+    // Drive to P4 the normal way would need code+phone; jump the router.
+    final ctx = tester.element(find.byType(P1LanguageScreen));
+    GoRouter.of(ctx).go('/consent');
     await tester.pumpAndSettle();
     expect(find.byType(P4ConsentScreen), findsOneWidget);
 
@@ -183,12 +186,11 @@ void main() {
           find.byType(PrimaryButton).first,
         );
 
-    // Neither scrolled nor ticked → disabled.
-    // (Short fake text may already be at the end; force the harder case by
-    // checking the checkbox path first.)
-    final checkbox = find.byType(InkWell).first;
+    // The checkbox row carries the consent-checkbox label (fake content
+    // renders it as txt:<key>).
+    final checkbox = find.text('txt:onboarding.consent.checkbox');
 
-    // Tick WITHOUT scrolling: if the text is scrollable, still disabled.
+    // Tick without scrolling first.
     await tester.tap(checkbox, warnIfMissed: false);
     await tester.pump();
 
@@ -197,7 +199,6 @@ void main() {
     await tester.drag(list, const Offset(0, -4000));
     await tester.pump();
 
-    // Now ensure ticked too (tap may have hit the sheet — re-tap if needed).
     if (agree().onPressed == null) {
       await tester.tap(checkbox, warnIfMissed: false);
       await tester.pump();

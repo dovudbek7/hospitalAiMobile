@@ -75,23 +75,7 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
     return Scaffold(
       backgroundColor: AppColors.canvas,
       appBar: AppBar(
-        titleSpacing: 0,
         title: const Txt('assistant.title', style: AppText.h2),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(28),
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpace.s16,
-              0,
-              AppSpace.s16,
-              AppSpace.s8,
-            ),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Txt('assistant.subtitle', style: AppText.caption),
-            ),
-          ),
-        ),
       ),
       body: Column(
         children: [
@@ -152,6 +136,12 @@ class _Intro extends StatelessWidget {
               ),
             ),
             const SizedBox(height: AppSpace.s16),
+            const Txt(
+              'assistant.subtitle',
+              style: AppText.h2,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpace.s8),
             const Txt(
               'assistant.intro',
               style: AppText.bodyL,

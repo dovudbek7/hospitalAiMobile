@@ -22,12 +22,15 @@ void main() {
     expect(sessionRedirect(fresh, Routes.language), isNull);
   });
 
-  test('language but no session → only P1–P3 reachable', () {
+  test('language but no session → P1–P4 reachable (enrolment is at Agree)',
+      () {
     expect(sessionRedirect(hasLang, Routes.code), isNull);
     expect(sessionRedirect(hasLang, Routes.phone), isNull);
     expect(sessionRedirect(hasLang, Routes.language), isNull);
+    // Consent is reachable before a session so P4 keeps a working Back.
+    expect(sessionRedirect(hasLang, Routes.consent), isNull);
     expect(sessionRedirect(hasLang, Routes.today), Routes.code);
-    expect(sessionRedirect(hasLang, Routes.consent), Routes.code);
+    expect(sessionRedirect(hasLang, Routes.checkin), Routes.code);
   });
 
   test('session without consent → pinned to P4, Today unreachable', () {

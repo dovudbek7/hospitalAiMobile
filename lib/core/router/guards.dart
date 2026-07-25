@@ -57,7 +57,14 @@ String? sessionRedirect(SessionSnapshot s, String location) {
   }
 
   if (!s.hasSession) {
-    const allowed = {Routes.language, Routes.code, Routes.phone};
+    // Enrolment now happens at Agree (P4), so consent is reachable before a
+    // session exists — which lets P4 keep a working Back to P3.
+    const allowed = {
+      Routes.language,
+      Routes.code,
+      Routes.phone,
+      Routes.consent,
+    };
     return allowed.contains(location) ? null : Routes.code;
   }
 
