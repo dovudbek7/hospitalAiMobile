@@ -1,3 +1,7 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart' show kDebugMode;
+
 /// Environment configuration.
 ///
 /// Nothing is hardcoded (ADR: "Configuration — nothing hardcoded").
@@ -11,14 +15,34 @@
 abstract final class Env {
   static const String apiBaseUrl = String.fromEnvironment('API_BASE_URL');
 
-  /// Set to `true` only for `flutter test` runs, where widget tests supply
-  /// their own fakes and no network is ever touched.
-  static const bool isTest = bool.fromEnvironment('FLUTTER_TEST');
+  /// True under `flutter test` (the runner exports FLUTTER_TEST in the
+  /// process environment; the dart-define variant is not reliable here).
+  /// Tests supply their own fakes and never touch the network.
+  static bool get isTest {
+    try {
+      return Platform.environment['FLUTTER_TEST'] == 'true';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// DEMO MODE: the in-app fake server (lib/core/demo/demo_server.dart).
+  /// Defaults ON in debug builds so the product is walkable before a real
+  /// enrolment code exists; OFF in release/profile. Override explicitly:
+  ///   --dart-define=DEMO_MODE=false   (debug run against the live API)
+  ///   --dart-define=DEMO_MODE=true    (a demo release build)
+  static bool get demoMode =>
+      !isTest &&
+      (const bool.hasEnvironment('DEMO_MODE')
+          ? const bool.fromEnvironment('DEMO_MODE')
+          : kDebugMode);
 
   static bool get isConfigured => apiBaseUrl.isNotEmpty;
 
   static void requireValid() {
     if (isTest) return;
+    // Demo mode needs no backend at all.
+    if (demoMode) return;
     if (!isConfigured) {
       throw StateError(
         'API_BASE_URL is not set. '

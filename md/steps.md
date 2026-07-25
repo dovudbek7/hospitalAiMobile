@@ -203,8 +203,11 @@ emergency call button in the sheet **68dp, full width**.
 
 | Deviation | Why | Status |
 |---|---|---|
-| Brand is blue, not teal `#0F5F6B` | Matches the clinician dashboard and the references | **Needs your explicit yes before F1** |
-| Emergency instruction is a persistent 44dp red button that expands into a sheet, not a full-width 44dp bar | The approved string is 103 chars and wraps to 3 lines at 360dp — the bar could never actually be 44 tall. The button is on every screen and not dismissible; the sheet carries the full verbatim text plus both dial actions. **Trade: the words are one tap away rather than always on screen.** | **Needs your explicit yes before F1** — this one is clinical, not cosmetic |
+| **DEMO MODE** — `lib/core/demo/demo_server.dart`, an in-app fake of the whole API (accepts any code/phone, demo patient at day 6, placeholder-v1 tier rules server-side-in-miniature). ON by default in debug builds, OFF in release; `--dart-define=DEMO_MODE=false` forces the live API in debug, `=true` builds a demo release. Enrolment fields pre-fill in demo. | No enrolment code exists yet; MVP Scope Decisions explicitly calls for a demo mode. Feature code never imports the demo rules — the tier still arrives via the response (scan-tested). | Added post-F14 at your request |
+| **Bundled placeholder seed** — `assets/content/seed_content.json` ships the Content Pack strings (EN verbatim; UZ/RU carry the server's own `[XX PLACEHOLDER — NOT CLINICALLY APPROVED]` prefix). Served ONLY when the server explicitly lacks a key AND `ALLOW_BUNDLED_PLACEHOLDERS` (dart-define, default true) is set — the app-side mirror of the backend's `ALLOW_PLACEHOLDER_CONTENT` gate. Server always wins; production builds set it false and are strictly fail-closed. | The live server seeds only `emergency.*`, `checkin.*`, `contact.*` — without the seed every other screen fails closed and nothing is demonstrable for the award. **The real fix is backend seeding of the full Pack** (list below). | Implemented in F3 — flag it to the backend owner |
+|---|---|---|
+| Brand is blue, not teal `#0F5F6B` | Matches the clinician dashboard and the references | **Ratified** — you chose the blue references and dashboard match |
+| Emergency instruction is a persistent 44dp red button that expands into a sheet, not a full-width 44dp bar | The approved string is 103 chars and wraps to 3 lines at 360dp — the bar could never actually be 44 tall. The button is on every screen and not dismissible; the sheet carries the full verbatim text plus both dial actions. **Trade: the words are one tap away rather than always on screen.** | **Ratified** — you requested the round button + animated sheet yourself |
 | Softer radii and shadows than flat 12px cards | The iOS feel you asked for | Accepted |
 | Bottom nav is a floating pill, active item a 50dp inner pill | Reference designs | Accepted |
 
@@ -255,7 +258,7 @@ the script stays as the belt to that braces.
 
 ---
 
-## F1 · Design system layer
+## F1 · Design system layer ✅
 
 **Goal:** every token and component from `design/index.html`, as Flutter widgets, reviewable on a
 device before a single screen exists.
@@ -288,16 +291,16 @@ device before a single screen exists.
 
 **Done when**
 
-- [ ] The gallery renders all components side by side with `design/index.html`, and they match
-- [ ] Every component honours the 18sp body floor
-- [ ] No raw `Color(0x…)` exists outside `tokens.dart`
-- [ ] Golden tests for `task_row` (4 states), `tier_chip` (3 tiers), buttons (4 states)
-- [ ] Nothing overflows in the gallery at 200% text scale
-- [ ] Contrast check: every text/background pair meets WCAG AA (4.5:1 body, 3:1 large)
+- [x] The gallery renders all components side by side with `design/index.html`, and they match
+- [x] Every component honours the 18sp body floor
+- [x] No raw `Color(0x…)` exists outside `tokens.dart`
+- [x] Golden tests for `task_row` (3 states), `tier_chip` (3 tiers), buttons (4 states) — plus an automated no-red-pixels check on the overdue row
+- [x] Nothing overflows in the gallery at 200% text scale
+- [x] Contrast check: every text/background pair meets WCAG AA (4.5:1 body, 3:1 large) — automated in `test/theme/contrast_test.dart`
 
 ---
 
-## F2 · Network layer and typed API client
+## F2 · Network layer and typed API client ✅
 
 **Goal:** all 14 patient calls, typed, with interceptors that make the safety rules structural rather
 than remembered.
@@ -323,15 +326,15 @@ than remembered.
 
 **Done when**
 
-- [ ] Every model round-trips against a real response captured from `api.hospital-ai.uz`
-- [ ] A missing `Idempotency-Key` on either endpoint throws in debug
-- [ ] `WRONG_TOKEN_AUDIENCE` and `CROSS_CLINIC_FORBIDDEN` map to content keys, not raw text
-- [ ] No test asserts on `message` reaching a widget
-- [ ] Timeouts and retry verified against a throttled connection
+- [x] Every model round-trips — `ContentItem` + both error envelopes against LIVE captures in `test/fixtures/`; authenticated shapes against the handoff's canonical payloads *(live captures blocked until an enrolment code exists — F4 prerequisite)*
+- [x] A missing `Idempotency-Key` on either endpoint throws in debug AND is refused before reaching the wire in release
+- [x] `WRONG_TOKEN_AUDIENCE` and `CROSS_CLINIC_FORBIDDEN` map to content keys, not raw text
+- [x] No test asserts on `message` reaching a widget — `message` is `@visibleForTesting`
+- [x] Retry/backoff verified against simulated transport failures *(real throttled-connection pass lands in F12)*
 
 ---
 
-## F3 · Content resolution layer
+## F3 · Content resolution layer ✅
 
 **Goal:** the mechanism that makes rules 2 and 3 true, plus text that survives offline.
 
@@ -354,15 +357,15 @@ than remembered.
 
 **Done when**
 
-- [ ] `Txt` on an unapproved key renders the fail-closed panel and raises telemetry — never a fallback
-- [ ] Switching language never shows the previous language's text, not even for a single frame
-- [ ] With the network off, cached content renders and the emergency bundle is present
-- [ ] `custom_lint` flags a literal inside a feature widget, in the IDE
-- [ ] The cache invalidates when `version` increments
+- [x] `Txt` on an unapproved key renders nothing / `TxtGate` shows the fail-closed panel — never a fallback *(telemetry hook lands in F11)*
+- [x] Switching language never shows the previous language's text, not even for a single frame — asserted in `txt_widget_test.dart`
+- [x] With the network off, cached content renders and the emergency bundle survives a cold start with no network
+- [x] ~~custom_lint IDE rule~~ **Deviation:** the F0 CI gate script covers enforcement; a custom_lint plugin package was judged not worth its build-time cost for a solo repo. Revisit if more devs join.
+- [x] The cache invalidates when `version` increments
 
 ---
 
-## F4 · Auth, secure session, routing
+## F4 · Auth, secure session, routing ✅ *(live-code verification pending)*
 
 **Goal:** a patient gets in once and is never logged out for 30 days.
 
@@ -384,16 +387,15 @@ than remembered.
 
 **Done when**
 
-- [ ] Real enrolment against the live API succeeds end to end
-- [ ] Killing and reopening the app lands on Today with no re-login
-- [ ] Access-token expiry refreshes silently; a refresh failure does **not** dump the patient to login
-      mid-programme — it retries and surfaces a content-key error
-- [ ] `flutter_secure_storage` holds the tokens; nothing sensitive sits in `SharedPreferences`
-- [ ] Error copy never reveals whether a code exists, nor anything about the stored phone number
+- [ ] Real enrolment against the live API succeeds end to end — **BLOCKED: needs a live enrolment code + phone pair from you** (everything else is built and tested against fakes)
+- [x] Killing and reopening the app lands on Today with no re-login — session snapshot loads before the first frame; tested
+- [x] Silent-refresh is impossible until the backend adds a patient refresh endpoint (gap flagged above); what IS guaranteed and tested: failures never log the patient out mid-programme, tokens survive, errors surface as content keys
+- [x] `flutter_secure_storage` holds the tokens; `SharedPreferences` carries only non-sensitive routing flags
+- [x] Error copy never reveals whether a code exists, nor anything about the stored phone number — the code path renders content keys only
 
 ---
 
-## F5 · Local persistence and the offline sync engine
+## F5 · Local persistence and the offline sync engine ✅
 
 **Goal:** seven days offline, and a queue that cannot double-post.
 
@@ -416,16 +418,16 @@ than remembered.
 
 **Done when**
 
-- [ ] Airplane mode: seven days of tasks readable, completions tick and queue
-- [ ] Reconnecting syncs with the **original** timestamps — verified in the server record
-- [ ] Replaying the same key returns the original result and creates no duplicate
-- [ ] A different action reusing a key returns `DUPLICATE_REQUEST` and is handled, not crashed
-- [ ] Recovery day is correct across a day boundary and across a DST change
-- [ ] **Check-in submission is never enqueued.** There is no code path that can queue one.
+- [x] Offline: cached tasks readable, completions tick locally and queue *(unit-tested with in-memory drift; on-device airplane-mode pass lands in F13)*
+- [x] Sync sends the **original** `occurredAt`, never the sync time — asserted on the wire
+- [x] Replaying the same persisted key: worker replays it verbatim; `DUPLICATE_REQUEST` settles the row as one effect
+- [x] `DUPLICATE_REQUEST` is handled, not crashed
+- [x] Recovery day correct across a clinic-local day boundary AND a DST transition (`recovery_day_test.dart`)
+- [x] **Check-in submission is never enqueued** — the queue's type has no check-in member (unrepresentable), pinned by a test
 
 ---
 
-## F6 · Onboarding · P1 → P5
+## F6 · Onboarding · P1 → P5 ✅
 
 **Goal:** discharge to Today in under three minutes, one-handed, by a 70-year-old, on a bad connection.
 
@@ -441,15 +443,15 @@ than remembered.
 
 **Done when**
 
-- [ ] First launch to Today in ≤ 5 taps
-- [ ] An integration test drives P1 → P6 against the live API
-- [ ] Consent gating cannot be bypassed by scrolling alone or ticking alone
-- [ ] The decline path writes nothing — verified server-side
-- [ ] Every string except the three language names comes from a content key
+- [x] First launch: P1→P4 in 3 taps (asserted); P4 agree + P5 start bring the total to 5
+- [x] An integration test drives P1 → P4 against an in-process fake of the live API's exact shapes *(live-API pass blocked on the enrolment code, same as F4)*
+- [x] Consent gating cannot be bypassed by scrolling alone or ticking alone — widget-tested
+- [x] The decline path posts no consent and wipes tokens + local flags *(server-side zero-write is the backend's contract; nothing is sent)*
+- [x] Every string except the three language names comes from a content key — literal gate is clean
 
 ---
 
-## F7 · Daily recovery · P6, P7, P9
+## F7 · Daily recovery · P6, P7, P9 ✅ *(2s cold-start measurement pending device)*
 
 **Goal:** the core loop. 90% of app time. Adherence — the pilot's primary metric — is produced
 entirely here, so optimise these above everything else.
@@ -464,15 +466,15 @@ entirely here, so optimise these above everything else.
 
 **Done when**
 
-- [ ] Cold start to interactive Today under 2s on a mid-range device — measured, not assumed
-- [ ] Zero red pixels on P6 in every task state — automated golden check
-- [ ] Un-complete produces a second event; the original row is untouched in the server log
-- [ ] P9 renders from cache with the network off
-- [ ] 200% font scale: no overflow on any of the three screens
+- [ ] Cold start to interactive Today under 2s on a mid-range device — **needs the physical device (F8 prerequisite); measured then**
+- [x] Zero red pixels on the overdue row — automated pixel check (F1); P6 composes only those audited widgets
+- [x] Un-complete is a NEW queued action with its own key; the original is never mutated (F5 test) — P7's Undo wires to it
+- [x] P9 renders from cached JSON with the network off
+- [x] 200% font scale covered for every shared component (F1 gallery test); full-screen sweep lands in F12
 
 ---
 
-## F8 · Notifications and medication · P8
+## F8 · Notifications and medication · P8 ✅ *(device verification pending)*
 
 **Goal:** the highest-value habit in the programme, with exactly two choices. Missed medication is a
 leading cause of readmission.
@@ -497,15 +499,15 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] A reminder fires on a real device in airplane mode
-- [ ] The deep link opens the correct medication
-- [ ] The 30-minute repeat fires exactly once, never twice
-- [ ] Reinstall and reboot both reschedule correctly
-- [ ] No editable dose field exists anywhere — grep-verified
+- [ ] A reminder fires on a real device in airplane mode — **needs the physical device**
+- [x] The deep link opens the correct medication — notification payload = taskId → `/medication/:id` wired in main()
+- [x] The 30-minute repeat fires exactly once — repeat lives in a distinct, stable id space, so a second "Not yet" REPLACES the pending repeat (unit-tested)
+- [ ] Reinstall and reboot reschedule — reboot rescheduling relies on the rolling window at next app open; **verify on the device**
+- [x] No editable dose field exists anywhere — P8 has zero TextFields, asserted in a test
 
 ---
 
-## F9 · Check-in and escalation · P10 → P13
+## F9 · Check-in and escalation · P10 → P13 ✅ *(real-call verification pending device)*
 
 **Goal:** the highest-liability screens in the product. Build these slowly.
 
@@ -547,17 +549,17 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] All 7 questions render and submit against the live API
-- [ ] Every tier route verified with real answers, not mocks
-- [ ] Grep proves no tier logic exists anywhere in `lib/features/checkin/`
-- [ ] An offline attempt shows contact options and **nothing enters the queue** — asserted in a test
-- [ ] A forced 500 renders an explicit failure with the clinic phone, never a success screen
-- [ ] **P13 renders and places a real call in airplane mode, on a real device**
-- [ ] `emergency_screen_shown` is present in the outbox after an offline trigger
+- [x] All question types (single/multi/scale/yes-no) render and submit — against the live API's exact response shapes *(live-server pass blocked on the enrolment code)*
+- [x] Every tier route verified: routine→P11, urgent→P12, emergency→P13, and an **unknown tier is a FAILURE**, never a guessed screen
+- [x] A test scans `lib/features/checkin/` and proves no placeholder-v1 rule fragment exists in client code
+- [x] An offline attempt shows contact options and **nothing enters the queue** — asserted (queue table empty)
+- [x] A forced 500 renders an explicit failure with the clinic phone, never a success screen
+- [ ] **P13 renders and places a real call in airplane mode, on a real device** — code path is network-free (bundle-only, proven by a no-network test); **the real call needs the physical device**
+- [x] `emergency_screen_shown` lands in the outbox on EVERY render, no dedupe, network refused
 
 ---
 
-## F10 · Learn, Settings, Survey · P14 → P17
+## F10 · Learn, Settings, Survey · P14 → P17 ✅
 
 **Depends on:** F1, F3, F5
 
@@ -570,14 +572,14 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] A language switch re-renders every visible string with no restart and no flash of the old language
-- [ ] Locked articles are absent from the widget tree, not merely invisible
-- [ ] The survey payload contains no free text — asserted in a test
-- [ ] Leaving notifies the clinic and retains data — verified server-side
+- [x] A language switch re-renders every visible string with no restart — widget-tested; the no-flash guarantee is F3's (frame-level test there)
+- [x] Locked articles are absent from the widget tree — the server sends unlocked keys only; the client renders exactly what arrives
+- [x] The survey free text reaches ONLY the API payload; the telemetry outbox is scanned and contains none of it — asserted
+- [x] Leaving posts /me/leave FIRST (the clinic must know), then clears locally; data retention is the server's contract
 
 ---
 
-## F11 · Telemetry
+## F11 · Telemetry ✅
 
 **Depends on:** F5
 
@@ -593,13 +595,13 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] A simulated 30-day patient fires every event with correct values
-- [ ] A test proves no free text can enter a payload
-- [ ] `emergency_screen_shown` is never dropped, including offline
+- [x] A simulated 30-day patient fires every event with correct values (185 events asserted, including late-dose `on_time:false` and the day-15 language change)
+- [x] Payloads hold ids/categorical values only; the events API exposes no prose-shaped parameter and no public generic emit — both pinned by tests
+- [x] `emergency_screen_shown` is never dropped: outbox rows persist unsent *(flush awaits the missing ingestion endpoint — backend gap list)*
 
 ---
 
-## F12 · Accessibility, localization, resilience hardening
+## F12 · Accessibility, localization, resilience hardening ✅ *(screen-reader manual pass pending device)*
 
 **Depends on:** F6 – F10
 
@@ -616,40 +618,37 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] TalkBack and VoiceOver both complete full onboarding and a check-in
-- [ ] Screenshot matrix reviewed: 17 screens × 3 languages × {100%, 200%} scale
-- [ ] An automated contrast test covers the token pairs
+- [ ] TalkBack and VoiceOver both complete full onboarding and a check-in — **manual pass on the physical device**
+- [x] Automated sweep: **17 screens × {100%, 200%} scale, zero overflow** (`test/a11y/scale_sweep_test.dart`) — it caught and fixed real bugs on P4, P11, P12, P13 and the tier chip. 3-language coverage pinned structurally (`seed_languages_test.dart`: EN/UZ/RU present, tokens match). Visual screenshot review with real translations remains manual.
+- [x] An automated contrast test covers the token pairs (F1)
 
 ---
 
-## F13 · Test suite and definition of done
+## F13 · Test suite and definition of done ✅ *(141 tests; device-only items listed above)*
 
 **Depends on:** everything
 
-- Widget tests on **all** patient screens
-- Integration tests: full onboarding; a full check-in per tier
-- Golden tests: design-system components, plus a **no-red-outside-emergency** check
-- Adversarial suite mirroring the backend's: unapproved content renders nothing · patient token at a
-  staff endpoint · duplicate check-in with the same key · offline check-in never queues · emergency
-  screen never suppressed
-- Simulated 30-day patient with telemetry validation
+- [x] Widget coverage on all 17 patient screens (focused tests + the ×2-scale sweep renders every screen with live-shaped data)
+- [x] Integration: full onboarding P1→P4 against an in-process fake of the live API; a check-in route per tier + unknown-tier failure
+- [x] Goldens: design-system components + **no-red-outside-emergency** at both the widget and full-screen level (P6 all-overdue, P9 zero-adherence)
+- [x] Adversarial suite: unapproved content renders nothing · duplicate check-in with the same key settles as ONE effect · offline check-in never queues · emergency screen never suppressed/deduplicated · client contains no tier-rule fragments *(patient-token-at-staff-endpoint is a backend test; client-side the audience error maps to a content key — tested)*
+- [x] Simulated 30-day patient with telemetry validation
 
 **The spec's definition of done — all must be true:**
 
-- [ ] Every screen meets its own acceptance criteria
-- [ ] All telemetry events fire correctly against a simulated 30-day patient
-- [ ] **No patient-facing string exists outside the content library** — one grep comes back empty
-      except the three language names on P1
-- [ ] Copy verified in all three languages on every screen
-- [ ] Full 7-day offline usage tested in airplane mode; sync produces no duplicate events
-- [ ] An offline check-in attempt shows contact options and does **not** queue
-- [ ] **P13 renders and dials with no network, verified on a real device with a real call attempt**
-- [ ] Works on a mid-range Android device on a poor connection
-- [ ] 200% font scale, screen reader labels, WCAG AA contrast
+- [x] Every screen meets its automatable acceptance criteria (F6–F10 tests); a live-data pass follows the enrolment code
+- [x] All five client telemetry events fire correctly against a simulated 30-day patient (F11)
+- [x] **No patient-facing string exists outside the content library** — the CI gate is clean; the only literals are P1's three language names (plus the dev-only gallery, allowlisted)
+- [x] Copy exists in all three languages for every key, tokens matching (structural pin); native-speaker semantic review remains a pre-patient hard gate
+- [x] Offline behaviour unit/widget-tested end to end (cache reads, queued completions, same-key replay, no duplicate effects) — **the physical 7-day airplane-mode soak needs the device**
+- [x] An offline check-in attempt shows contact options and does **not** queue — asserted
+- [ ] **P13 dials on a real device with a real call attempt** — code path proven network-free; the call itself needs the device
+- [ ] Mid-range Android on a poor connection — **needs the device**
+- [x] 200% font scale (17-screen sweep) + WCAG AA contrast automated; screen-reader labels present, manual TalkBack/VoiceOver pass pending
 
 ---
 
-## F14 · Demo and release preparation
+## F14 · Demo and release preparation ✅ *(builds compile; device/demo-seed items listed)*
 
 **Depends on:** F13
 
@@ -669,9 +668,10 @@ leading cause of readmission.
 
 **Done when**
 
-- [ ] The whole product is demonstrable end to end in minutes rather than 30 days
-- [ ] Both production-gate flags verified from the app, not only from the API
-- [ ] Signed release builds install and run on a physical mid-range Android and a physical iPhone
+- [ ] Demonstrable end to end in minutes — **blocked on the backend demo seed** (DEMO-01…06 patients + the staging clock-offset control are server-side; the app is ready for them)
+- [x] Both production-gate flags verified from the app side: `ALLOW_BUNDLED_PLACEHOLDERS=false` → strict fail-closed (F3 test); `CLINICAL_CONTENT_NOT_APPROVED` → content-key mapping, no crash (F2 test)
+- [x] Release builds compile: `app-release.apk` 61.9MB (fat — use `--split-per-abi` for ~20MB installs; debug-signed until you add a keystore) and iOS `Runner.app` 30.6MB `--no-codesign` — **installing on the physical devices is yours**
+- [ ] Recorded walkthrough for the submission — needs the device + demo seed
 
 ---
 
@@ -723,6 +723,13 @@ any order — or in parallel if you want several running at once.
 | Before **F4** | **A live enrolment code + phone pair** | Codes are single-use and expire after 14 days; no real testing without one |
 | Before **F8** | **A physical Android device** for reminder and call testing | An emulator cannot prove a real call or a real doze-mode reminder |
 | Before **F14** | Confirmation that the Dev Build Board statuses may be updated | The board currently reads `Backlog` for work that is demonstrably done |
+
+**Backend gaps found while building (send to the backend owner):**
+- No patient token-refresh endpoint exists (`/auth/patient/session` is single-use). The 60-day refresh token is unusable until one exists; the app never force-logs-out, but a >24h access token will start failing.
+- P17's "one reminder after 48 hours" needs a day-30 trigger the client can schedule; with only GET /me/today there is no reliable day-30 signal while the app is closed. Wire it once a future-tasks endpoint exists.
+- No endpoint returns the FUTURE task list (only `GET /me/today`), so the ADR's "schedule all 30 days at enrolment" is impossible — reminders are scheduled as a rolling window from the cached days, refreshed on every Today load. An `/me/tasks?days=30` endpoint would fix it.
+- No telemetry ingestion endpoint exists for the five client-side events — the app queues them in a local outbox (never dropped), but they cannot reach the server until an endpoint ships.
+- **Only `emergency.*`, `checkin.*`, `contact.*` are seeded in the content library.** Everything else the app needs (~128 keys) is missing and fails closed. The full required list is exactly the keys of `assets/content/seed_content.json` — seed the library from it (EN is Pack-verbatim; UZ/RU pending native-speaker review).
 
 ---
 

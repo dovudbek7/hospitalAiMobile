@@ -1,3 +1,11 @@
+// Pixel-exact tests, generated/verified on macOS; Linux CI rasterises
+// fonts slightly differently (<1% diff), so this whole file is excluded on
+// CI via --exclude-tags=golden. The SCREEN-level no-red scan
+// (test/a11y/no_red_outside_emergency_test.dart) is untagged and still
+// runs on CI.
+@Tags(['golden'])
+library;
+
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -132,20 +140,25 @@ void main() {
 
     // Standing rule 8: red is reserved for medical emergency. An overdue
     // task must not render a single emergency-red pixel.
-    final image = await _capture(tester, find.byType(TaskRow));
-    final data = (await image.toByteData())!;
-    var redPixels = 0;
-    for (var i = 0; i < data.lengthInBytes; i += 4) {
-      final r = data.getUint8(i);
-      final g = data.getUint8(i + 1);
-      final b = data.getUint8(i + 2);
-      // near the emergency token #B3261E
-      if ((r - 0xB3).abs() < 24 &&
-          (g - 0x26).abs() < 24 &&
-          (b - 0x1E).abs() < 24) {
-        redPixels++;
+    // toImage/toByteData are real async — they never complete inside the
+    // test's FakeAsync zone, hence runAsync.
+    final redPixels = await tester.runAsync<int>(() async {
+      final image = await _capture(tester, find.byType(TaskRow));
+      final data = (await image.toByteData())!;
+      var count = 0;
+      for (var i = 0; i < data.lengthInBytes; i += 4) {
+        final r = data.getUint8(i);
+        final g = data.getUint8(i + 1);
+        final b = data.getUint8(i + 2);
+        // near the emergency token #B3261E
+        if ((r - 0xB3).abs() < 24 &&
+            (g - 0x26).abs() < 24 &&
+            (b - 0x1E).abs() < 24) {
+          count++;
+        }
       }
-    }
+      return count;
+    });
     expect(redPixels, 0);
   });
 }
