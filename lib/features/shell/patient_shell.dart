@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/content/emergency_bundle.dart';
 import '../../core/content/txt.dart';
 import '../../core/providers.dart';
+import '../../core/router/guards.dart';
 import '../../core/theme/tokens.dart';
 import '../../core/util/dial.dart';
 import '../../core/widgets/bottom_nav.dart';
@@ -61,6 +62,15 @@ class PatientShell extends ConsumerWidget {
             right: AppSpace.s16,
             child: _EmergencyAffordance(
               onPressed: () => _openEmergencySheet(context, ref),
+            ),
+          ),
+          // Persistent AI-assistant entry — above the bottom nav, on every
+          // tab. The nav stays at the spec's four items.
+          Positioned(
+            right: AppSpace.s16,
+            bottom: AppSpace.s16,
+            child: _AssistantFab(
+              onPressed: () => context.push(Routes.assistant),
             ),
           ),
         ],
@@ -121,5 +131,48 @@ class _EmergencyAffordance extends ConsumerWidget {
       _ => '103',
     };
     return EmergencyButton(semanticLabel: resolved, onPressed: onPressed);
+  }
+}
+
+class _AssistantFab extends ConsumerWidget {
+  const _AssistantFab({required this.onPressed});
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final label = switch (ref.watch(txtProvider('assistant.title'))) {
+      AsyncData(value: final ContentResolved r) => r.text,
+      _ => 'Assistant',
+    };
+    return Semantics(
+      button: true,
+      label: label,
+      child: Container(
+        // Sits just above the floating bottom-nav pill.
+        margin: const EdgeInsets.only(bottom: 80),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: AppShadow.nav,
+        ),
+        child: Material(
+          color: AppColors.brand600,
+          shape: const CircleBorder(),
+          child: InkWell(
+            onTap: onPressed,
+            customBorder: const CircleBorder(),
+            child: const SizedBox(
+              width: 56,
+              height: 56,
+              child: Icon(
+                Icons.auto_awesome_outlined,
+                color: AppColors.surface,
+                size: 26,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
