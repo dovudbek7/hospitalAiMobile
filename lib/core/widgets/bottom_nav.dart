@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../theme/tokens.dart';
-import '../theme/typography.dart';
 
 class BottomNavItem {
   const BottomNavItem({
@@ -88,35 +87,12 @@ class _NavButton extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(19),
+          // Icon-only for every tab; the active one keeps the brand pill.
+          // Names live in semanticLabel for screen readers.
           child: Container(
             height: 50,
             alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(horizontal: AppSpace.s8),
-            // Active: icon + label pill. Inactive: icon only — the label
-            // stays in the tree invisibly so screen readers still hear it.
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(item.icon, size: 22, color: color),
-                if (active) ...[
-                  const SizedBox(width: 6),
-                  Flexible(
-                    child: DefaultTextStyle.merge(
-                      style: AppText.caption.copyWith(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: color,
-                        height: 1.1,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      child: item.label,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+            child: Icon(item.icon, size: 22, color: color),
           ),
         ),
       ),
