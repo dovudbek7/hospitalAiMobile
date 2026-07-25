@@ -116,18 +116,25 @@ class _QuestionPager extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpace.s24),
           Expanded(
+            // Clip.none so the option cards' soft shadow isn't cut into a
+            // hard line at the scroll viewport's left/right edge. A little
+            // horizontal padding keeps that shadow off the screen edge.
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Question text = content key, resolved.
-                  Txt(
-                    q.questionContentKey,
-                    style: AppText.display.copyWith(fontSize: 25),
-                  ),
-                  const SizedBox(height: AppSpace.s16),
-                  _AnswerArea(question: q, answer: answer),
-                ],
+              clipBehavior: Clip.none,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.s4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Question text = content key, resolved.
+                    Txt(
+                      q.questionContentKey,
+                      style: AppText.display.copyWith(fontSize: 25),
+                    ),
+                    const SizedBox(height: AppSpace.s16),
+                    _AnswerArea(question: q, answer: answer),
+                  ],
+                ),
               ),
             ),
           ),
