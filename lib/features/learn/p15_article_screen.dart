@@ -76,12 +76,8 @@ class _P15ArticleScreenState extends ConsumerState<P15ArticleScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Txt(
-                '$key.title',
-                style: AppText.display.copyWith(fontSize: 26),
-              ),
-              const SizedBox(height: AppSpace.s16),
-              // The body — verbatim, untransformed.
+              // The body — verbatim, untransformed. (No separate title key
+              // exists server-side; the approved text stands on its own.)
               Txt(key, style: AppText.bodyL),
               const SizedBox(height: AppSpace.s32),
               const Divider(),

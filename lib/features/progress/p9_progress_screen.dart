@@ -77,28 +77,36 @@ class P9ProgressScreen extends ConsumerWidget {
                     child: _StatCard(
                       label: const Txt('progress.completed_label'),
                       value: Text(
-                        '${(p.adherence.value * 100).round()}%',
+                        // No tasks counted yet → a dash, not a bare 0%.
+                        p.adherence.denominator == 0
+                            ? '—'
+                            : '${(p.adherence.value * 100).round()}%',
                         style: AppText.display
                             .copyWith(color: AppColors.brand700),
                       ),
-                      // The denominator is ALWAYS shown (spec P9).
-                      caption: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Txt(
-                            'progress.tasks_frac',
-                            vars: {
-                              'N': '${p.adherence.numerator}',
-                              'TOTAL': '${p.adherence.denominator}',
-                            },
-                            style: AppText.caption,
-                          ),
-                          const Txt(
-                            'progress.not_counted',
-                            style: AppText.caption,
-                          ),
-                        ],
-                      ),
+                      // The denominator is ALWAYS shown once there is one.
+                      caption: p.adherence.denominator == 0
+                          ? const Txt(
+                              'progress.not_counted',
+                              style: AppText.caption,
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Txt(
+                                  'progress.tasks_frac',
+                                  vars: {
+                                    'N': '${p.adherence.numerator}',
+                                    'TOTAL': '${p.adherence.denominator}',
+                                  },
+                                  style: AppText.caption,
+                                ),
+                                const Txt(
+                                  'progress.not_counted',
+                                  style: AppText.caption,
+                                ),
+                              ],
+                            ),
                     ),
                   ),
                 ],

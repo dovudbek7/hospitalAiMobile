@@ -332,8 +332,10 @@ class _TaskCard extends ConsumerWidget {
 
     return TaskRow(
       icon: Icon(icon),
-      // Task title = clinician-approved content, resolved by key.
-      title: Txt(task.contentRef),
+      // Task title = clinician-approved content, resolved by key. The
+      // server stores the full instruction here, so cap it to two lines;
+      // the whole text lives on P7.
+      title: Txt(task.contentRef, maxLines: 2, overflow: TextOverflow.ellipsis),
       time: task.timeLabel,
       state: state,
       overdueSuffix: const Txt('today.overdue'),

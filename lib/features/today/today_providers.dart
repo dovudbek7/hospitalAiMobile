@@ -185,23 +185,39 @@ class TodayNotifier extends AsyncNotifier<TodayView> {
   }
 }
 
-/// P9 data: server first, cached JSON for offline re-render.
+/// P9 data: server first, cached JSON for offline, and — as a last resort —
+/// a minimal view synthesised from Today so the screen never hard-errors on
+/// an unexpected server shape. Progress is motivational, not safety-critical.
 final progressProvider = FutureProvider<ProgressResponse>((ref) async {
   final api = ref.watch(patientApiProvider);
   final prefs = ref.watch(sharedPrefsProviderSafe);
   const cacheKey = 'cache.progress_v1';
+
+  ProgressResponse fallback() {
+    final day = ref.read(todayProvider).value?.recoveryDay ?? 0;
+    return ProgressResponse(
+      adherence: const Adherence(value: 0, numerator: 0, denominator: 0),
+      daysCompleted: day,
+      programmeDays: 30,
+    );
+  }
+
   try {
     final progress = await api.getProgress();
     await prefs?.setString(cacheKey, jsonEncode(progress.toJson()));
     return progress;
-  } on DioException {
+  } catch (_) {
+    // Offline / parse mismatch / server trouble — prefer cache, else a
+    // synthesised minimal view. Never a full error screen.
     final raw = prefs?.getString(cacheKey);
     if (raw != null) {
-      return ProgressResponse.fromJson(
-        jsonDecode(raw) as Map<String, dynamic>,
-      );
+      try {
+        return ProgressResponse.fromJson(
+          jsonDecode(raw) as Map<String, dynamic>,
+        );
+      } catch (_) {/* fall through */}
     }
-    rethrow;
+    return fallback();
   }
 });
 

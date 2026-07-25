@@ -112,11 +112,13 @@ class _ArticleRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Title = `<contentKey>.title` by convention, resolved
-                // through the library; the body lives at the key itself.
+                // The server has no separate title key, so the approved
+                // article text doubles as the headline (first line).
                 Txt(
-                  '${item.contentKey}.title',
+                  item.contentKey,
                   style: AppText.bodyL.copyWith(fontWeight: FontWeight.w600),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 2),
                 Txt(

@@ -37,6 +37,15 @@ class _AssistantScreenState extends ConsumerState<AssistantScreen> {
   final _scroll = ScrollController();
 
   @override
+  void initState() {
+    super.initState();
+    // Best-effort: pull the latest thread so past messages reappear.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(assistantProvider.notifier).loadHistory();
+    });
+  }
+
+  @override
   void dispose() {
     _input.dispose();
     _scroll.dispose();

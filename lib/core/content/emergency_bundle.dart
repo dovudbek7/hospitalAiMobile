@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'content_repository.dart';
+import 'interpolate.dart';
 import 'content_result.dart';
 
 /// P13's hard requirement: the emergency screen must render and dial with
@@ -98,11 +99,19 @@ class EmergencyBundle {
     required String clinicPhone,
     String ambulanceNumber = '103',
   }) async {
+    // The server ships emergency.* with {CLINIC_NAME}/{CLINIC_PHONE} tokens
+    // unresolved (unlike checkin.submitted.*). P13 renders the bundle text
+    // directly, so interpolate HERE and store clean text.
+    final vars = {
+      'CLINIC_NAME': clinicName,
+      'CLINIC_PHONE': clinicPhone,
+      'EMERGENCY_NUMBER': ambulanceNumber,
+    };
     final texts = <String, String>{};
     for (final key in contentKeys) {
       final result = await content.resolve(key, language);
       if (result is! ContentResolved) return null;
-      texts[key] = result.text;
+      texts[key] = interpolate(result.text, vars);
     }
     final bundle = EmergencyBundle(
       headline: texts['emergency.headline']!,

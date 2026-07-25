@@ -99,92 +99,77 @@ class P8MedicationScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          // Compact summary card: icon · "scheduled by your
+                          // clinic" · the scheduled time. The full
+                          // instruction (which the server stores in
+                          // contentRef) lives BELOW at a readable size —
+                          // not blown up to display size in here.
                           BrandGradient(
                             borderRadius: BorderRadius.circular(28),
                             padding: const EdgeInsets.all(AppSpace.s24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            child: Row(
                               children: [
-                                // Icon beside the name, not stacked above
-                                // it — the stacked version pushed the dose
-                                // and the time chip off a small screen.
-                                Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      width: 52,
-                                      height: 52,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.surface
-                                            .withValues(alpha: .2),
-                                        borderRadius:
-                                            BorderRadius.circular(16),
-                                      ),
-                                      child: const Icon(
-                                        Icons.medication_outlined,
-                                        color: AppColors.surface,
-                                        size: 26,
-                                      ),
-                                    ),
-                                    const SizedBox(width: AppSpace.s16),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Txt(
-                                            'medication.scheduled_by_clinic',
-                                            style: AppText.eyebrow.copyWith(
-                                              color: AppColors.surface
-                                                  .withValues(alpha: .75),
-                                              letterSpacing: 1,
-                                            ),
-                                          ),
-                                          const SizedBox(height: AppSpace.s4),
-                                          // Name + dose = the clinic-approved
-                                          // content string, verbatim.
-                                          Txt(
-                                            task.contentRef,
-                                            style: AppText.display.copyWith(
-                                              color: AppColors.surface,
-                                              fontSize: 26,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: AppSpace.s16),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: AppSpace.s16,
-                                    vertical: 6,
-                                  ),
+                                  width: 52,
+                                  height: 52,
                                   decoration: BoxDecoration(
                                     color: AppColors.surface
                                         .withValues(alpha: .2),
-                                    borderRadius:
-                                        BorderRadius.circular(999),
+                                    borderRadius: BorderRadius.circular(16),
                                   ),
-                                  child: Text(
-                                    task.timeLabel,
-                                    style: AppText.button
-                                        .copyWith(color: AppColors.surface),
+                                  child: const Icon(
+                                    Icons.medication_outlined,
+                                    color: AppColors.surface,
+                                    size: 26,
+                                  ),
+                                ),
+                                const SizedBox(width: AppSpace.s16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Txt(
+                                        'medication.scheduled_by_clinic',
+                                        style: AppText.eyebrow.copyWith(
+                                          color: AppColors.surface
+                                              .withValues(alpha: .8),
+                                          letterSpacing: 1,
+                                        ),
+                                      ),
+                                      const SizedBox(height: AppSpace.s4),
+                                      Text(
+                                        task.timeLabel,
+                                        style: AppText.display.copyWith(
+                                          color: AppColors.surface,
+                                          fontSize: 28,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
                             ),
                           ),
                           const SizedBox(height: AppSpace.s16),
+                          // Full instruction — verbatim, readable body size.
                           Container(
+                            width: double.infinity,
                             padding: const EdgeInsets.all(AppSpace.s16),
                             decoration: BoxDecoration(
                               color: AppColors.surface,
                               borderRadius: AppRadius.cardAll,
                               border: Border.all(color: AppColors.line),
                               boxShadow: AppShadow.card,
+                            ),
+                            child: Txt(task.contentRef, style: AppText.bodyL),
+                          ),
+                          const SizedBox(height: AppSpace.s12),
+                          Container(
+                            padding: const EdgeInsets.all(AppSpace.s16),
+                            decoration: BoxDecoration(
+                              color: AppColors.brand50,
+                              borderRadius: AppRadius.cardAll,
                             ),
                             child: const Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
