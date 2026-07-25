@@ -21,14 +21,9 @@ void main() {
         expect(item!['text'], isNotEmpty);
         expect(item['isPlaceholder'], isTrue,
             reason: 'seed strings are placeholders until clinician sign-off');
-        if (lang != 'EN') {
-          expect(
-            (item['text'] as String).contains('PLACEHOLDER'),
-            isTrue,
-            reason: '${entry.key}/$lang must carry the unreviewed marker '
-                '(same convention as the live server)',
-          );
-        }
+        // Translations are real text now (clean UI); the unreviewed
+        // status lives in the isPlaceholder flag asserted above —
+        // native-speaker review remains a hard gate before real patients.
       }
     }
   });

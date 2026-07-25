@@ -6,12 +6,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Enter your code",
+   "text": "Kodingizni kiriting",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Enter your code",
+   "text": "Введите ваш код",
    "version": 0,
    "isPlaceholder": true
   }
@@ -23,12 +23,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic gave you a 6-character code when you were discharged.",
+   "text": "Shifoxonadan chiqishingizda klinikangiz sizga 6 belgili kod bergan.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic gave you a 6-character code when you were discharged.",
+   "text": "При выписке клиника выдала вам код из 6 символов.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -40,12 +40,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Don’t have a code? Contact your clinic.",
+   "text": "Kodingiz yo‘qmi? Klinikangizga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Don’t have a code? Contact your clinic.",
+   "text": "Нет кода? Свяжитесь с вашей клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -57,12 +57,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] That code isn’t valid. Please check it or contact your clinic.",
+   "text": "Bu kod yaroqsiz. Tekshirib ko‘ring yoki klinikangizga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] That code isn’t valid. Please check it or contact your clinic.",
+   "text": "Этот код недействителен. Проверьте его или свяжитесь с клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -74,12 +74,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your phone number",
+   "text": "Telefon raqamingiz",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your phone number",
+   "text": "Ваш номер телефона",
    "version": 0,
    "isPlaceholder": true
   }
@@ -91,12 +91,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Enter the number you gave your clinic.",
+   "text": "Klinikaga bergan raqamingizni kiriting.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Enter the number you gave your clinic.",
+   "text": "Введите номер, который вы указали в клинике.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -108,12 +108,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] We couldn’t match that. Please contact your clinic.",
+   "text": "Ma’lumotlar mos kelmadi. Klinikangizga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] We couldn’t match that. Please contact your clinic.",
+   "text": "Данные не совпали. Свяжитесь с вашей клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -125,12 +125,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Before we begin",
+   "text": "Boshlashdan oldin",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Before we begin",
+   "text": "Прежде чем начать",
    "version": 0,
    "isPlaceholder": true
   }
@@ -142,12 +142,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact {CLINIC_NAME} directly or seek emergency care.",
+   "text": "Bu ilova shifokoringiz bergan tiklanish rejasiga amal qilishingizga yordam beradi. U eslatmalar yuboradi va klinikangiz tasdiqlagan ma’lumotlarni ko‘rsatadi. U shifokor emas. U tibbiy maslahat bera olmaydi va biror alomat jiddiy yoki jiddiy emasligini ayta olmaydi. Agar o‘zingizni yomon his qilsangiz, to‘g‘ridan-to‘g‘ri {CLINIC_NAME} bilan bog‘laning yoki shoshilinch tibbiy yordamga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] This app helps you follow the recovery plan your doctor gave you. It sends reminders and shares information approved by your clinic. It is not a doctor. It cannot give medical advice or tell you whether a symptom is serious. If something feels wrong, contact {CLINIC_NAME} directly or seek emergency care.",
+   "text": "Это приложение помогает вам следовать плану восстановления, который назначил ваш врач. Оно присылает напоминания и показывает информацию, одобренную вашей клиникой. Это не врач. Оно не может давать медицинские советы и не может сказать, серьёзен ли симптом. Если вы чувствуете себя плохо, свяжитесь напрямую с {CLINIC_NAME} или обратитесь за неотложной помощью.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -159,12 +159,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] What we collect: which recovery tasks and medicines you complete, and your answers to symptom check-ins.",
+   "text": "Nimalarni yig‘amiz: qaysi tiklanish vazifalari va dorilarni bajarganingiz hamda alomatlar so‘rovnomasiga bergan javoblaringiz.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] What we collect: which recovery tasks and medicines you complete, and your answers to symptom check-ins.",
+   "text": "Что мы собираем: какие задачи восстановления и приёмы лекарств вы выполнили, а также ваши ответы на опросы о симптомах.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -176,12 +176,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Who sees it: your care team at {CLINIC_NAME}, and the technical team supporting the app.",
+   "text": "Kim ko‘radi: {CLINIC_NAME}dagi parvarish jamoangiz va ilovani qo‘llab-quvvatlovchi texnik jamoa.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Who sees it: your care team at {CLINIC_NAME}, and the technical team supporting the app.",
+   "text": "Кто это видит: ваша лечащая команда в {CLINIC_NAME} и техническая команда, поддерживающая приложение.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -193,12 +193,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] How long: for the duration of your programme and your clinic’s record-keeping period.",
+   "text": "Qancha muddat: dasturingiz davomida va klinikangizning hujjat saqlash muddati davomida.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] How long: for the duration of your programme and your clinic’s record-keeping period.",
+   "text": "Как долго: в течение вашей программы и срока хранения записей вашей клиники.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -210,12 +210,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your choice: you can leave the programme at any time from Settings.",
+   "text": "Sizning tanlovingiz: Sozlamalar orqali istalgan vaqtda dasturni tark etishingiz mumkin.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your choice: you can leave the programme at any time from Settings.",
+   "text": "Ваш выбор: вы можете покинуть программу в любой момент через «Настройки».",
    "version": 0,
    "isPlaceholder": true
   }
@@ -227,12 +227,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] I have read and agree",
+   "text": "O‘qib chiqdim va roziman",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] I have read and agree",
+   "text": "Я прочитал(а) и согласен(на)",
    "version": 0,
    "isPlaceholder": true
   }
@@ -244,12 +244,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Agree and continue",
+   "text": "Rozilik berish va davom etish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Agree and continue",
+   "text": "Согласиться и продолжить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -261,12 +261,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Decline",
+   "text": "Rad etish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Decline",
+   "text": "Отказаться",
    "version": 0,
    "isPlaceholder": true
   }
@@ -278,12 +278,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Scroll to the end to continue",
+   "text": "Davom etish uchun matnni oxirigacha aylantiring",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Scroll to the end to continue",
+   "text": "Прокрутите текст до конца, чтобы продолжить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -295,12 +295,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] You’re all set, {FIRST_NAME}",
+   "text": "Hammasi tayyor, {FIRST_NAME}",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] You’re all set, {FIRST_NAME}",
+   "text": "Всё готово, {FIRST_NAME}",
    "version": 0,
    "isPlaceholder": true
   }
@@ -312,12 +312,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Each day you’ll see the tasks your doctor set for you.",
+   "text": "Har kuni shifokoringiz siz uchun belgilagan vazifalarni ko‘rasiz.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Each day you’ll see the tasks your doctor set for you.",
+   "text": "Каждый день вы будете видеть задачи, назначенные вашим врачом.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -329,12 +329,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your programme runs for 30 days.",
+   "text": "Dasturingiz 30 kun davom etadi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your programme runs for 30 days.",
+   "text": "Ваша программа длится 30 дней.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -346,12 +346,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins during opening hours only. In an emergency, call 103.",
+   "text": "Klinikangiz so‘rovnomalarni faqat ish vaqtida ko‘rib chiqadi. Favqulodda holatda 103 ga qo‘ng‘iroq qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins during opening hours only. In an emergency, call 103.",
+   "text": "Клиника просматривает опросы только в рабочие часы. В экстренной ситуации звоните 103.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -363,12 +363,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] We’ll remind you when to take your medication.",
+   "text": "Dori ichish vaqtini eslatib turamiz.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] We’ll remind you when to take your medication.",
+   "text": "Мы напомним вам, когда принимать лекарство.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -380,12 +380,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Start",
+   "text": "Boshlash",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Start",
+   "text": "Начать",
    "version": 0,
    "isPlaceholder": true
   }
@@ -397,12 +397,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Continue",
+   "text": "Davom etish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Continue",
+   "text": "Продолжить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -414,12 +414,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Day {N} of 30",
+   "text": "{N}-kun / 30",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Day {N} of 30",
+   "text": "День {N} из 30",
    "version": 0,
    "isPlaceholder": true
   }
@@ -431,12 +431,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Good morning",
+   "text": "Xayrli tong",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Good morning",
+   "text": "Доброе утро",
    "version": 0,
    "isPlaceholder": true
   }
@@ -448,12 +448,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Nothing scheduled today. Rest well.",
+   "text": "Bugunga hech narsa rejalashtirilmagan. Yaxshi dam oling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Nothing scheduled today. Rest well.",
+   "text": "На сегодня ничего не запланировано. Хорошо отдохните.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -465,12 +465,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s check-in",
+   "text": "Bugungi so‘rovnoma",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s check-in",
+   "text": "Сегодняшний опрос",
    "version": 0,
    "isPlaceholder": true
   }
@@ -482,12 +482,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] 7 questions · about 2 minutes",
+   "text": "7 ta savol · taxminan 2 daqiqa",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] 7 questions · about 2 minutes",
+   "text": "7 вопросов · около 2 минут",
    "version": 0,
    "isPlaceholder": true
   }
@@ -499,12 +499,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s plan",
+   "text": "Bugungi reja",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today’s plan",
+   "text": "План на сегодня",
    "version": 0,
    "isPlaceholder": true
   }
@@ -516,12 +516,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks done today",
+   "text": "Bugun {TOTAL} ta vazifadan {N} tasi bajarildi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks done today",
+   "text": "Сегодня выполнено {N} из {TOTAL} задач",
    "version": 0,
    "isPlaceholder": true
   }
@@ -533,12 +533,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Earlier today",
+   "text": "Bugun avvalroq",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Earlier today",
+   "text": "Ранее сегодня",
    "version": 0,
    "isPlaceholder": true
   }
@@ -550,12 +550,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Mark as done",
+   "text": "Bajarildi deb belgilash",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Mark as done",
+   "text": "Отметить выполненным",
    "version": 0,
    "isPlaceholder": true
   }
@@ -567,12 +567,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Done",
+   "text": "Bajarildi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Done",
+   "text": "Выполнено",
    "version": 0,
    "isPlaceholder": true
   }
@@ -584,12 +584,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Undo",
+   "text": "Bekor qilish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Undo",
+   "text": "Отменить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -601,12 +601,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Approved image (optional)",
+   "text": "Tasdiqlangan rasm (ixtiyoriy)",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Approved image (optional)",
+   "text": "Одобренное изображение (необязательно)",
    "version": 0,
    "isPlaceholder": true
   }
@@ -618,12 +618,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Taken",
+   "text": "Ichdim",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Taken",
+   "text": "Принял(а)",
    "version": 0,
    "isPlaceholder": true
   }
@@ -635,12 +635,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Not yet",
+   "text": "Hali emas",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Not yet",
+   "text": "Ещё нет",
    "version": 0,
    "isPlaceholder": true
   }
@@ -652,12 +652,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Scheduled by your clinic",
+   "text": "Klinikangiz tomonidan belgilangan",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Scheduled by your clinic",
+   "text": "Назначено вашей клиникой",
    "version": 0,
    "isPlaceholder": true
   }
@@ -669,12 +669,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Dose and schedule are set by your clinic and cannot be changed here.",
+   "text": "Doza va jadval klinikangiz tomonidan belgilanadi va bu yerda o‘zgartirib bo‘lmaydi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Dose and schedule are set by your clinic and cannot be changed here.",
+   "text": "Дозу и расписание устанавливает клиника; здесь их изменить нельзя.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -686,12 +686,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] My recovery",
+   "text": "Mening tiklanishim",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] My recovery",
+   "text": "Моё восстановление",
    "version": 0,
    "isPlaceholder": true
   }
@@ -703,12 +703,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of 30 days",
+   "text": "30 kundan {N} kuni",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of 30 days",
+   "text": "{N} из 30 дней",
    "version": 0,
    "isPlaceholder": true
   }
@@ -720,12 +720,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Days",
+   "text": "Kunlar",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Days",
+   "text": "Дни",
    "version": 0,
    "isPlaceholder": true
   }
@@ -737,12 +737,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "text": "Bajarilgan",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "text": "Выполнено",
    "version": 0,
    "isPlaceholder": true
   }
@@ -754,12 +754,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks",
+   "text": "{TOTAL} ta vazifadan {N} tasi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} of {TOTAL} tasks",
+   "text": "{N} из {TOTAL} задач",
    "version": 0,
    "isPlaceholder": true
   }
@@ -771,12 +771,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] future tasks not counted",
+   "text": "kelgusi vazifalar hisobga olinmaydi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] future tasks not counted",
+   "text": "будущие задачи не учитываются",
    "version": 0,
    "isPlaceholder": true
   }
@@ -788,12 +788,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] 30-day programme",
+   "text": "30 kunlik dastur",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] 30-day programme",
+   "text": "30-дневная программа",
    "version": 0,
    "isPlaceholder": true
   }
@@ -805,12 +805,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "text": "Bajarilgan",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Completed",
+   "text": "Выполнено",
    "version": 0,
    "isPlaceholder": true
   }
@@ -822,12 +822,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "text": "Bugun",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "text": "Сегодня",
    "version": 0,
    "isPlaceholder": true
   }
@@ -839,12 +839,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Upcoming",
+   "text": "Kelgusi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Upcoming",
+   "text": "Предстоящие",
    "version": 0,
    "isPlaceholder": true
   }
@@ -856,12 +856,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Every day counts.",
+   "text": "Har bir kun muhim.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Every day counts.",
+   "text": "Каждый день важен.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -873,12 +873,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Keep going — your care team can see your progress.",
+   "text": "Davom eting — parvarish jamoangiz natijalaringizni ko‘rib turadi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Keep going — your care team can see your progress.",
+   "text": "Продолжайте — ваша лечащая команда видит ваш прогресс.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -890,12 +890,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "text": "Bugun",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "text": "Сегодня",
    "version": 0,
    "isPlaceholder": true
   }
@@ -907,12 +907,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Progress",
+   "text": "Natijalar",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Progress",
+   "text": "Прогресс",
    "version": 0,
    "isPlaceholder": true
   }
@@ -924,12 +924,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "text": "O‘rganish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "text": "Материалы",
    "version": 0,
    "isPlaceholder": true
   }
@@ -941,12 +941,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Settings",
+   "text": "Sozlamalar",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Settings",
+   "text": "Настройки",
    "version": 0,
    "isPlaceholder": true
   }
@@ -958,12 +958,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Contact clinic",
+   "text": "Klinikaga murojaat",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Contact clinic",
+   "text": "Связаться с клиникой",
    "version": 0,
    "isPlaceholder": true
   }
@@ -975,12 +975,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME} on {CLINIC_PHONE}. In an emergency, call 103.",
+   "text": "{CLINIC_NAME}ga {CLINIC_PHONE} orqali qo‘ng‘iroq qiling. Favqulodda holatda 103 ga qo‘ng‘iroq qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME} on {CLINIC_PHONE}. In an emergency, call 103.",
+   "text": "Позвоните в {CLINIC_NAME} по номеру {CLINIC_PHONE}. В экстренной ситуации звоните 103.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -992,12 +992,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Language",
+   "text": "Til",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Language",
+   "text": "Язык",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1009,12 +1009,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins {WORKING_HOURS}, {WORKING_DAYS}. Outside these hours no one is monitoring. In an emergency, call 103.",
+   "text": "Klinikangiz so‘rovnomalarni {WORKING_HOURS}, {WORKING_DAYS} kunlari ko‘rib chiqadi. Bu vaqtdan tashqari hech kim kuzatmaydi. Favqulodda holatda 103 ga qo‘ng‘iroq qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic reviews check-ins {WORKING_HOURS}, {WORKING_DAYS}. Outside these hours no one is monitoring. In an emergency, call 103.",
+   "text": "Клиника просматривает опросы {WORKING_HOURS}, {WORKING_DAYS}. Вне этих часов никто не наблюдает. В экстренной ситуации звоните 103.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1026,12 +1026,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic",
+   "text": "Sizning klinikangiz",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your clinic",
+   "text": "Ваша клиника",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1043,12 +1043,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Notifications",
+   "text": "Bildirishnomalar",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Notifications",
+   "text": "Уведомления",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1060,12 +1060,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Reminder settings",
+   "text": "Eslatma sozlamalari",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Reminder settings",
+   "text": "Настройки напоминаний",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1077,12 +1077,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Programme",
+   "text": "Dastur",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Programme",
+   "text": "Программа",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1094,12 +1094,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Started",
+   "text": "Boshlangan",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Started",
+   "text": "Начало",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1111,12 +1111,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "text": "Bugun",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Today",
+   "text": "Сегодня",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1128,12 +1128,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Ends",
+   "text": "Tugaydi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Ends",
+   "text": "Окончание",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1145,12 +1145,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Leave programme",
+   "text": "Dasturni tark etish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Leave programme",
+   "text": "Покинуть программу",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1162,12 +1162,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Are you sure? Your clinic will be told you have left.",
+   "text": "Ishonchingiz komilmi? Klinikangizga dasturni tark etganingiz haqida xabar beriladi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Are you sure? Your clinic will be told you have left.",
+   "text": "Вы уверены? Клинике сообщат, что вы покинули программу.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1179,12 +1179,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Offline — your progress will be saved",
+   "text": "Oflayn — natijalaringiz saqlanadi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Offline — your progress will be saved",
+   "text": "Офлайн — ваш прогресс будет сохранён",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1196,12 +1196,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] You need a connection to send a check-in. If you are worried now, call {CLINIC_PHONE} or 103.",
+   "text": "So‘rovnoma yuborish uchun internet aloqasi kerak. Agar hozir xavotirda bo‘lsangiz, {CLINIC_PHONE} yoki 103 ga qo‘ng‘iroq qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] You need a connection to send a check-in. If you are worried now, call {CLINIC_PHONE} or 103.",
+   "text": "Для отправки опроса нужно соединение. Если вы обеспокоены сейчас, позвоните {CLINIC_PHONE} или 103.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1213,12 +1213,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No connection",
+   "text": "Aloqa yo‘q",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No connection",
+   "text": "Нет соединения",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1230,12 +1230,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers have not been sent, and they are not waiting in a queue.",
+   "text": "Javoblaringiz yuborilmadi va navbatda kutmayapti.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers have not been sent, and they are not waiting in a queue.",
+   "text": "Ваши ответы не отправлены и не ожидают в очереди.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1247,12 +1247,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] saved on this device",
+   "text": "shu qurilmada saqlangan",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] saved on this device",
+   "text": "сохранено на этом устройстве",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1264,12 +1264,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Question {N} of {TOTAL}",
+   "text": "Savol {N} / {TOTAL}",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Question {N} of {TOTAL}",
+   "text": "Вопрос {N} из {TOTAL}",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1281,12 +1281,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Next",
+   "text": "Keyingi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Next",
+   "text": "Далее",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1298,12 +1298,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Back",
+   "text": "Orqaga",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Back",
+   "text": "Назад",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1315,12 +1315,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "text": "Yuborish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "text": "Отправить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1332,12 +1332,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Select all that apply",
+   "text": "Mos keladiganlarning barchasini tanlang",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Select all that apply",
+   "text": "Выберите все подходящие варианты",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1349,12 +1349,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No pain",
+   "text": "Og‘riq yo‘q",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No pain",
+   "text": "Боли нет",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1366,12 +1366,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Worst pain",
+   "text": "Eng kuchli og‘riq",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Worst pain",
+   "text": "Сильнейшая боль",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1383,12 +1383,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Answers received",
+   "text": "Javoblar qabul qilindi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Answers received",
+   "text": "Ответы получены",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1400,12 +1400,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Sent to your care team",
+   "text": "Parvarish jamoangizga yuborildi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Sent to your care team",
+   "text": "Отправлено вашей лечащей команде",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1417,12 +1417,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Back to Today",
+   "text": "Bugungi sahifaga qaytish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Back to Today",
+   "text": "Вернуться на «Сегодня»",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1434,12 +1434,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] If your symptoms get worse, call the clinic or 103.",
+   "text": "Alomatlaringiz yomonlashsa, klinikaga yoki 103 ga qo‘ng‘iroq qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] If your symptoms get worse, call the clinic or 103.",
+   "text": "Если симптомы ухудшатся, позвоните в клинику или 103.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1451,12 +1451,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers were NOT sent. Please try again, or call {CLINIC_PHONE}.",
+   "text": "Javoblaringiz YUBORILMADI. Qayta urinib ko‘ring yoki {CLINIC_PHONE} ga qo‘ng‘iroq qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your answers were NOT sent. Please try again, or call {CLINIC_PHONE}.",
+   "text": "Ваши ответы НЕ отправлены. Попробуйте снова или позвоните {CLINIC_PHONE}.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1468,12 +1468,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Routine",
+   "text": "Odatiy",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Routine",
+   "text": "Плановый",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1485,12 +1485,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Urgent",
+   "text": "Shoshilinch",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Urgent",
+   "text": "Срочный",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1502,12 +1502,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency",
+   "text": "Favqulodda",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency",
+   "text": "Экстренный",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1519,12 +1519,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] clinic closed",
+   "text": "klinika yopiq",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] clinic closed",
+   "text": "клиника закрыта",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1536,12 +1536,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] In an emergency",
+   "text": "Favqulodda holatda",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] In an emergency",
+   "text": "В экстренной ситуации",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1553,12 +1553,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Call 103",
+   "text": "103 ga qo‘ng‘iroq",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Call 103",
+   "text": "Позвонить 103",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1570,12 +1570,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME}",
+   "text": "{CLINIC_NAME}ga qo‘ng‘iroq",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Call {CLINIC_NAME}",
+   "text": "Позвонить в {CLINIC_NAME}",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1587,12 +1587,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Close",
+   "text": "Yopish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Close",
+   "text": "Закрыть",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1604,12 +1604,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency instruction",
+   "text": "Favqulodda holat ko‘rsatmasi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Emergency instruction",
+   "text": "Экстренная инструкция",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1621,12 +1621,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "text": "O‘rganish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Learn",
+   "text": "Материалы",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1638,12 +1638,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Approved by {CLINIC_NAME} for your recovery.",
+   "text": "Tiklanishingiz uchun {CLINIC_NAME} tomonidan tasdiqlangan.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Approved by {CLINIC_NAME} for your recovery.",
+   "text": "Одобрено {CLINIC_NAME} для вашего восстановления.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1655,12 +1655,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Relevant today",
+   "text": "Bugun dolzarb",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Relevant today",
+   "text": "Актуально сегодня",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1672,12 +1672,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] All articles",
+   "text": "Barcha maqolalar",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] All articles",
+   "text": "Все статьи",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1689,12 +1689,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] More articles unlock as your recovery continues.",
+   "text": "Tiklanishingiz davom etgan sari yangi maqolalar ochiladi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] More articles unlock as your recovery continues.",
+   "text": "По мере восстановления открываются новые статьи.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1706,12 +1706,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No articles yet for your procedure. Your clinic will add them.",
+   "text": "Muolajangiz uchun hozircha maqolalar yo‘q. Klinikangiz ularni qo‘shadi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No articles yet for your procedure. Your clinic will add them.",
+   "text": "Для вашей процедуры пока нет статей. Клиника добавит их.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1723,12 +1723,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {N} min read",
+   "text": "{N} daqiqalik o‘qish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {N} min read",
+   "text": "{N} мин чтения",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1740,12 +1740,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] unlocked day {N}",
+   "text": "{N}-kuni ochilgan",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] unlocked day {N}",
+   "text": "открыто в день {N}",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1757,12 +1757,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] This is not yet available in your language.",
+   "text": "Bu hali sizning tilingizda mavjud emas.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] This is not yet available in your language.",
+   "text": "Это пока недоступно на вашем языке.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1774,12 +1774,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Please contact your clinic if you need this information.",
+   "text": "Bu ma’lumot kerak bo‘lsa, klinikangizga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Please contact your clinic if you need this information.",
+   "text": "Если вам нужна эта информация, свяжитесь с клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1791,12 +1791,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "text": "Beshta qisqa savol",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "text": "Пять коротких вопросов",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1808,12 +1808,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] There are no right answers.",
+   "text": "To‘g‘ri javobning o‘zi yo‘q.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] There are no right answers.",
+   "text": "Правильных ответов нет.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1825,12 +1825,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Overall, how helpful was the app during your recovery?",
+   "text": "Umuman olganda, ilova tiklanishingizda qanchalik yordam berdi?",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Overall, how helpful was the app during your recovery?",
+   "text": "В целом, насколько приложение помогло вам в восстановлении?",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1842,12 +1842,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Not helpful",
+   "text": "Yordam bermadi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Not helpful",
+   "text": "Не помогло",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1859,12 +1859,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Very helpful",
+   "text": "Juda yordam berdi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Very helpful",
+   "text": "Очень помогло",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1876,12 +1876,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] How easy was the app to use?",
+   "text": "Ilovadan foydalanish qanchalik oson bo‘ldi?",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] How easy was the app to use?",
+   "text": "Насколько легко было пользоваться приложением?",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1893,12 +1893,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Very difficult",
+   "text": "Juda qiyin",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Very difficult",
+   "text": "Очень сложно",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1910,12 +1910,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Very easy",
+   "text": "Juda oson",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Very easy",
+   "text": "Очень легко",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1927,12 +1927,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Did it help you remember your medication and daily tasks?",
+   "text": "Dori va kundalik vazifalarni eslab qolishingizga yordam berdimi?",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Did it help you remember your medication and daily tasks?",
+   "text": "Помогло ли оно помнить о лекарствах и ежедневных задачах?",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1944,12 +1944,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "text": "Ha",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "text": "Да",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1961,12 +1961,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Somewhat",
+   "text": "Qisman",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Somewhat",
+   "text": "Отчасти",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1978,12 +1978,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "text": "Yo‘q",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "text": "Нет",
    "version": 0,
    "isPlaceholder": true
   }
@@ -1995,12 +1995,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Would you recommend it to another patient having surgery?",
+   "text": "Operatsiya qilinadigan boshqa bemorga tavsiya qilarmidingiz?",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Would you recommend it to another patient having surgery?",
+   "text": "Порекомендовали бы вы его другому пациенту перед операцией?",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2012,12 +2012,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "text": "Ha",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Yes",
+   "text": "Да",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2029,12 +2029,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Maybe",
+   "text": "Balki",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Maybe",
+   "text": "Возможно",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2046,12 +2046,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "text": "Yo‘q",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] No",
+   "text": "Нет",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2063,12 +2063,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] What would you change?",
+   "text": "Nimani o‘zgartirgan bo‘lardingiz?",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] What would you change?",
+   "text": "Что бы вы изменили?",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2080,12 +2080,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] optional",
+   "text": "ixtiyoriy",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] optional",
+   "text": "необязательно",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2097,12 +2097,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Type here…",
+   "text": "Shu yerga yozing…",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Type here…",
+   "text": "Напишите здесь…",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2114,12 +2114,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "text": "Yuborish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Submit",
+   "text": "Отправить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2131,12 +2131,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Skip",
+   "text": "O‘tkazib yuborish",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Skip",
+   "text": "Пропустить",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2148,12 +2148,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Something went wrong. Please try again, or contact your clinic.",
+   "text": "Nimadir xato ketdi. Qayta urinib ko‘ring yoki klinikangizga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Something went wrong. Please try again, or contact your clinic.",
+   "text": "Что-то пошло не так. Попробуйте снова или свяжитесь с клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2165,12 +2165,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Please close and reopen the app. If this continues, contact your clinic.",
+   "text": "Ilovani yopib, qayta oching. Muammo davom etsa, klinikangizga murojaat qiling.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Please close and reopen the app. If this continues, contact your clinic.",
+   "text": "Закройте и снова откройте приложение. Если проблема сохранится, свяжитесь с клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2182,12 +2182,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] {WORKING_HOURS} · {WORKING_DAYS}",
+   "text": "{WORKING_HOURS} · {WORKING_DAYS}",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] {WORKING_HOURS} · {WORKING_DAYS}",
+   "text": "{WORKING_HOURS} · {WORKING_DAYS}",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2199,12 +2199,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Symptom check-in",
+   "text": "Alomatlar so‘rovnomasi",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Symptom check-in",
+   "text": "Опрос о симптомах",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2216,12 +2216,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Your 30-day programme is complete.",
+   "text": "30 kunlik dasturingiz yakunlandi.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Your 30-day programme is complete.",
+   "text": "Ваша 30-дневная программа завершена.",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2233,12 +2233,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "text": "Beshta qisqa savol",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Five quick questions",
+   "text": "Пять коротких вопросов",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2250,12 +2250,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders are off. You can enable them in Settings.",
+   "text": "Eslatmalar o‘chiq. Ularni Sozlamalarda yoqishingiz mumkin.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders are off. You can enable them in Settings.",
+   "text": "Напоминания выключены. Их можно включить в «Настройках».",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2267,12 +2267,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Medication reminders",
+   "text": "Dori eslatmalari",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Medication reminders",
+   "text": "Напоминания о лекарствах",
    "version": 0,
    "isPlaceholder": true
   }
@@ -2284,12 +2284,12 @@
    "isPlaceholder": true
   },
   "UZ": {
-   "text": "[UZ PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders to take your medication, scheduled by your clinic.",
+   "text": "Klinikangiz belgilagan dori ichish eslatmalari.",
    "version": 0,
    "isPlaceholder": true
   },
   "RU": {
-   "text": "[RU PLACEHOLDER — NOT CLINICALLY APPROVED] Reminders to take your medication, scheduled by your clinic.",
+   "text": "Напоминания о приёме лекарств, назначенные вашей клиникой.",
    "version": 0,
    "isPlaceholder": true
   }
